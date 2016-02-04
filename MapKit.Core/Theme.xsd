@@ -1,0 +1,733 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://www.cyrez.com/theme" targetNamespace="http://www.cyrez.com/theme" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="lrsCalibration">
+    <xs:restriction base ="xs:string">
+      <xs:enumeration value="Custom"/>
+      <xs:enumeration value="Length"/>
+      <xs:enumeration value="Vertices"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="VerticesMode">
+    <xs:restriction base ="xs:string">
+      <xs:enumeration value="All"/>
+      <xs:enumeration value="Range"/>
+      <xs:enumeration value="First"/>
+      <xs:enumeration value="Last"/>
+      <xs:enumeration value="Outer"/>
+      <xs:enumeration value="Inner"/>
+    </xs:restriction>
+  </xs:simpleType>
+          
+  <xs:simpleType name="color">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:pattern value ="#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})"/>
+        </xs:restriction>
+      </xs:simpleType>
+
+      <xs:simpleType>
+
+        <xs:restriction base ="xs:string">
+          <xs:enumeration value="Random"/>
+          <xs:enumeration value="AliceBlue"/>
+          <xs:enumeration value="AntiqueWhite"/>
+          <xs:enumeration value="Aqua"/>
+          <xs:enumeration value="Aquamarine"/>
+          <xs:enumeration value="Azure"/>
+          <xs:enumeration value="Beige"/>
+          <xs:enumeration value="Bisque"/>
+          <xs:enumeration value="Black"/>
+          <xs:enumeration value="BlanchedAlmond"/>
+          <xs:enumeration value="Blue"/>
+          <xs:enumeration value="BlueViolet"/>
+          <xs:enumeration value="Brown"/>
+          <xs:enumeration value="BurlyWood"/>
+          <xs:enumeration value="CadetBlue"/>
+          <xs:enumeration value="Chartreuse"/>
+          <xs:enumeration value="Chocolate"/>
+          <xs:enumeration value="Coral"/>
+          <xs:enumeration value="CornflowerBlue"/>
+          <xs:enumeration value="Cornsilk"/>
+          <xs:enumeration value="Crimson"/>
+          <xs:enumeration value="Cyan"/>
+          <xs:enumeration value="DarkBlue"/>
+          <xs:enumeration value="DarkCyan"/>
+          <xs:enumeration value="DarkGoldenRod"/>
+          <xs:enumeration value="DarkGray"/>
+          <xs:enumeration value="DarkGreen"/>
+          <xs:enumeration value="DarkKhaki"/>
+          <xs:enumeration value="DarkMagenta"/>
+          <xs:enumeration value="DarkOliveGreen"/>
+          <xs:enumeration value="Darkorange"/>
+          <xs:enumeration value="DarkOrchid"/>
+          <xs:enumeration value="DarkRed"/>
+          <xs:enumeration value="DarkSalmon"/>
+          <xs:enumeration value="DarkSeaGreen"/>
+          <xs:enumeration value="DarkSlateBlue"/>
+          <xs:enumeration value="DarkSlateGray"/>
+          <xs:enumeration value="DarkTurquoise"/>
+          <xs:enumeration value="DarkViolet"/>
+          <xs:enumeration value="DeepPink"/>
+          <xs:enumeration value="DeepSkyBlue"/>
+          <xs:enumeration value="DimGray"/>
+          <xs:enumeration value="DimGrey"/>
+          <xs:enumeration value="DodgerBlue"/>
+          <xs:enumeration value="FireBrick"/>
+          <xs:enumeration value="FloralWhite"/>
+          <xs:enumeration value="ForestGreen"/>
+          <xs:enumeration value="Fuchsia"/>
+          <xs:enumeration value="Gainsboro"/>
+          <xs:enumeration value="GhostWhite"/>
+          <xs:enumeration value="Gold"/>
+          <xs:enumeration value="GoldenRod"/>
+          <xs:enumeration value="Gray"/>
+          <xs:enumeration value="Green"/>
+          <xs:enumeration value="GreenYellow"/>
+          <xs:enumeration value="HoneyDew"/>
+          <xs:enumeration value="HotPink"/>
+          <xs:enumeration value="IndianRed"/>
+          <xs:enumeration value="Indigo"/>
+          <xs:enumeration value="Ivory"/>
+          <xs:enumeration value="Khaki"/>
+          <xs:enumeration value="Lavender"/>
+          <xs:enumeration value="LavenderBlush"/>
+          <xs:enumeration value="LawnGreen"/>
+          <xs:enumeration value="LemonChiffon"/>
+          <xs:enumeration value="LightBlue"/>
+          <xs:enumeration value="LightCoral"/>
+          <xs:enumeration value="LightCyan"/>
+          <xs:enumeration value="LightGoldenRodYellow"/>
+          <xs:enumeration value="LightGray"/>
+          <xs:enumeration value="LightGreen"/>
+          <xs:enumeration value="LightPink"/>
+          <xs:enumeration value="LightSalmon"/>
+          <xs:enumeration value="LightSeaGreen"/>
+          <xs:enumeration value="LightSkyBlue"/>
+          <xs:enumeration value="LightSlateGray"/>
+          <xs:enumeration value="LightSteelBlue"/>
+          <xs:enumeration value="LightYellow"/>
+          <xs:enumeration value="Lime"/>
+          <xs:enumeration value="LimeGreen"/>
+          <xs:enumeration value="Linen"/>
+          <xs:enumeration value="Magenta"/>
+          <xs:enumeration value="Maroon"/>
+          <xs:enumeration value="MediumAquaMarine"/>
+          <xs:enumeration value="MediumBlue"/>
+          <xs:enumeration value="MediumOrchid"/>
+          <xs:enumeration value="MediumPurple"/>
+          <xs:enumeration value="MediumSeaGreen"/>
+          <xs:enumeration value="MediumSlateBlue"/>
+          <xs:enumeration value="MediumSpringGreen"/>
+          <xs:enumeration value="MediumTurquoise"/>
+          <xs:enumeration value="MediumVioletRed"/>
+          <xs:enumeration value="MidnightBlue"/>
+          <xs:enumeration value="MintCream"/>
+          <xs:enumeration value="MistyRose"/>
+          <xs:enumeration value="Moccasin"/>
+          <xs:enumeration value="NavajoWhite"/>
+          <xs:enumeration value="Navy"/>
+          <xs:enumeration value="OldLace"/>
+          <xs:enumeration value="Olive"/>
+          <xs:enumeration value="OliveDrab"/>
+          <xs:enumeration value="Orange"/>
+          <xs:enumeration value="OrangeRed"/>
+          <xs:enumeration value="Orchid"/>
+          <xs:enumeration value="PaleGoldenRod"/>
+          <xs:enumeration value="PaleGreen"/>
+          <xs:enumeration value="PaleTurquoise"/>
+          <xs:enumeration value="PaleVioletRed"/>
+          <xs:enumeration value="PapayaWhip"/>
+          <xs:enumeration value="PeachPuff"/>
+          <xs:enumeration value="Peru"/>
+          <xs:enumeration value="Pink"/>
+          <xs:enumeration value="Plum"/>
+          <xs:enumeration value="PowderBlue"/>
+          <xs:enumeration value="Purple"/>
+          <xs:enumeration value="Red"/>
+          <xs:enumeration value="RosyBrown"/>
+          <xs:enumeration value="RoyalBlue"/>
+          <xs:enumeration value="SaddleBrown"/>
+          <xs:enumeration value="Salmon"/>
+          <xs:enumeration value="SandyBrown"/>
+          <xs:enumeration value="SeaGreen"/>
+          <xs:enumeration value="SeaShell"/>
+          <xs:enumeration value="Sienna"/>
+          <xs:enumeration value="Silver"/>
+          <xs:enumeration value="SkyBlue"/>
+          <xs:enumeration value="SlateBlue"/>
+          <xs:enumeration value="SlateGray"/>
+          <xs:enumeration value="Snow"/>
+          <xs:enumeration value="SpringGreen"/>
+          <xs:enumeration value="SteelBlue"/>
+          <xs:enumeration value="Tan"/>
+          <xs:enumeration value="Teal"/>
+          <xs:enumeration value="Thistle"/>
+          <xs:enumeration value="Tomato"/>
+          <xs:enumeration value="Turquoise"/>
+          <xs:enumeration value="Violet"/>
+          <xs:enumeration value="Wheat"/>
+          <xs:enumeration value="White"/>
+          <xs:enumeration value="WhiteSmoke"/>
+          <xs:enumeration value="Yellow"/>
+          <xs:enumeration value="YellowGreen"/>
+        </xs:restriction>
+
+
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="DashStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Solid" />
+      <xs:enumeration value="Dash" />
+      <xs:enumeration value="Dot" />
+      <xs:enumeration value="DashDot" />
+      <xs:enumeration value="DashDotDot" />
+      <xs:enumeration value="Custom" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="lineCap">
+    <xs:restriction base ="xs:string">
+      <xs:enumeration value="butt" />
+      <xs:enumeration value="round" />
+      <xs:enumeration value="square" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="lineJoin">
+    <xs:restriction base ="xs:string">
+      <xs:enumeration value="miter" />
+      <xs:enumeration value="round" />
+      <xs:enumeration value="bevel" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="contentAlignment">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="columnRef" />
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base ="xs:string">
+          <xs:enumeration value="BottomLeft" />
+          <xs:enumeration value="BottomCenter" />
+          <xs:enumeration value="BottomRight" />
+          <xs:enumeration value="MiddleLeft" />
+          <xs:enumeration value="MiddleCenter" />
+          <xs:enumeration value="MiddleRight" />
+          <xs:enumeration value="TopLeft" />
+          <xs:enumeration value="TopCenter" />
+          <xs:enumeration value="TopRight" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:simpleType name="columnRef">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\[.+\]" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attributeGroup name="visibility">
+    <xs:attribute name="visible" type="xs:boolean" default="true"/>
+    <xs:attribute name="minScale" type="xs:double" use="optional" />
+    <xs:attribute name="maxScale" type="xs:double" use="optional"  />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="filterAttributes">
+    <xs:attribute name="condition" use="required" />
+    <xs:attribute name="label"/>
+    <xs:attributeGroup ref="visibility" />
+  </xs:attributeGroup>
+
+  <xs:element name="stroke">
+    <xs:complexType>
+      <xs:attributeGroup ref="lineStyleAttributes" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attributeGroup name="lineStyleAttributes">
+    <xs:attribute name="patternFile" />
+    <xs:attribute name="width" default="1" />
+    <xs:attribute name="color" default="Black" />
+    <xs:attribute name="dashArray" />
+    <xs:attribute name="dashOffset" default="0" />
+    <xs:attribute name="dashStyle" default="Solid" />
+    <xs:attribute name="opacity" default="1" />
+    <xs:attribute name="startCap" default="butt" type="lineCap" />
+    <xs:attribute name="endCap"  default="butt" type="lineCap" />
+    <xs:attribute name="join" default="bevel" type="lineJoin" />
+    <xs:attribute name="miterlimit"  />
+    <xs:attribute name="id" />
+    <xs:attribute name="visible" default="true" type="xs:boolean" />
+    <xs:attribute name="label"/>
+  </xs:attributeGroup>
+ 
+  <xs:element name="lineStyle">
+    <xs:complexType>
+      <xs:attributeGroup ref="lineStyleAttributes" />
+      <xs:attribute name="name"/>
+    </xs:complexType>
+  </xs:element>  
+
+  <xs:element name="text">
+    <xs:complexType>
+    <xs:sequence>
+      <xs:element name="content" minOccurs="0"/>
+      <xs:element name="labelBox" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:group ref="areaItems" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+      <xs:attributeGroup ref="textAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:attributeGroup name="textAttributes">
+    <xs:attribute name="font" />
+    <xs:attribute name="size" />
+    <xs:attribute name="color" default="Black" type="color" />
+    <xs:attribute name="alignment" default="BottomLeft" type="contentAlignment" />
+    <xs:attribute name="allowOverlap" default="true"/>
+    <xs:attribute name="overlapable"/>
+    <xs:attribute name="opacity" default="1" />
+    <xs:attribute name="scaleX" />
+    <xs:attribute name="scaleY" />
+    <xs:attribute name="angle" />
+    <xs:attribute name="id" />
+    <xs:attribute name="visible" default="true" type="xs:boolean" />
+    <xs:attribute name="keepUpward" default="true" type="xs:boolean" />
+    <xs:attribute name="label"/>
+  </xs:attributeGroup>
+  
+  <xs:element name="textStyle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="content" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="textAttributes" />
+      <xs:attribute name="name"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="solidFillStyle">
+    <xs:complexType>
+      <xs:attributeGroup ref="solidFillAttributes"/>
+      <xs:attribute name="name"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="pointStyle">
+    <xs:complexType>
+      <xs:attribute name="name"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="offset">
+    <xs:complexType>
+      <xs:group ref="layerItems" />
+      <xs:attribute name="x" />
+      <xs:attribute name="y" />
+      <xs:attribute name="label"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="marker">
+    <xs:complexType>
+      <xs:attribute name="file" />
+      <xs:attribute name="allowOverlap" />
+      <xs:attribute name="overlapable"/>
+      <xs:attribute name="opacity" default="1" />
+      <xs:attribute name="scaleX" />
+      <xs:attribute name="scaleY" />
+      <xs:attribute name="angle" />
+      <xs:attribute name="alignment" default="BottomLeft" type="contentAlignment" />
+      <xs:attribute name="color" />
+      <xs:attribute name="id" />
+      <xs:attribute name="visible" default="true" type="xs:boolean" />
+      <xs:attribute name="label"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="linearItems">
+    <xs:sequence>
+      <xs:element ref ="stroke" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="vertices" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:group ref="pointItems"/>
+          </xs:sequence>
+          <xs:attributeGroup ref="visibility" />
+          <xs:attribute name="start" type="xs:double" default="0"/>
+          <xs:attribute name="end" type="xs:double"/>
+          <xs:attribute name="increment" type="xs:double" default="1"/>
+          <xs:attribute name="mode" type="VerticesMode" default="All"/>
+          <xs:attribute name="label"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="pointExtractor" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:group ref="pointItems"/>
+          </xs:sequence>
+          <xs:attributeGroup ref="visibility" />
+          <xs:attribute name="start" type="xs:double" default="0"/>
+          <xs:attribute name="end" type="xs:double"/>
+          <xs:attribute name="increment" type="xs:double" use="required"/>
+          <xs:attribute name="offset" type="xs:double" default="0"/>
+          <xs:attribute name="xColumn" default="coord_x"/>
+          <xs:attribute name="yColumn" default="coord_y"/>
+          <xs:attribute name="zColumn" default="coord_z"/>
+          <xs:attribute name="mColumn" default="coord_m"/>
+          <xs:attribute name="angleColumn" default="coord_angle"/>
+          <xs:attribute name="label"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="linearCalibration" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:group ref="linearItems"/>
+          </xs:sequence>
+          <xs:attributeGroup ref="visibility" />
+          <xs:attribute name="startMeasure" type="xs:double" default="0"/>
+          <xs:attribute name="endMeasure" type="xs:double"/>
+          <xs:attribute name="label"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:group name="pointItems">
+    <xs:sequence>
+      <xs:element ref="text" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="marker" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:group>
+
+  <xs:group name="areaItems">
+    <xs:sequence>
+      <xs:group ref="linearItems" minOccurs="0" maxOccurs="unbounded" />
+      <xs:group ref="fills" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:group>
+
+  <xs:group name="symbolizer">
+    <xs:choice>
+      <xs:element ref="stroke" />
+      <xs:group ref="fills" />
+      <xs:element ref="marker" />
+      <xs:element ref="text"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="styles">
+    <xs:choice>
+      <xs:element ref="lineStyle" />
+      <xs:element ref="textStyle" />
+      <xs:element ref="solidFillStyle" />
+      <xs:element ref="pointStyle" />
+      <!--<xs:group ref="fills" />
+      <xs:element ref="marker" />
+      <xs:element name="text" type="textType" />-->
+
+          <!--<xs:element name="zoomFilter" >
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="inside" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:group ref="topLevelStyles"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="outside" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:group ref="topLevelStyles"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attributeGroup ref="visibility"/>
+        </xs:complexType>
+      </xs:element>-->
+    </xs:choice>
+  </xs:group>
+
+  <xs:attributeGroup name="solidFillAttributes">
+    <xs:attribute name="color" default="Black" type="color" />
+    <xs:attribute name="opacity" default="1" />
+    <xs:attribute name="id" />
+    <xs:attribute name="visible" default="true" type="xs:boolean" />
+    <xs:attribute name="label"/>
+  </xs:attributeGroup>
+  
+  <xs:group name="fills">
+    <xs:choice>
+      <xs:element name="solidFill">
+        <xs:complexType>
+          <xs:attributeGroup ref="solidFillAttributes"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="hatchFill">
+        <xs:complexType>
+          <xs:attribute name="backColor" default="White" type="color" />
+          <xs:attribute name="backOpacity" default="0" />
+          <xs:attribute name="foreColor" default="Black" type="color" />
+          <xs:attribute name="foreOpacity" default="1" />
+          <xs:attribute name="id" default="default" type="xs:string" />
+          <xs:attribute name="visible" default="true" type="xs:boolean" />
+          <xs:attribute name="label"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="linearGradientFill">
+        <xs:complexType>
+          <xs:attribute name="fromColor" default="White" type="color" />
+          <xs:attribute name="fromOpacity" default="1" />
+          <xs:attribute name="toColor" default="Black" type="color" />
+          <xs:attribute name="toOpacity" default="1" />
+          <xs:attribute name="angle" default="0" type="xs:float" />
+          <xs:attribute name="id" default="default" type="xs:string" />
+          <xs:attribute name="visible" default="true" type="xs:boolean" />
+          <xs:attribute name="label"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="conditionnal">
+    <xs:sequence>
+      <xs:element name="filter" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:group ref="layerItems"/>
+          <xs:attributeGroup ref="filterAttributes"/>
+        </xs:complexType>
+      </xs:element>
+
+      <xs:element name="case" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+
+            <xs:element name="when" minOccurs="1" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:choice minOccurs ="1" maxOccurs="unbounded" >
+                  <xs:group ref="layerItems" minOccurs="1" maxOccurs="unbounded"/>
+                </xs:choice>
+                <xs:attribute name="label"/>
+                <xs:attribute name="expression" use="required"/>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="else" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:group ref="layerItems" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:attribute name="label"/>
+              </xs:complexType>
+            </xs:element>
+
+          </xs:sequence>
+          <xs:attribute name="expression"/>
+          <xs:attribute name="label"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:group>
+  
+  <xs:group name="layerItems">
+    <xs:choice>
+      <!--<xs:element name="lineString" type="lineStringType"/>
+      <xs:element name="polygon" type="polygonType"/>
+      <xs:element name="point">
+        <xs:complexType>
+          <xs:group ref="pointItems" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:complexType>
+      </xs:element>-->
+      <xs:group ref="conditionnal" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:group ref="linearItems" />
+      <xs:group ref="pointItems" />
+      <xs:group ref="areaItems" />
+      <xs:group ref="styles" />
+      <xs:element ref="offset" />
+    </xs:choice>
+  </xs:group>  
+
+  <!--<xs:complexType name="lineStringType">
+    <xs:sequence>
+      <xs:element ref="stroke" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="text" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="filter" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="lineStringType">
+              <xs:sequence>
+              </xs:sequence>
+              <xs:attributeGroup ref="filterAttributes"/>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="polygonType">
+    <xs:sequence>
+      <xs:group ref="fills" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="text" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="filter" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="polygonType">
+              <xs:attributeGroup ref="filterAttributes"/>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:group name="pointItems">
+    <xs:choice>
+      <xs:element ref="marker"/>
+      <xs:element ref="text"/>
+      <xs:element name="filter">
+        <xs:complexType>
+          <xs:group ref="layerItems" minOccurs="1" maxOccurs="unbounded"/>
+          <xs:attributeGroup ref="filterAttributes"/>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:element name="case">
+        <xs:complexType>
+          <xs:sequence>
+
+            <xs:element name="when" minOccurs="1" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:group ref="pointItems" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:attribute name="label"/>
+                <xs:attribute name="expression" use="required"/>
+              </xs:complexType>
+            </xs:element>
+
+            <xs:element name="else" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:group ref="layerItems" minOccurs="1" maxOccurs="unbounded"/>
+              </xs:complexType>
+            </xs:element>
+
+          </xs:sequence>
+          <xs:attribute name="label"/>
+          <xs:attribute name="expression"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>-->
+
+  <xs:complexType name="dataSource"/>
+
+  <xs:complexType name="layer" >
+    <xs:attribute name="name" />
+    <!--<xs:attribute name="label" type="xs:string"  />-->
+    <xs:attributeGroup ref="visibility" />
+    <xs:attribute name="antiAlias" type="xs:boolean"/>
+  </xs:complexType>
+
+  <xs:element name="spatialiteLayer">
+    <xs:complexType>
+      <xs:complexContent>
+        
+        <xs:extension base="layer">
+          <xs:sequence>
+            <xs:sequence>
+              <xs:element name="sql" minOccurs="0" maxOccurs="1" type="xs:string"/>
+            </xs:sequence>
+            <xs:group ref="layerItems"  minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+          <xs:attribute name="file" use="required" />
+          <xs:attribute name="fidColumn" default="fid" />
+          <xs:attribute name="geometryColumn" default="geom" />
+          <xs:attribute name="table" use="required" type="xs:string"/>
+          <xs:attribute name="indexed" type="xs:boolean"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="group">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="groupItems"/>
+      </xs:sequence>
+      <xs:attribute name="name" />
+      <xs:attributeGroup ref="visibility" />
+      <xs:attribute name="antiAlias" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:unique name="uniqueName">
+      <xs:selector xpath="*"/>
+      <xs:field xpath="@name" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:element name="var">
+    <xs:complexType>
+      <xs:attribute name="name" />
+      <xs:attribute name="value"/>
+      <xs:attribute name="type"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:group name="layers" >
+    <xs:choice>
+      <xs:element ref ="spatialiteLayer"/>
+    </xs:choice>
+  </xs:group>
+  
+  <xs:group name="groupItems">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:group ref="styles"/>
+        <xs:element ref="group"/>
+        <xs:element ref="var"/>
+        <xs:group ref="layers"/> 
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+
+
+  
+  <xs:element name="map">
+    <xs:complexType >
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:group ref="groupItems" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="bgColor" />
+      <xs:attribute name="bgImage" />
+      <xs:attribute name="srs" />
+      <xs:attribute name="base" />
+      <xs:attribute name="fontDirectory" />
+      <xs:attribute name="centerX" type="xs:double"/>
+      <xs:attribute name="centerY" type="xs:double"/>
+      <xs:attribute name="zoom" type="xs:double"/>
+      <xs:attribute name="angle" type="xs:double"/>
+      <xs:attribute name="antiAlias" type="xs:boolean"/>
+      <xs:attribute name="srid" type="xs:int"/>
+      <xs:attribute name="name" />
+    </xs:complexType>
+
+    <xs:unique name="groupName">
+      <xs:selector xpath="./group"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    
+  </xs:element>
+  
+  
+</xs:schema>

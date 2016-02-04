@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B47A4DE5-7AD8-4D4F-9ADA-4774C437FAC5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MapKit.Core</RootNamespace>
+    <AssemblyName>MapKit.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ciloci.Flee, Version=0.9.27.0, Culture=neutral, PublicKeyToken=fc11e355737f8b7f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Library\Ciloci.Flee.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extenssion.cs" />
+    <Compile Include="FeatureProcessorType.cs" />
+    <Compile Include="Feature\Attribute.cs" />
+    <Compile Include="Feature\Feature.cs" />
+    <Compile Include="Feature\FeatureType.cs" />
+    <Compile Include="NodeType.cs" />
+    <Compile Include="Rendering\MacroExecuter.cs" />
+    <Compile Include="Rendering\VarRenderer.cs" />
+    <Compile Include="Rendering\GroupItemRenderer.cs" />
+    <Compile Include="Rendering\LayerGroupRenderer.cs" />
+    <Compile Include="Rendering\IRenderer.cs" />
+    <Compile Include="Rendering\LayerRenderer.cs" />
+    <Compile Include="Rendering\LineStyleRenderer.cs" />
+    <Compile Include="Rendering\WindowRenderer.cs" />
+    <Compile Include="StyleNodeType.cs" />
+    <Compile Include="ThemeNode\Constants.cs" />
+    <Compile Include="ThemeNode\ContainerNode.cs" />
+    <Compile Include="DataSourceType.cs" />
+    <Compile Include="ElseNodeType.cs" />
+    <Compile Include="ThemeNode\FeatureSourceConverter.cs" />
+    <Compile Include="ThemeNode\FeatureSourceEditor.cs" />
+    <Compile Include="ThemeNode\GroupItem.cs" />
+    <Compile Include="ThemeNode\ItemEventArgs.cs" />
+    <Compile Include="ThemeNode\LabelBox.cs" />
+    <Compile Include="ThemeNode\LayerType.cs" />
+    <Compile Include="ThemeNode\LineOffset.cs" />
+    <Compile Include="Rendering\ContainterNodeRenderer.cs" />
+    <Compile Include="Rendering\FeatureRenderer.cs" />
+    <Compile Include="Rendering\FeatureVariableResolver.cs" />
+    <Compile Include="Rendering\LayerEventArgs.cs" />
+    <Compile Include="Rendering\LayerFailedEventArgs.cs" />
+    <Compile Include="Rendering\NodeEventArgs.cs" />
+    <Compile Include="Rendering\Renderer.cs" />
+    <Compile Include="Rendering\RenderingException.cs" />
+    <Compile Include="Rendering\SolidFillRenderer.cs" />
+    <Compile Include="Rendering\TextRenderer.cs" />
+    <Compile Include="Rendering\VerticesEnumeratorRenderer.cs" />
+    <Compile Include="ThemeNode\Case.cs" />
+    <Compile Include="Rendering\CaseRenderer.cs" />
+    <Compile Include="ThemeNode\Condition.cs" />
+    <Compile Include="ThemeNode\Else.cs" />
+    <Compile Include="ThemeNode\FeatureSource.cs" />
+    <Compile Include="ThemeNode\Fill.cs" />
+    <Compile Include="ThemeNode\Filter.cs" />
+    <Compile Include="ThemeNode\Group.cs" />
+    <Compile Include="ThemeNode\HatchFill.cs" />
+    <Compile Include="ThemeNode\Layer.cs" />
+    <Compile Include="ThemeNode\LinearCalibration.cs" />
+    <Compile Include="Rendering\LinearCalibrationRenderer.cs" />
+    <Compile Include="ThemeNode\LinearGradientFill.cs" />
+    <Compile Include="ThemeNode\LineStyle.cs" />
+    <Compile Include="ThemeNode\InheritableField.cs" />
+    <Compile Include="ThemeNode\Macro.cs" />
+    <Compile Include="ThemeNode\Map.cs" />
+    <Compile Include="Rendering\MapRenderer.cs" />
+    <Compile Include="ThemeNode\Marker.cs" />
+    <Compile Include="Rendering\MarkerRenderer.cs" />
+    <Compile Include="ThemeNode\PointExtractor.cs" />
+    <Compile Include="Rendering\PointExtractorRenderer.cs" />
+    <Compile Include="ThemeNode\PointStyle.cs" />
+    <Compile Include="ThemeNode\Run.cs" />
+    <Compile Include="ThemeNode\SolidFill.cs" />
+    <Compile Include="ThemeNode\SolidFillStyle.cs" />
+    <Compile Include="ThemeNode\Stroke.cs" />
+    <Compile Include="Rendering\StrokeRenderer.cs" />
+    <Compile Include="ThemeNode\Style.cs" />
+    <Compile Include="ThemeNode\Text.cs" />
+    <Compile Include="ThemeNode\TextStyle.cs" />
+    <Compile Include="ThemeNode\ThemeNode.cs" />
+    <Compile Include="ThemeNode\ThemeNodeCollection.cs" />
+    <Compile Include="ThemeNode\Truc.cs" />
+    <Compile Include="ThemeNode\Variable.cs" />
+    <Compile Include="ThemeNode\VerticesEnumerator.cs" />
+    <Compile Include="ThemeNode\When.cs" />
+    <Compile Include="ThemeNode\Window.cs" />
+    <Compile Include="ThemeNode\WindowQuery.cs" />
+    <Compile Include="ThemeNode\WindowTarget.cs" />
+    <Compile Include="WhenNodeType.cs" />
+    <Compile Include="ThemeNode\ZoomFilter.cs" />
+    <Compile Include="SourceEventArgs.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="MapXmlReader.cs" />
+    <Compile Include="InvalidGeometryException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Theme.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoAPI\GeoAPI.csproj">
+      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+      <Name>GeoAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetTopologySuite\NetTopologySuite\NetTopologySuite.csproj">
+      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Name>NetTopologySuite</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

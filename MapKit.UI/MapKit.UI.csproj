@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E45E3156-79DF-4876-9C7F-D1135605F320}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MapKit.UI</RootNamespace>
+    <AssemblyName>MapKit.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ThemeEditor\ContainerNodeWrapper.cs" />
+    <Compile Include="ThemeEditor\CaseItemWrapper.cs" />
+    <Compile Include="ThemeEditor\LabelBoxWrapper.cs" />
+    <Compile Include="ThemeEditor\MapWrapper.cs" />
+    <Compile Include="ThemeEditor\StyleWrapper.cs" />
+    <Compile Include="ThemeEditor\LayerWrapper.cs" />
+    <Compile Include="ThemeEditor\ThemeNodeWrapper.cs" />
+    <Compile Include="ThemeEditor\PropertiesToolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ThemeEditor\PropertiesToolForm.Designer.cs">
+      <DependentUpon>PropertiesToolForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThemeEditor\ThemeEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ThemeEditor\ThemeEditor.Designer.cs">
+      <DependentUpon>ThemeEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThemeEditor\QueryDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ThemeEditor\QueryDialog.Designer.cs">
+      <DependentUpon>QueryDialog.cs</DependentUpon>
+    </Compile>
+    <None Include="ThemeEditor\DisplayDialog.cs">
+      <SubType>Form</SubType>
+    </None>
+    <None Include="ThemeEditor\DisplayDialog.Designer.cs">
+      <DependentUpon>DisplayDialog.cs</DependentUpon>
+    </None>
+    <Compile Include="ThemeEditor\LineStyleEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ThemeEditor\LineStyleEditor.Designer.cs">
+      <DependentUpon>LineStyleEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThemeEditor\ThemeEditorComponent.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ThemeEditor\ThemeEditorComponent.Designer.cs">
+      <DependentUpon>ThemeEditorComponent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThemeEditor\GroupWrapper.cs" />
+    <Compile Include="frmExpressionEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExpressionEditor.Designer.cs">
+      <DependentUpon>frmExpressionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThemeEditor\Interfaces.cs" />
+    <EmbeddedResource Include="ThemeEditor\PropertiesToolForm.resx">
+      <DependentUpon>PropertiesToolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ThemeEditor\ThemeEditor.resx">
+      <DependentUpon>ThemeEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExpressionEditor.resx">
+      <DependentUpon>frmExpressionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ThemeEditor\QueryDialog.resx">
+      <DependentUpon>QueryDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="ThemeEditor\DisplayDialog.resx">
+      <DependentUpon>DisplayDialog.cs</DependentUpon>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ThemeEditor\LineStyleEditor.resx">
+      <DependentUpon>LineStyleEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ThemeEditor\ThemeEditorComponent.resx">
+      <DependentUpon>ThemeEditorComponent.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MapKit.Core\MapKit.Core.csproj">
+      <Project>{B47A4DE5-7AD8-4D4F-9ADA-4774C437FAC5}</Project>
+      <Name>Cyrez.GIS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cyrez.UI\Cyrez.UI.csproj">
+      <Project>{DF4A5D56-3611-490F-8A69-98917096183E}</Project>
+      <Name>Cyrez.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
