@@ -84,6 +84,7 @@ namespace GeoAPI.Geometries
 
         /// <summary>
         /// Compares this object with the specified object for order.
+        /// </summary>
         /// <param name="other"><c>Coordinate</c> with which this <c>Coordinate</c> is being compared.</param>
         /// <returns>
         /// A negative integer, zero, or a positive integer as this <c>Coordinate</c>
