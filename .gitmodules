@@ -1,0 +1,3 @@
+[submodule "FleeSharp"]
+	path = FleeSharp
+	url = https://github.com/netgrim/FleeSharp.git
