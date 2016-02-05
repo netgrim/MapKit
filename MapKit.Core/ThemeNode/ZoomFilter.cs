@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using System.Xml;
 
 namespace MapKit.Core
 {
-	[DebuggerDisplay("ZoomFilter ")]
+    [DebuggerDisplay("ZoomFilter ")]
 	public class ZoomFilter : ContainerNode
 	{
         internal const string ElementName = "zoomFilter";

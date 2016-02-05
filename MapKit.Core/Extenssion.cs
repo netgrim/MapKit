@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-
-using NTSPoint = NetTopologySuite.Geometries.Point;
+﻿using System.Drawing;
 using WinPoint = System.Windows.Point;
 using GdiMatrix = System.Drawing.Drawing2D.Matrix;
 using GdiPoint = System.Drawing.Point;
@@ -14,7 +8,7 @@ using GeoAPI.Geometries;
 
 namespace MapKit.Core
 {
-	static class Extension
+    static class Extension
 	{
 		public static PointF ToPointF(this WinPoint p)
 		{

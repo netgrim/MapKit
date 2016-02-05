@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using Ciloci.Flee;
 using System.Xml;
 using System.Diagnostics;
 using System.ComponentModel;
@@ -206,7 +203,7 @@ namespace MapKit.Core
                 case Map.CenterYField:
                     CenterY = double.Parse(reader.Value, NumberFormatInfo.InvariantInfo);
                     break;
-                case Map.ZoomField:
+                case ZoomField:
                     Zoom = double.Parse(reader.Value, NumberFormatInfo.InvariantInfo);
                     break;
                 case Map.SridField:

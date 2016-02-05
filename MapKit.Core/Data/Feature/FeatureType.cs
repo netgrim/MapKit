@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using GeoAPI.Geometries;
+using System.Xml;
 
 namespace MapKit.Core
 {
-	[DebuggerDisplay("Name = {Name}")]
+    [DebuggerDisplay("Name = {Name}")]
 	public class FeatureType
 	{
         private Dictionary<string, Attribute> _attributesByName;

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using Ciloci.Flee;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
-using System.Diagnostics;
 using MapKit.Core.Rendering;
 
 namespace MapKit.Core

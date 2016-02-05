@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Xml;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace MapKit.Core
 {
@@ -152,7 +146,7 @@ namespace MapKit.Core
             get { return "Stroke"; }
         }
 
-        public static new NodeType NodeType
+        public static NodeType NodeType
         {
             get { return _nodeType; }
         }

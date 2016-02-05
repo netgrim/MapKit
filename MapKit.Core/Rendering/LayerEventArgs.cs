@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MapKit.Core
 {
-	public class LayerEventArgs : EventArgs
+    public class LayerEventArgs : EventArgs
 	{
 		public LayerEventArgs(Layer layer)
 		{

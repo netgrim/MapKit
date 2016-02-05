@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using MapKit.Core;
+using Cyrez.SqliteUtil;
 
 namespace MapKit.Spatialite
 {

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using NetTopologySuite.Geometries;
+﻿using System.Diagnostics;
 using GeoAPI.Geometries;
 using System.Dynamic;
 
 namespace MapKit.Core
 {
-	[DebuggerDisplay("Fid = {Fid}")]
+    [DebuggerDisplay("Fid = {Fid}")]
 	public class Feature: DynamicObject
 	{
 		internal Feature(FeatureType featureType, long fid, object[] values)

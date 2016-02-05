@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Xml;
 using MapKit.Core;
 using System.ComponentModel;
+using Cyrez.SqliteUtil;
 
 namespace MapKit.Spatialite
 {
@@ -273,6 +274,7 @@ namespace MapKit.Spatialite
                 return base.TryReadXmlElement(reader);
 
             return true;
-        }
+        }
+
 	}
 }

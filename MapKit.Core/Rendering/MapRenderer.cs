@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ciloci.Flee;
-using MapKit.Core.Rendering;
+﻿using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {

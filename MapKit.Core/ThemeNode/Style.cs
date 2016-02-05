@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using System.Xml;
+﻿using System.Xml;
 
 namespace MapKit.Core
 {
-	public abstract class Style : Group
+    public abstract class Style : Group
 	{
         internal const string ReferenceFieldName = "ref";
         internal const string NameFieldName = "name";

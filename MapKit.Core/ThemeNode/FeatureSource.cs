@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using GeoAPI.Geometries;
 using System.Xml;
 
 namespace MapKit.Core
 {
-    
+
     [TypeConverter( typeof(FeatureSourceConverter))]
     [Editor(typeof(FeatureSourceEditor), typeof(System.Drawing.Design.UITypeEditor))]
     public abstract class FeatureSource 

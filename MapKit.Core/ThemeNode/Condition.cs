@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.ComponentModel;
+﻿using System.Xml;
 
 namespace MapKit.Core
 {
-	public abstract class ExpressionNode : ContainerNode
+    public abstract class ExpressionNode : ContainerNode
 	{
         internal const string ExpressionField = "expression";
         internal const string ExpressionProperty = "Expression";

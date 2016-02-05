@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ciloci.Flee;
-using GeoAPI.Geometries;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
 
@@ -69,11 +64,11 @@ namespace MapKit.Core
             if (!_compiled)
                 Compile();
 
-            foreach (var renderer in _declarations)
-                renderer.BeginScene(Visible);
-            foreach (var renderer in _renderers)
-                renderer.BeginScene(Visible);
-        }
+                foreach (var renderer in _declarations)
+                    renderer.BeginScene(Visible);
+                foreach (var renderer in _renderers)
+                    renderer.BeginScene(Visible);
+            }
 
         public override void Compile(bool recursive = false)
         {

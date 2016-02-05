@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using GeoAPI.Geometries;
-using NetTopologySuite.LinearReferencing;
+﻿using System.Diagnostics;
 using System.Xml;
-using System.ComponentModel;
 
 namespace MapKit.Core
 {
-	[DebuggerDisplay("LinearCalibration: Label = {Label}, Path={NodePath}")]
+    [DebuggerDisplay("LinearCalibration: Label = {Label}, Path={NodePath}")]
     public class LinearCalibration : ContainerNode
 	{
         private const string ElementName = "linearCalibration";

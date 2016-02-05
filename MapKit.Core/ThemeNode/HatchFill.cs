@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 
 namespace MapKit.Core
 {
-	public class HatchFill : Fill
+    public class HatchFill : Fill
 	{
         private const string ElementName = "hatchFill";
 

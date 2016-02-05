@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Xml;
-using System.ComponentModel;
-using System.Globalization;
 
 namespace MapKit.Core
 {

@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ciloci.Flee;
 using GeoAPI.Geometries;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using MapKit.Core;
 
 using WinPoint = System.Windows.Point;
-using System.Diagnostics;
 using MapKit.Core.Rendering;
 
 namespace MapKit.Core
@@ -24,12 +19,12 @@ namespace MapKit.Core
         private IGenericExpression<ContentAlignment> _alignEvaluator;
         private IGenericExpression<string> _fontEvaluator;
         private IGenericExpression<Color> _colorEvaluator;
-        private IGenericExpression<bool> _allowOverlap;
+        private IGenericExpression<bool> _allowOverlapEvaluator;
         private IGenericExpression<bool> _overlapableEvaluator;
         private IGenericExpression<float> _opacityEvaluator;
         private IGenericExpression<double> _scaleXEvaluator;
         private IGenericExpression<double> _scaleYvaluator;
-        private FeatureVariableResolver _resolver;
+        //private FeatureVariableResolver _resolver;
         private Text _text;
         private bool _compiled;
         private Color _color = Color.Black;
@@ -38,6 +33,10 @@ namespace MapKit.Core
         private double _scaleX = 1;
         private double _scaleY = 1;
         private double _size = 10;
+        private ContentAlignment _alignment = ContentAlignment.BottomLeft;
+        private object _content;
+        private bool _overlapable;
+        private bool _allowOverlap;
 
         public TextRenderer(Renderer renderer, Text text, IBaseRenderer parent)
             : base(renderer, text, parent)
@@ -54,33 +53,47 @@ namespace MapKit.Core
             {
                 var renderer = _text.LabelBox.Renderer as IFeatureRenderer;
                 if (renderer != null)
+                {
                     renderer.InputFeatureType = InputFeatureType;
+                    if (recursive)
+                        renderer.Compile(true);
+                }
             }
 
             var context = Renderer.Context;
-            var colorContext = context;
-            var contentAlignmentContext = context;
+            //var colorContext = context;
+            //var contentAlignmentContext = context;
 
-            _resolver = new FeatureVariableResolver(InputFeatureType);
-            _resolver.BindContext(context);
-            _resolver.BindContext(colorContext);
-            _resolver.BindContext(contentAlignmentContext);
+            //_resolver = new FeatureVariableResolver(InputFeatureType);
+            //_resolver.BindContext(context);
+            //_resolver.BindContext(colorContext);
+            //_resolver.BindContext(contentAlignmentContext);
 
-            _angleEvaluator = CompileDoubleExpression(context, TextStyle.AngleField, _text.Angle, ref _angle);
-            _contentEvaluator = CompileExpression(context, TextStyle.ContentField, _text.Content);
-            _sizeEvaluator = CompileDoubleExpression(context, TextStyle.SizeField, _text.Size, ref _size);
-            _alignEvaluator = CompileExpression<ContentAlignment>(contentAlignmentContext, TextStyle.AlignmentField, _text.Alignment);
-            _fontEvaluator = CompileExpression<string>(context, TextStyle.FontField, _text.Font);
-            _colorEvaluator = CompileColorExpression(colorContext, TextStyle.ColorField, _text.Color, ref _color);
-            _scaleXEvaluator = CompileDoubleExpression(context, TextStyle.ScaleXField, _text.ScaleX, ref _scaleX);
-            _scaleYvaluator = CompileDoubleExpression(context, TextStyle.ScaleYField, _text.ScaleY, ref _scaleY);
-            _opacityEvaluator = CompileFloatExpression(context, TextStyle.OpacityField, _text.Opacity, ref _opacity);
-            _overlapableEvaluator = CompileExpression<bool>(context, TextStyle.OverlapableField, _text.Overlappable);
-            _allowOverlap = CompileExpression<bool>(context, TextStyle.AllowOverlapField, _text.AllowOverlap);
+            var oldFeatureType = Renderer.FeatureVarResolver.FeatureType;
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
+            try
+            {
+                _contentEvaluator = CompileExpression(context, TextStyle.ContentField, _text.Content, ref _content);
+                _angleEvaluator = CompileDoubleExpression(context, TextStyle.AngleField, _text.Angle, ref _angle);
+                _sizeEvaluator = CompileDoubleExpression(context, TextStyle.SizeField, _text.Size, ref _size);
+                _alignEvaluator = CompileEnumExpression(context, TextStyle.AlignmentField, _text.Alignment, ref _alignment);
+                _fontEvaluator = CompileExpression<string>(context, TextStyle.FontField, _text.Font);
+                _colorEvaluator = CompileColorExpression(context, TextStyle.ColorField, _text.Color, ref _color);
+                _scaleXEvaluator = CompileDoubleExpression(context, TextStyle.ScaleXField, _text.ScaleX, ref _scaleX);
+                _scaleYvaluator = CompileDoubleExpression(context, TextStyle.ScaleYField, _text.ScaleY, ref _scaleY);
+                _opacityEvaluator = CompileFloatExpression(context, TextStyle.OpacityField, _text.Opacity, ref _opacity);
+                _overlapableEvaluator = CompileBoolExpression(context, TextStyle.OverlapableField, _text.Overlappable, ref _overlapable);
+                _allowOverlapEvaluator = CompileBoolExpression(context, TextStyle.AllowOverlapField, _text.AllowOverlap, ref _allowOverlap);
+            }
+            finally
+            {
+                Renderer.FeatureVarResolver.FeatureType = oldFeatureType;
+            }
 
-            _labelBoxRenderer = _text.LabelBox != null && _text.LabelBox.Renderer != null && !string.IsNullOrWhiteSpace(_text.Content)
-                ? _text.LabelBox.Renderer as IFeatureRenderer
-                : null;
+            //_labelBoxRenderer = _text.LabelBox != null && _text.LabelBox.Renderer != null && !string.IsNullOrWhiteSpace(_text.Content)
+            //    ? _text.LabelBox.Renderer as IFeatureRenderer
+            //    : null;
+            _labelBoxRenderer = _text.LabelBox != null ? new ContainerNodeRenderer(Renderer, _text.LabelBox, this) : null;
 
             _compiled = true;
         }
@@ -92,17 +105,19 @@ namespace MapKit.Core
 
         public override void Render(Feature feature)
         {
-            _resolver.Feature = feature;
+            if (feature == null) return;
+
+            //Renderer.FeatureVarResolver.Feature = feature;
 
             var size = (float)Evaluate(_sizeEvaluator, _size);
-            if (Renderer.Zoom * size < 1 || _contentEvaluator == null) return; //culling
+            if (Renderer.Zoom * size < 1 || (_contentEvaluator == null && _content == null)) return; //culling
             var oldMatrix = Renderer.Graphics.Transform;
 
-            var content = Convert.ToString(_contentEvaluator.Evaluate());
+            var content = Convert.ToString(_contentEvaluator != null ? _contentEvaluator.Evaluate() : _content);
             if (string.IsNullOrWhiteSpace(content)) return;
 
             var angle = (float)Evaluate(_angleEvaluator, _angle);
-            var alignment = Evaluate(_alignEvaluator, ContentAlignment.BottomLeft);
+            var alignment = Evaluate(_alignEvaluator, _alignment);
 
             if (_text.KeepUpward && Math.Abs((angle + Node.Map.Angle) % 360) > 90)
             {

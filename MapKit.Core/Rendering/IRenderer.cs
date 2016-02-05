@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MapKit.Core
 {
@@ -26,7 +23,7 @@ namespace MapKit.Core
     public interface IBaseRenderer
     {
         void Render(Feature feature);
-
+        
         void BeginScene(bool visible);
 
         void Compile(bool recursive);

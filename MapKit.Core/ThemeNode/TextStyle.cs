@@ -1,10 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Text.RegularExpressions;
-using Ciloci.Flee;
 using System.Xml;
 using System.Diagnostics;
 using System.ComponentModel;
@@ -198,7 +192,7 @@ namespace MapKit.Core
             internal set { base.Map = value; }
         }
 
-        public static NodeType NodeType
+        public static new NodeType NodeType
         {
             get { return _nodeType; }
         }
@@ -327,7 +321,7 @@ namespace MapKit.Core
             return true;
         }
 
-        internal bool ReadXmlContent(XmlReader _reader)
+        internal new bool ReadXmlContent(XmlReader _reader)
         {
             if (!_reader.IsStartElement(TextStyle.ContentField)) return false;
             Content = _reader.ReadElementContentAsString();

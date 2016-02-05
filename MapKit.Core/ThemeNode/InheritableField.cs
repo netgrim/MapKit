@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Text.RegularExpressions;
 
 namespace MapKit.Core
 {

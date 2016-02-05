@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Text.RegularExpressions;
 
 namespace MapKit.Core
 {
-	static class Util
+    static class Util
 	{
 		public static Color GetColor(float alpha, Color baseColor)
 		{
@@ -34,7 +30,7 @@ namespace MapKit.Core
 
         public static bool TryParseColor(string s, out Color color)
         {
-            if (!String.IsNullOrEmpty(s))
+            if (!string.IsNullOrEmpty(s))
             {
                 //SystemColors.
                 color = Color.FromName(s);

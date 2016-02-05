@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Diagnostics;
 using System.ComponentModel;
@@ -107,7 +104,7 @@ namespace MapKit.Core
             get { return "Marker"; }
         }
 
-        public static new NodeType NodeType
+        public static NodeType NodeType
         {
             get { return _nodeType; }
         }

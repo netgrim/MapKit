@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ciloci.Flee;
-using GeoAPI.Geometries;
-using System.Drawing.Drawing2D;
-using System.ComponentModel;
 using MapKit.Core.Rendering;
 
 namespace MapKit.Core
@@ -16,7 +9,7 @@ namespace MapKit.Core
             : base(renderer, group, parent)
         {
         }
-        
+
         public override void Render(Feature feature)
         {
             int tStart = Environment.TickCount;

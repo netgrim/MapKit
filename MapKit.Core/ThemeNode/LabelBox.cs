@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using GeoAPI.Geometries;
-using Ciloci.Flee;
+﻿using System.Diagnostics;
 using System.Xml;
 
 namespace MapKit.Core

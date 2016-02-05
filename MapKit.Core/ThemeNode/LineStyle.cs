@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Xml;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -382,7 +378,7 @@ namespace MapKit.Core
             get { return "LineStyle"; }
         }
 
-        public static NodeType NodeType
+        public static new NodeType NodeType
         {
             get { return _nodeType; }
         }

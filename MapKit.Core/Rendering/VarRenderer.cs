@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ciloci.Flee;
 using System.Diagnostics;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
 
-namespace MapKit.Core 
+namespace MapKit.Core
 {
     class VarRenderer : IBaseRenderer
     {

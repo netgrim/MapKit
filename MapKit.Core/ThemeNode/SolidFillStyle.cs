@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
 using System.Xml;
 using System.Diagnostics;
 using System.ComponentModel;
@@ -51,7 +47,7 @@ namespace MapKit.Core
             }
 		}
 
-        public static NodeType NodeType
+        public static new NodeType NodeType
         {
             get { return _nodeType; }
         }
