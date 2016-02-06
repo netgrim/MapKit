@@ -28,11 +28,11 @@ namespace MapKit.Core
             {
                 base.InputFeatureType = value;
                 _compiled = false;
-                OutputFeatureType = value;
+                //OutputFeatureType = value;
             }
         }
 
-        public FeatureType OutputFeatureType { get; protected set; }
+        //public FeatureType OutputFeatureType { get; protected set; }
 
         public IList<IBaseRenderer> Renderers
         {
@@ -58,30 +58,42 @@ namespace MapKit.Core
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible && _containerNode.IsVisibleAt(Renderer.Zoom));
-            if (!Visible)
-                return;
             
-            if (!_compiled)
+            if (Visible && !_compiled)
                 Compile();
 
+            if (_compiled)
+            {
                 foreach (var renderer in _declarations)
                     renderer.BeginScene(Visible);
                 foreach (var renderer in _renderers)
                     renderer.BeginScene(Visible);
             }
+        }
 
         public override void Compile(bool recursive = false)
+        {
+            Compile(InputFeatureType, recursive);
+        }
+
+        public virtual void Compile(FeatureType featuretype, bool recursive = false)
         {
             //_containerNode.CascadeStyles();
 
             _renderers = new List<IBaseRenderer>();
             _declarations = new List<IBaseRenderer>();
 
-            foreach (var renderer in Renderer.GetRenderers(_containerNode, this))
+            foreach (IFeatureRenderer renderer in Renderer.GetRenderers(_containerNode, this))
                 if (renderer.Node is Macro)
                     _declarations.Add(renderer);
                 else
+                {
+                    renderer.InputFeatureType = featuretype;
                     _renderers.Add(renderer);
+
+                    if (recursive)
+                        renderer.Compile(true);
+                }
 
             _compiled = true;
         }

@@ -64,12 +64,15 @@ namespace MapKit.Core
 
             var color = GetRenderColor(_opacityEvaluator, _opacity, _colorEvaluator, _color);
 
-            _path.Reset();
-            foreach (var lineString in Renderer.GetLineString(feature.Geometry))
-                AddToPath(lineString, _path);
+            if (feature != null)
+            {
+                _path.Reset();
+                foreach (var lineString in Renderer.GetLineString(feature.Geometry))
+                    AddToPath(lineString, _path);
 
-            using (var brush = new SolidBrush(color))
-                Renderer.Graphics.FillPath(brush, _path);
+                using (var brush = new SolidBrush(color))
+                    Renderer.Graphics.FillPath(brush, _path);
+            }
 
             //using (var path = new GraphicsPath())
             //{

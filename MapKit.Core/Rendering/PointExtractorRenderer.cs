@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using GeoAPI.Geometries;
 using System.ComponentModel;
 using NetTopologySuite.LinearReferencing;
@@ -22,8 +20,13 @@ namespace MapKit.Core
         private IGenericExpression<double> _endEvaluator;
         private IGenericExpression<double> _incEvaluator;
         private IGenericExpression<double> _offsetEvaluator;
-        private FeatureVariableResolver _featureVarResolver;
+        //private FeatureVariableResolver _featureVarResolver;
         private bool _compiled;
+        private FeatureType _outputFeatureType;
+        private double _start = 0;
+        private double _end;
+        private double _increment;
+        private double _offset;
 
         public PointExtractorRenderer(Renderer renderer, PointExtractor pointExtractor, IBaseRenderer parent)
             : base(renderer, pointExtractor, parent)
@@ -39,18 +42,17 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
-            OutputFeatureType = WrapFeatureType(_pointExtractor, InputFeatureType);
-            base.Compile(recursive);
+            _outputFeatureType = WrapFeatureType(_pointExtractor, InputFeatureType);
+            base.Compile(_outputFeatureType, recursive);
 
-            var context = CreateContext();
+            //var context = CreateContext();
+            //_featureVarResolver = new FeatureVariableResolver(OutputFeatureType);
+            //_featureVarResolver.BindContext(context);
 
-            _featureVarResolver = new FeatureVariableResolver(OutputFeatureType);
-            _featureVarResolver.BindContext(context);
-
-            _startEvaluator = CompileExpression<double>(context, PointExtractor.StartField, _pointExtractor.Start, false);
-            _endEvaluator = CompileExpression<double>(context, PointExtractor.EndField, _pointExtractor.End, false);
-            _incEvaluator = CompileExpression<double>(context, PointExtractor.IncField, _pointExtractor.Increment, false);
-            _offsetEvaluator = CompileExpression<double>(context, PointExtractor.OffsetField, _pointExtractor.Offset);
+            _startEvaluator = CompileDoubleExpression(PointExtractor.StartField, _pointExtractor.Start, ref _start, false);
+            _endEvaluator = CompileDoubleExpression(PointExtractor.EndField, _pointExtractor.End, ref _end, false);
+            _incEvaluator = CompileDoubleExpression(PointExtractor.IncField, _pointExtractor.Increment, ref _increment, false);
+            _offsetEvaluator = CompileDoubleExpression(PointExtractor.OffsetField, _pointExtractor.Offset, ref _offset);
             
             _compiled = true;
         }
@@ -70,11 +72,18 @@ namespace MapKit.Core
 
         public override void Render(Feature feature)
         {
-            foreach (var newFeature in GetFeatures(feature))
+            try
             {
-                _featureVarResolver.Feature = newFeature;
-                
-                base.Render(newFeature);
+                foreach (var newFeature in GetFeatures(feature))
+                {
+                    Renderer.FeatureVarResolver.Feature = newFeature;
+
+                    base.Render(newFeature);
+                }
+            }
+            finally
+            {
+                Renderer.FeatureVarResolver.Feature = feature;
             }
         }
 
@@ -82,10 +91,10 @@ namespace MapKit.Core
         {
             var geometry = feature.Geometry;
 
-            var start = FeatureRenderer.Evaluate(_startEvaluator, 0);
-            var end = FeatureRenderer.Evaluate(_endEvaluator, 0);
-            var increment = FeatureRenderer.Evaluate(_incEvaluator, 1);
-            var offset = FeatureRenderer.Evaluate(_offsetEvaluator, 1);
+            var start = Evaluate(_startEvaluator, _start);
+            double end = Evaluate(_endEvaluator, _end);
+            var increment = Evaluate(_incEvaluator, _increment);
+            var offset = Evaluate(_offsetEvaluator, _offset);
 
             switch (geometry.OgcGeometryType)
             {
@@ -94,7 +103,7 @@ namespace MapKit.Core
                 case OgcGeometryType.MultiLineString:
                 case OgcGeometryType.MultiLineStringZ:
                     if (start < 0) start += geometry.Length;
-                    if (end < 0) end += geometry.Length;
+                    if(end < 0) end += geometry.Length;
                     return GetFeatures(feature, start, end, increment, offset);
                 case OgcGeometryType.LineStringM:
                 case OgcGeometryType.LineStringZM:
@@ -108,7 +117,7 @@ namespace MapKit.Core
 
         private IEnumerable<Feature> GetFeaturesM(Feature feature, double start, double end, double increment, double offset)
         {
-            var newFeature = OutputFeatureType.NewFeature(feature.Fid, feature.Values);
+            var newFeature = _outputFeatureType.NewFeature(feature.Fid, feature.Values);
             var geometry = feature.Geometry;
             var map = new MeasureLocationMap(geometry);
 
@@ -126,13 +135,12 @@ namespace MapKit.Core
 
                 newFeature.Geometry = new NetTopologySuite.Geometries.Point(coord) { SRID = geometry.SRID };
                 yield return newFeature;
-
             }
         }
 
         IEnumerable<Feature> GetFeatures(Feature feature, double start, double end, double Increment, double offset)
         {
-            var newFeature = OutputFeatureType.NewFeature(feature.Fid, feature.Values);
+            var newFeature = _outputFeatureType.NewFeature(feature.Fid, feature.Values);
             var geometry = feature.Geometry;
 
             for (var m = start; m <= end; m += Increment)

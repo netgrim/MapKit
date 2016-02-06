@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ciloci.Flee;
-using GeoAPI.Geometries;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    abstract class GroupItemRenderer : IGroupRenderer
+    abstract class GroupBaseRenderer : IGroupRenderer
     {
         private bool _compiled;
         private IList<IBaseRenderer> _declarations;
-        
-        public GroupItemRenderer(Renderer renderer, GroupItem groupItem, IBaseRenderer parent)
+
+        public GroupBaseRenderer(Renderer renderer, GroupItem groupItem, IBaseRenderer parent)
         {
             Renderer = renderer;
             GroupItem = groupItem;
@@ -48,12 +44,16 @@ namespace MapKit.Core
         {
             get { return null; }
         }
+        
+        public IBaseRenderer Parent { get; set; }
 
         public SmoothingMode SmoothingMode { get; private set; }
+
+        public IList<IBaseRenderer> Renderers { get; set; }
         
         [Browsable(false)]
         public Renderer Renderer { get; set; }
-        
+
         public abstract void Render(Feature feature);
 
         public virtual void BeginScene(bool visible)
@@ -62,12 +62,13 @@ namespace MapKit.Core
             if (Visible && !_compiled)
                 Compile();
 
-            foreach (var renderer in _declarations)
-                renderer.BeginScene(Visible);
-            foreach (var childRenderer in Renderers)
-                childRenderer.BeginScene(Visible);
-
-            Renderer.Graphics.SmoothingMode = SmoothingMode;
+            if(_compiled)
+            {
+                foreach (var declaration in _declarations)
+                    declaration.BeginScene(Visible);
+                foreach (var renderer in Renderers)
+                    renderer.BeginScene(Visible);
+            }
 
             FeatureCount = 0;
             RenderTime = new TimeSpan();
@@ -76,8 +77,6 @@ namespace MapKit.Core
 
         public virtual void Compile(bool recursive = false)
         {
-            //GroupItem.CascadeStyles();
-
             SmoothingMode = GroupItem.SmoothingMode ? SmoothingMode.HighQuality : SmoothingMode.HighSpeed;
 
             _declarations = new List<IBaseRenderer>();
@@ -87,35 +86,31 @@ namespace MapKit.Core
                 if (renderer.Node is Macro)
                     _declarations.Add(renderer);
                 else
+                {
                     Renderers.Add(renderer);
-            
-            if (recursive)
-                foreach (var renderer in Renderers)
 
-                    renderer.Compile(recursive);
+                    if (recursive)
+                        renderer.Compile(true);
+                }
 
             _compiled = true;
+        }
+
+        public IBaseRenderer FindChildByName(string name)
+        {
+            //foreach (var renderers in new[] {_declarations, Renderers})
+            //    foreach (var child in renderers)
+            //    {
+            //        var container = child.Node as ContainerNode;
+            //        if (container != null && string.Compare(container.Name, name, true) == 0)
+            //            return child;
+            //    }
+            return null;
         }
 
         void container_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _compiled = false;
-        }
-
-        public List<IBaseRenderer> Renderers { get; set; }
-
-        public IBaseRenderer Parent { get; set; }
-
-        public IBaseRenderer FindChildByName(string name)
-        {
-            foreach (var renderers in new[] {_declarations, Renderers})
-                foreach (var child in renderers)
-                {
-                    var container = child.Node as ContainerNode;
-                    if (container != null && string.Compare(container.Name, name, true) == 0)
-                        return child;
-                }
-            return null;
         }
     }
 }

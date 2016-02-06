@@ -3,7 +3,7 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class LayerRenderer : GroupItemRenderer
+    class LayerRenderer : GroupBaseRenderer
     {
         private Layer _layer;
         private FeatureType _featureType;
@@ -14,12 +14,14 @@ namespace MapKit.Core
             _layer = layer;
         }
 
-        public override void Render(Feature f)
+        public override void Render(Feature scrapFeature)
         {
             if(!(Visible && _layer.IsVisibleAt(Renderer.Zoom)))
                 return;
 
             var tStart = Environment.TickCount;
+
+            Renderer.Graphics.SmoothingMode = SmoothingMode;
 
             try
             {
@@ -47,7 +49,7 @@ namespace MapKit.Core
             }
             finally
             {
-                Renderer.FeatureVarResolver.Feature = f; //restore old feature
+                Renderer.FeatureVarResolver.Feature = null; //restore old feature
             }
             
             RenderCount++;
@@ -56,7 +58,6 @@ namespace MapKit.Core
         
         public override void BeginScene(bool visible)
         {
-            Renderer.FeatureVarResolver.FeatureType = _featureType;
             base.BeginScene(visible);
         }
 
@@ -66,7 +67,17 @@ namespace MapKit.Core
             _featureType = _layer.GetFeatureType();
             Renderer.FeatureVarResolver.FeatureType = _featureType;
 
-            base.Compile(recursive);
+            base.Compile(false);
+
+            foreach (var renderer in Renderers)
+            {
+                var featureRenderer = renderer as IFeatureRenderer;
+                if (featureRenderer != null)
+                    featureRenderer.InputFeatureType = _featureType;
+
+                if (recursive)
+                    renderer.Compile(true);
+            }
         }
     }
 }

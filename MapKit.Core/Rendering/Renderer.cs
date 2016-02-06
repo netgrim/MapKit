@@ -33,6 +33,9 @@ namespace MapKit.Core.Rendering
             //LineStyles = new Dictionary<string, Style>(StringComparer.OrdinalIgnoreCase);
             Context = new ExpressionContext(this);
             Context.Variables.DefineVariable(FEATURE_VAR, typeof(Feature));
+            Context.Options.ParseCulture = System.Globalization.CultureInfo.InvariantCulture;
+            Context.Imports.AddType(typeof(Math), "math");
+            Context.Imports.AddType(typeof(Drawing), "color");
 
             FeatureVarResolver = new FeatureVariableResolver();
             FeatureVarResolver.BindContext(Context);
@@ -147,6 +150,7 @@ namespace MapKit.Core.Rendering
 		{
 			Progress();
 
+            
 			_mapRenderer.Render(null);
 
             if (ShowQueryMBR)
@@ -277,7 +281,7 @@ namespace MapKit.Core.Rendering
 
         public Double Zoom { get; set; }
 
-        public Double Angle { get; set; }
+        //public Double Angle { get; set; }
 
         internal void PerformLayerRendered(LayerEventArgs e)
         {

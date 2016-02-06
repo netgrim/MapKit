@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using Ciloci.Flee;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
-using System.Diagnostics;
 using MapKit.Core.Rendering;
 
 namespace MapKit.Core
@@ -25,12 +20,14 @@ namespace MapKit.Core
         private IGenericExpression<LineCap> _endCapEvaluator;
         private IGenericExpression<LineJoin> _joinEvaluator;
         private IGenericExpression<float> _mitterLimitEvaluator;
-        private FeatureVariableResolver _resolver;
         private bool _compiled;
         private Color _color = Color.Black;
         private float _opacity = 1;
         private double _width = 1;
         private DashStyle _dash = DashStyle.Solid;
+        private int _invalidGeometry;
+        private LineCap _startCap;
+        private LineCap _endCap;
 
         public StrokeRenderer(Renderer renderer, Stroke stroke, IBaseRenderer parent)
             :base(renderer, stroke, parent)
@@ -44,7 +41,9 @@ namespace MapKit.Core
             base.BeginScene(visible);
             if (Visible && !_compiled)
                 Compile();
+            _invalidGeometry = 0;
         }
+
 
         public override void Compile(bool recursive = false)
         {
@@ -70,15 +69,15 @@ namespace MapKit.Core
             var dashArrayContext = Renderer.Context;
             var lineCapContext = Renderer.Context;
             var lineJoinContext = Renderer.Context;
-
+     
             _widthEvaluator = CompileDoubleExpression(context, LineStyle.WidthField, _stroke.Width, ref _width);
             _colorEvaluator = CompileColorExpression(colorContext, LineStyle.ColorField, _stroke.Color, ref _color);
-            _dashStyleEvaluator = CompileDashStyleExpression(dashStyleContext, LineStyle.DashStyleField, _stroke.DashStyle, ref _dash);
+            _dashStyleEvaluator = CompileEnumExpression(dashStyleContext, LineStyle.DashStyleField, _stroke.DashStyle, ref _dash);
             _dashArrayEvaluator = CompileExpression<float[]>(dashArrayContext, LineStyle.DashArrayField, _stroke.DashArray);
             _dashOffsetEvaluator = CompileExpression<float>(context, LineStyle.DashOffsetField, _stroke.DashOffset);
             _opacityEvaluator = CompileFloatExpression(context, LineStyle.OpacityField, _stroke.Opacity, ref _opacity);
-            _startCapEvaluator = CompileExpression<LineCap>(lineCapContext, LineStyle.StartCapField, _stroke.StartCap);
-            _endCapEvaluator = CompileExpression<LineCap>(lineCapContext, LineStyle.EndCapField, _stroke.EndCap);
+            _startCapEvaluator = CompileEnumExpression(lineCapContext, LineStyle.StartCapField, _stroke.StartCap, ref _startCap);
+            _endCapEvaluator = CompileEnumExpression(lineCapContext, LineStyle.EndCapField, _stroke.EndCap, ref _endCap);
             _joinEvaluator = CompileExpression<LineJoin>(lineJoinContext, LineStyle.JoinField, _stroke.Join);
             _mitterLimitEvaluator = CompileExpression<float>(context, LineStyle.MiterLimitField, _stroke.Miterlimit);
 
@@ -119,12 +118,14 @@ namespace MapKit.Core
 
         public override void Render(Feature feature)
         {
+            if (feature == null) return;
+
             using (var pen = new Pen( GetRenderColor(_opacityEvaluator, _opacity, _colorEvaluator, _color), (float)Evaluate(_widthEvaluator, _width)))
             {
-                var dashArray = Evaluate<float[]>(_dashArrayEvaluator, null);
+                var dashArray = Evaluate(_dashArrayEvaluator, null);
                 if (dashArray != null)
                 {
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+                    pen.DashStyle = DashStyle.Custom;
                     //var parts = dashArray.Split(' ');
                     //var dashes = new float[parts.Length];
                     //for (int i = 0; i < parts.Length; i++)
@@ -137,9 +138,13 @@ namespace MapKit.Core
                 if (_dashOffsetEvaluator != null)
                     pen.DashOffset = _dashOffsetEvaluator.Evaluate();
 
-                
                 foreach (var lineString in Renderer.GetLineString(feature.Geometry))
-                    Renderer.Graphics.DrawLines(pen, TransformToPointsF(lineString.Vertices));
+                    if (lineString.Vertices.Count > 1)
+                        Renderer.Graphics.DrawLines(pen, TransformToPointsF(lineString.Vertices));
+                    else
+                        _invalidGeometry++;
+                
+
             }
         }
 
