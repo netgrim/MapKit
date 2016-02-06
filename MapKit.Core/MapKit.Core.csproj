@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="Extenssion.cs" />
     <Compile Include="FeatureProcessorType.cs" />
-    <Compile Include="Feature\Attribute.cs" />
-    <Compile Include="Feature\Feature.cs" />
-    <Compile Include="Feature\FeatureType.cs" />
+    <Compile Include="Data\Feature\Attribute.cs" />
+    <Compile Include="Data\Feature\Feature.cs" />
+    <Compile Include="Data\Feature\FeatureType.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Rendering\MacroExecuter.cs" />
     <Compile Include="Rendering\VarRenderer.cs" />
