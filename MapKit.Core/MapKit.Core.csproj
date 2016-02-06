@@ -52,6 +52,7 @@
     <Compile Include="Data\Feature\Feature.cs" />
     <Compile Include="Data\Feature\FeatureType.cs" />
     <Compile Include="NodeType.cs" />
+    <Compile Include="Rendering\Drawing.cs" />
     <Compile Include="Rendering\MacroExecuter.cs" />
     <Compile Include="Rendering\VarRenderer.cs" />
     <Compile Include="Rendering\GroupItemRenderer.cs" />
