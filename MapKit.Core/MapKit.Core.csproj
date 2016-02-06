@@ -123,6 +123,10 @@
     <Compile Include="ThemeNode\Window.cs" />
     <Compile Include="ThemeNode\WindowQuery.cs" />
     <Compile Include="ThemeNode\WindowTarget.cs" />
+    <Compile Include="Topology\Edge.cs" />
+    <Compile Include="Topology\EdgeDirection.cs" />
+    <Compile Include="Topology\EdgeType.cs" />
+    <Compile Include="Topology\Node.cs" />
     <Compile Include="WhenNodeType.cs" />
     <Compile Include="ThemeNode\ZoomFilter.cs" />
     <Compile Include="SourceEventArgs.cs" />
@@ -144,6 +148,10 @@
       <Name>NetTopologySuite</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Topology\Install.sql" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
