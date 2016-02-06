@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F1C9F506-4142-4157-ABC4-AA56AF708E0A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MapKit.GisLite</RootNamespace>
+    <AssemblyName>MapKit.GisLite</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Downloads\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\System.Data.SQLite\2008\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL" />
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\ConnectivityContext.cs" />
+    <Compile Include="Data\FeatureType.cs" />
+    <Compile Include="Topology\BreadFirstSearch.cs" />
+    <Compile Include="Topology\ConnectivityConverter.cs" />
+    <Compile Include="Data\DevIntConn.cs" />
+    <Compile Include="Data\DevIntInfo.cs" />
+    <Compile Include="Data\Session.cs" />
+    <Compile Include="Topology\DepthFirstSearch.cs" />
+    <Compile Include="Topology\Edge.cs" />
+    <Compile Include="Topology\EdgeDirection.cs" />
+    <Compile Include="Topology\EdgeType.cs" />
+    <Compile Include="Topology\Frame.cs" />
+    <Compile Include="Topology\GraphAdapter.cs" />
+    <Compile Include="Topology\GraphElement.cs" />
+    <Compile Include="Topology\GraphEnumerator.cs" />
+    <Compile Include="Topology\GraphModel.cs" />
+    <Compile Include="Topology\GraphTraversal.cs" />
+    <Compile Include="Topology\Node.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraceController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cyrez.SqliteUtil\Cyrez.SqliteUtil.csproj">
+      <Project>{00437DA6-7EFF-4168-BCD4-678661119812}</Project>
+      <Name>Cyrez.SqliteUtil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapKit.Core\MapKit.Core.csproj">
+      <Project>{B47A4DE5-7AD8-4D4F-9ADA-4774C437FAC5}</Project>
+      <Name>MapKit.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapKit.Spatialite\MapKit.Spatialite.csproj">
+      <Project>{2B0DB697-4EEF-4920-8906-A8B09F9A8301}</Project>
+      <Name>MapKit.Spatialite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MapKit.UI\MapKit.UI.csproj">
+      <Project>{E45E3156-79DF-4876-9C7F-D1135605F320}</Project>
+      <Name>MapKit.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
