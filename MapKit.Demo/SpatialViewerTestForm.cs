@@ -339,7 +339,9 @@ namespace MapKit.Demo
                 {
                     try
                     {
-                        _renderer.Angle = (float)viewport1.Angle;
+                        _map.Zoom = e.Scale;
+                        _map.Angle = viewport1.Angle;
+                        //_renderer.Angle = (float);
                         _renderer.Zoom = e.Scale;
                         _renderer.Window = e.ViewBox;
                         _renderer.Matrix = e.Matrix;
