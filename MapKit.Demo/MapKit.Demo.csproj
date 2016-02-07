@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionTest.cs" />
+    <Compile Include="MatrixWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MatrixWindow.Designer.cs">
+      <DependentUpon>MatrixWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SelectionTool.cs" />
     <Compile Include="SpatialViewerTestForm.cs">
       <SubType>Form</SubType>
