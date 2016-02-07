@@ -46,6 +46,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSource.cs" />
+    <Compile Include="DBConnectionDataSourceType.cs" />
     <Compile Include="Extenssion.cs" />
     <Compile Include="FeatureProcessorType.cs" />
     <Compile Include="Data\Feature\Attribute.cs" />
