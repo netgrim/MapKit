@@ -42,6 +42,11 @@ namespace Cyrez.Graphics.Control
 		public Matrix View
 		{
 			get { return _view; }
+            set
+            {
+                _view = value;
+                Invalidate();
+            }
 		}
 
         public MatrixF SetViewScreen(Matrix viewScreen)
