@@ -35,8 +35,9 @@ namespace MapKit.Demo
 		private Matrix _imageTransform;
 		private SelectionTool _selectionTool;
         private bool _mapHasChanges;
+        private MatrixWindow _matrixWindow;
 
-		public SpatialViewerTestForm()
+        public SpatialViewerTestForm()
 		{
 			InitializeComponent();
 
@@ -54,13 +55,15 @@ namespace MapKit.Demo
 			_selectionTool = new SelectionTool(this);
 			viewport1.LeftButtonTool = _selectionTool;
 
+            if ( Settings.Default.ShowMatrixWindow)
+                ShowMatrixWindow();
 		}
 
         private void LoadSettings()
         {
             AutoRender = Settings.Default.AutoRender;
             reopenToolStripMenuItem.Checked = Settings.Default.ReopenLastFile;
-
+            showMatrixWindowToolStripMenuItem.Checked = Settings.Default.ShowMatrixWindow;
         }
 
         private void InitMap()
@@ -508,8 +511,11 @@ namespace MapKit.Demo
 
 		private void viewport1_WindowChanged(object sender, WindowChangedEventArgs e)
 		{
-            if (AutoRender && e.Type != WindowChangedEventType.PanStart && e.Type != WindowChangedEventType.Pan)
+            if (AutoRender && e.Type != WindowChangedEventType.PanStart && e.Type != WindowChangedEventType.Pan && _renderer != null)
                 RedrawAsync();
+
+            if (_matrixWindow != null)
+                _matrixWindow.Matrix = viewport1.View;
 		}
 
 		private void RedrawAsync()
@@ -565,6 +571,45 @@ namespace MapKit.Demo
         private void reopenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.Default.ReopenLastFile = reopenToolStripMenuItem.Checked;
+        }
+
+        private void showMatrixWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.Default.ShowMatrixWindow = showMatrixWindowToolStripMenuItem.Checked;
+            Settings.Default.Save();
+            if (showMatrixWindowToolStripMenuItem.Checked)
+                ShowMatrixWindow();
+            else if (_matrixWindow != null)
+                _matrixWindow.Hide();
+        }
+
+        private void ShowMatrixWindow()
+        {
+            if (_matrixWindow != null)
+                _matrixWindow.Show();
+            else
+            {
+                _matrixWindow = new MatrixWindow();
+                _matrixWindow.TopMost = true;
+                _matrixWindow.Matrix = viewport1.View;
+                _matrixWindow.Show();
+                _matrixWindow.FormClosed += _matrixWindow_FormClosed;
+                _matrixWindow.MatrixChanged += _matrixWindow_MatrixChanged;
+            }
+        }
+
+        private void _matrixWindow_MatrixChanged(object sender, EventArgs e)
+        {
+            viewport1.View = _matrixWindow.Matrix;
+        }
+
+        private void _matrixWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _matrixWindow.Dispose();
+            _matrixWindow = null;
+            Settings.Default.ShowMatrixWindow =
+                showMatrixWindowToolStripMenuItem.Checked = false;
+            Settings.Default.Save();
         }
     }
 }

@@ -50,6 +50,7 @@
             this.mnuRenderSmallQueryWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.showMatrixWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStatistics = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAutoTune = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -166,7 +167,8 @@
             this.mnuRenderShowQueryMBR,
             this.mnuRenderSmallQueryWindow,
             this.toolStripMenuItem1,
-            this.mnuRefresh});
+            this.mnuRefresh,
+            this.showMatrixWindowToolStripMenuItem});
             mnuView.Name = "mnuView";
             mnuView.Size = new System.Drawing.Size(44, 20);
             mnuView.Text = "View";
@@ -241,6 +243,16 @@
             this.mnuRefresh.Size = new System.Drawing.Size(186, 22);
             this.mnuRefresh.Text = "Refresh";
             this.mnuRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
+            // 
+            // showMatrixWindowToolStripMenuItem
+            // 
+            this.showMatrixWindowToolStripMenuItem.Checked = true;
+            this.showMatrixWindowToolStripMenuItem.CheckOnClick = true;
+            this.showMatrixWindowToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showMatrixWindowToolStripMenuItem.Name = "showMatrixWindowToolStripMenuItem";
+            this.showMatrixWindowToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.showMatrixWindowToolStripMenuItem.Text = "ShowMatrixWindow";
+            this.showMatrixWindowToolStripMenuItem.Click += new System.EventHandler(this.showMatrixWindowToolStripMenuItem_Click);
             // 
             // mnuTools
             // 
@@ -544,6 +556,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRefresh;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reopenToolStripMenuItem;
-	}
+        private System.Windows.Forms.ToolStripMenuItem showMatrixWindowToolStripMenuItem;
+    }
 }
 
