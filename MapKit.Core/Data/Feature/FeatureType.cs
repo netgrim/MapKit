@@ -74,7 +74,7 @@ namespace MapKit.Core
             return null;
         }
 
-        public object Clone()
+        public virtual object Clone()
         {
             var newFeatureType = new FeatureType(Name);
 
@@ -94,6 +94,54 @@ namespace MapKit.Core
             _attributes.Add(attribute);
 
             return attribute;
+        }
+
+        protected virtual bool TryReadXmlElement(System.Xml.XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void WriteXmlContent(System.Xml.XmlWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Envelope GetBoundingBox()
+        {
+            return new Envelope();
+        }
+
+        public virtual IEnumerable<Feature> GetFeatures(Envelope window)
+        {
+            return new Feature[0];
+        }
+
+        protected virtual void WriteXmlAttributes(XmlWriter writer)
+        {
+        }
+
+        public virtual int HitCount(Envelope window)
+        {
+            return 0;
+        }
+
+        protected virtual bool TryReadXmlAttribute(XmlReader reader)
+        {
+            return false;
+        }
+
+
+        public virtual Layer CreateLayer()
+        {
+            var layer = new Layer();
+            layer.FeatureType = this;
+            layer.Name = Name;
+            return layer;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

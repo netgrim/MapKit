@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using GeoAPI.Geometries;
-using MapKit.Core;
 using System.Drawing.Drawing2D;
-using System.IO;
 using System.Drawing.Imaging;
-using System.Diagnostics;
 using Ciloci.Flee;
 using MapKit.Core.Rendering;
 
@@ -32,6 +25,9 @@ namespace MapKit.Core
         private double _scaleX = 1;
         private double _scaleY = 1;
         private double _angle = 0;
+        private ContentAlignment _alignment;
+        private bool _overlappable;
+        private bool _allowOverlap;
 
         public MarkerRenderer(Renderer renderer, Marker marker, IBaseRenderer parent)
             : base(renderer, marker, parent)
@@ -61,7 +57,7 @@ namespace MapKit.Core
             var winPoint = point.ToWinPoint();
             var width = (float)Evaluate(_scaleXEvaluator, _scaleX);
             var height = (float)Evaluate(_scaleYEvaluator, _scaleY);
-            var alignment = Evaluate(_alignEvaluator, ContentAlignment.MiddleCenter);
+            var alignment = Evaluate(_alignEvaluator, _alignment);
             winPoint.Y += GetVerticalAlignentOffset(alignment, height);
             winPoint.X += GetHorizontalAligmentOffset(alignment, width);
 
@@ -168,7 +164,7 @@ namespace MapKit.Core
             //_resolver.BindContext(contentAlignmentContext);
 
             var context = Renderer.Context;
-            var colorContext = context;
+            //var colorContext = context;
             var contentAlignmentContext = context;
             
             _angleEvaluator = CompileDoubleExpression(context, Marker.AnglePropertyName, _marker.Angle, ref _angle);
@@ -176,11 +172,11 @@ namespace MapKit.Core
             _scaleYEvaluator = CompileDoubleExpression(context, Marker.ScaleYPropertyName, _marker.ScaleY, ref _scaleY);
 
             _opacityEvaluator = CompileFloatExpression(context, Marker.OpacityPropertyName, _marker.Opacity, ref _opacity);
-            _overlappableEvaluator = CompileExpression<bool>(context, Marker.OverlappablePropertyName, _marker.Overlappable);
-            _alignEvaluator = CompileExpression<ContentAlignment>(contentAlignmentContext, Marker.AlignmentPropertyName, _marker.Alignment);
-            _allowOverlapEvaluator = CompileExpression<bool>(context, Marker.AllowOverlapPropertyName, _marker.AllowOverlap);
+            _overlappableEvaluator = CompileBoolExpression(context, Marker.OverlappablePropertyName, _marker.Overlappable, ref _overlappable);
+            _alignEvaluator = CompileEnumExpression(context, Marker.AlignmentPropertyName, _marker.Alignment, ref _alignment);
+            _allowOverlapEvaluator = CompileBoolExpression(context, Marker.AllowOverlapPropertyName, _marker.AllowOverlap, ref _allowOverlap);
             _fileEvaluator = CompileExpression<string>(context, Marker.FilePropertyName, _marker.File);
-            _colorEvaluator = CompileColorExpression(colorContext, Marker.FilePropertyName, _marker.Color, ref _color);
+            _colorEvaluator = CompileColorExpression(context, Marker.FilePropertyName, _marker.Color, ref _color);
          
             _compiled = true;
         }

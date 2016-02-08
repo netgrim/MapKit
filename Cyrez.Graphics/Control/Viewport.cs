@@ -42,6 +42,11 @@ namespace Cyrez.Graphics.Control
 		public Matrix View
 		{
 			get { return _view; }
+            set
+            {
+                _view = value;
+                Invalidate();
+            }
 		}
 
         public MatrixF SetViewScreen(Matrix viewScreen)
@@ -208,29 +213,35 @@ namespace Cyrez.Graphics.Control
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.White);
-                        
-			//using (var brush = new HatchBrush(HatchStyle.LargeCheckerBoard, Color.RoyalBlue))
-			//    e.Graphics.FillRectangle(brush, e.ClipRectangle);
 
-            e.Graphics.Transform = _view.ToGdiMatrix();
+            //using (var brush = new HatchBrush(HatchStyle.LargeCheckerBoard, Color.RoyalBlue))
+            //    e.Graphics.FillRectangle(brush, e.ClipRectangle);
+
+            var offset = GetTranslateMatrix();
+
+            e.Graphics.Transform = GetRotationScaleMatrix();
 						
 			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            var m = new Matrix();
-			m.ScalePrepend(50, 50);
+
+            //debug text orientation
+            //var p = new WinPoint(0, 50);
+            //p = offset.Transform(p);
+            //e.Graphics.DrawString("hello world jpgqy", SystemFonts.DefaultFont, Brushes.Black, p.ToPointF(), new StringFormat { LineAlignment = StringAlignment.Far });
 
 			if (DebugDrawGrid)
 			{
-				using(var pen = new Pen(Color.LightGray, 1/50))
+                var m = offset;
+			    m.ScalePrepend(50, 50);
+                using (var pen = new Pen(Color.LightGray, 1/50))
 				for (int i = 0; i < 10; i++)
 				{
 					//e.Graphics.DrawLine(Pens.LightGray, i * 50, 0, i * 50, 9 * 50);
 					//e.Graphics.DrawLine(Pens.LightGray, 0, i * 50, 9 * 50, i * 50);
-					var a = new[] { new System.Windows.Point(i, 0), new System.Windows.Point(i, 9) };
+					var a = new[] { new WinPoint(i, 0), new WinPoint(i, 9) };
 					m.Transform(a);
 
-
 					e.Graphics.DrawLine(pen, (float)a[0].X, (float)a[0].Y, (float)a[1].X, (float)a[1].Y);
-					a = new[] { new System.Windows.Point(0, i), new System.Windows.Point(9, i) };
+					a = new[] { new WinPoint(0, i), new WinPoint(9, i) };
 					m.Transform(a);
 					e.Graphics.DrawLine(pen, (float)a[0].X, (float)a[0].Y, (float)a[1].X, (float)a[1].Y);
 
@@ -247,14 +258,16 @@ namespace Cyrez.Graphics.Control
 			{
 				//using(var brush = new LinearGradientBrush(new PointF(0,0), new PointF(0,1000), Color.Blue, Color.Transparent))
 				//using(var pen = new Pen(brush))
-				var a = new[]{new System.Windows.Point(0, 0), new System.Windows.Point(100, 0)};
+				var a = new[]{new WinPoint(0, 0), new WinPoint(100, 0)};
+                offset.Transform(a);
 
 				e.Graphics.DrawLine(Pens.Red, (float)a[0].X, (float)a[0].Y, (float)a[1].X, (float)a[1].Y);
 				//using (var brush = new LinearGradientBrush(new Point(0, 0), new Point(1000, 0), Color.Red, Color.Transparent))
 				//using (var pen = new Pen(brush))
-				a = new[] { new System.Windows.Point(0, 0), new System.Windows.Point(0, 100) };
+				a = new[] { new WinPoint(0, 0), new WinPoint(0, 100) };
+                offset.Transform(a);
 
-				e.Graphics.DrawLine(Pens.Blue, (float)a[0].X, (float)a[0].Y, (float)a[1].X, (float)a[1].Y);
+                e.Graphics.DrawLine(Pens.Blue, (float)a[0].X, (float)a[0].Y, (float)a[1].X, (float)a[1].Y);
 			}
 
 			if (_leftButtonTool != null && _leftButtonTool.IsDown)
@@ -426,18 +439,42 @@ namespace Cyrez.Graphics.Control
 
         public MatrixF GetRotationScaleMatrix()
         {
-            var transform = _view;
-            transform.OffsetX = transform.OffsetY = 0;
-            return transform.ToGdiMatrix();
+            return GetRotationScaleMatrix(_view);
         }
 
+        public static MatrixF GetRotationScaleMatrix(Matrix transform)
+        {
+            transform.OffsetX = transform.OffsetY = 0;
+
+            var gdiTransform = transform.ToGdiMatrix();
+            gdiTransform.Scale(1, -1);
+            return gdiTransform;
+        }
+
+        /// <summary>
+        /// Get the offset component of the current view matrix
+        /// </summary>
+        /// <returns></returns>
         public Matrix GetTranslateMatrix()
         {
-            var translate = _view;
+            return GetTranslateMatrix(_view);
+        }
+
+        /// <summary>
+        /// Extract the offset component of the specified matrix
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static Matrix GetTranslateMatrix(Matrix m)
+        {
+            var translate = m;
             translate.OffsetX = translate.OffsetY = 0;
             translate.Invert();
-            
-            return _view * translate;
+
+            translate = m * translate;
+            translate.Scale(1, -1);
+
+            return translate;
         }
 
         public void RotateAt(double angle, double centerX, double centerY)

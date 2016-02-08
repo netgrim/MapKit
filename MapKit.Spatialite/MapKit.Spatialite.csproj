@@ -33,9 +33,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.79.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+    <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\System.Data.SQLite.dll</HintPath>
+      <HintPath>.\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionManager.cs" />
+    <Compile Include="SpatialiteFeatureType.cs" />
     <Compile Include="NewSpatialiteLayerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,13 +73,11 @@
     <Compile Include="SourceProperties.Designer.cs">
       <DependentUpon>SourceProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpatialColumnInfo.cs" />
     <Compile Include="SpatialiteLayer.cs" />
+    <Compile Include="SpatialiteSource.cs" />
     <Compile Include="SpatialiteSourceConverter.cs" />
     <Compile Include="SpatialiteSourceEditor.cs" />
     <Compile Include="SpatialiteSourceType.cs" />
-    <Compile Include="SpatialiteUtil.cs" />
-    <Compile Include="SqliteUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="NewSpatialiteLayerDialog.resx">
@@ -95,6 +94,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cyrez.SqliteUtil\Cyrez.SqliteUtil.csproj">
+      <Project>{00437DA6-7EFF-4168-BCD4-678661119812}</Project>
+      <Name>Cyrez.SqliteUtil</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeoAPI\GeoAPI.csproj">
       <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
       <Name>GeoAPI</Name>
@@ -113,36 +116,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="libfreexl-1.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="libgcc_s_dw2-1.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="libgeos-3-3-1.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="libgeos_c-1.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="libiconv-2.dll">
+    <None Include="libspatialite-2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="libproj-0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="libspatialite-2.dll">
+    <None Include="libiconv-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="libgeos_c-1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="libgeos-3-3-1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="libgcc_s_dw2-1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="libstdc++-6.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SQLite.Interop.dll">
+    <None Include="libfreexl-1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="System.Data.SQLite.dll" />
+    <Content Include="SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="System.Data.SQLite.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

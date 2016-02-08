@@ -37,8 +37,9 @@ namespace MapKit.Demo
 		private Matrix _imageTransform;
 		private SelectionTool _selectionTool;
         private bool _mapHasChanges;
+        private MatrixWindow _matrixWindow;
 
-		public SpatialViewerTestForm()
+        public SpatialViewerTestForm()
 		{
 			InitializeComponent();
 
@@ -53,16 +54,20 @@ namespace MapKit.Demo
             LoadSettings();
             InitMap();
 
+            themeEditorComponent.SetMap(_map);
+
 			_selectionTool = new SelectionTool(this);
 			viewport1.LeftButtonTool = _selectionTool;
 
+            if ( Settings.Default.ShowMatrixWindow)
+                ShowMatrixWindow();
 		}
 
         private void LoadSettings()
         {
             AutoRender = Settings.Default.AutoRender;
             reopenToolStripMenuItem.Checked = Settings.Default.ReopenLastFile;
-
+            showMatrixWindowToolStripMenuItem.Checked = Settings.Default.ShowMatrixWindow;
         }
 
         private void InitMap()
@@ -164,7 +169,7 @@ namespace MapKit.Demo
 
 		private void mnuAutoTune_Click(object sender, EventArgs e)
 		{
-			TuneMap(themeEditorComponent.Map);
+			TuneMap(_map);
 		}
 
 		private void mnuFileSave_Click(object sender, EventArgs e)
@@ -182,8 +187,11 @@ namespace MapKit.Demo
 
 		private void mnuRendererSmallQueryWindow_Click(object sender, EventArgs e)
 		{
-			_renderer.SmallQueryWindow = mnuRenderSmallQueryWindow.Checked;
-			viewport1.Invalidate();
+            if (_renderer != null)
+            {
+				_renderer.SmallQueryWindow = mnuRenderSmallQueryWindow.Checked;
+				viewport1.Invalidate();
+			}
 		}
 
 		private void mnuRenderShowGeomMbr_Click(object sender, EventArgs e)
@@ -194,12 +202,17 @@ namespace MapKit.Demo
 
 		private void mnuRenderShowQueryMBR_Click(object sender, EventArgs e)
 		{
+            if (_renderer != null)
+            {
 			_renderer.ShowQueryMBR = mnuRenderShowQueryMBR.Checked;
 			viewport1.Invalidate();
+		}
 		}
 
 		private void mnuStatistics_Click(object sender, EventArgs e)
 		{
+            if (_renderer != null)
+            {
 			_renderer.GatherStatistics = true;
 			using (Graphics g = viewport1.CreateGraphics())
 			{
@@ -209,6 +222,9 @@ namespace MapKit.Demo
 				_renderer.EndScene();
 			}
 			_renderer.GatherStatistics = false;
+		}
+            else
+                MessageBox.Show("no renderer");
 		}
 
 		private void OpenFile(string filename)
@@ -226,7 +242,10 @@ namespace MapKit.Demo
 
 			_fileName = filename;
 			recentFilesManager.SetFileRecent(filename);
-			themeEditorComponent.Map = _map;
+
+            //treeview
+            themeEditorComponent.SetMap(_map);
+
 			SetTitle(filename);
 			viewport1.SetView(_map.CenterX, _map.CenterY, _map.Zoom, _map.Angle);
 
@@ -235,6 +254,8 @@ namespace MapKit.Demo
                 Settings.Default.LastFile = filename;
                 Settings.Default.Save();
             }
+
+            mnuClose.Visible = true;
 		}
 
 
@@ -325,15 +346,15 @@ namespace MapKit.Demo
                 }
 
                 var g = Graphics.FromImage(_backBuffer);
-                var view = e.Matrix;
 
-                var transform = view;
-                transform.OffsetX = transform.OffsetY = 0;
-                g.Transform = transform.ToGdiMatrix();
-                var invRotScale = view;
+                g.Transform = Viewport.GetRotationScaleMatrix(e.Matrix);
+
+                /*var invRotScale = e.Matrix;
                 invRotScale.OffsetX = invRotScale.OffsetY = 0;
                 invRotScale.Invert();
-                var translate = view * invRotScale;
+
+                var translate = e.Matrix * invRotScale;*/
+                var translate = Viewport.GetTranslateMatrix(e.Matrix);
 
                 BeginInvoke(new ThreadStart(RenderingStarted));
 
@@ -341,7 +362,9 @@ namespace MapKit.Demo
                 {
                     try
                     {
-                        _renderer.Angle = (float)viewport1.Angle;
+                        _map.Zoom = e.Scale;
+                        _map.Angle = viewport1.Angle;
+                        //_renderer.Angle = (float);
                         _renderer.Zoom = e.Scale;
                         _renderer.Window = e.ViewBox;
                         _renderer.Matrix = e.Matrix;
@@ -353,14 +376,19 @@ namespace MapKit.Demo
                     {
                         MessageBox.Show(ex.Message);
                     }
-                }
+                /*}
                 else
-                {
-                    g.Clear(Color.Gray);
+                {*/
+                    //g.Clear(Color.Gray);
                     //draw test rectagle
                     var rectPosition = translate.Transform(new WinPoint(100.0, 200.0));
                     PointF rectPositionF = rectPosition.ToPointF();
                     g.DrawRectangle(Pens.Black, rectPositionF.X, rectPositionF.Y, 100f, 100f);
+
+                    var p = new WinPoint(100, 200);
+                    p = translate.Transform(p);
+                    g.DrawString("hello world jpgqy", SystemFonts.DefaultFont, Brushes.Black, p.ToPointF(), new System.Drawing.StringFormat { LineAlignment = StringAlignment.Far });
+
                 }
 
                 BeginInvoke(new ThreadStart(RenderingComplete));
@@ -483,17 +511,11 @@ namespace MapKit.Demo
 			positionLabel.Text = string.Format("client=({0}, {1}) world=({2}, {3}), zoom={4}, angle={5}", new object[] { e.X, e.Y, p.X, p.Y, viewport1.Zoom, viewport1.Angle });
 		}
 
-		private void viewport1_MouseUp(object sender, MouseEventArgs e)
-		{
-			
-		}
-
 		private void viewport1_Paint(object sender, PaintEventArgs e)
 		{
 			lock (this)
 			{
-
-				if (_frontBuffer != null)
+				if (_frontBuffer != null && _renderer != null)
 				{
 					var transform = e.Graphics.Transform;
                     
@@ -508,8 +530,11 @@ namespace MapKit.Demo
 
 		private void viewport1_WindowChanged(object sender, WindowChangedEventArgs e)
 		{
-            if (AutoRender && e.Type != WindowChangedEventType.PanStart && e.Type != WindowChangedEventType.Pan)
+            if (AutoRender && e.Type != WindowChangedEventType.PanStart && e.Type != WindowChangedEventType.Pan && _renderer != null)
                 RedrawAsync();
+
+            if (_matrixWindow != null)
+                _matrixWindow.Matrix = viewport1.View;
 		}
 
 		private void RedrawAsync()
@@ -565,6 +590,77 @@ namespace MapKit.Demo
         private void reopenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.Default.ReopenLastFile = reopenToolStripMenuItem.Checked;
+        }
+
+        private void mnuClose_Click(object sender, EventArgs e)
+        {
+            CloseMap();
+        }
+
+        private void CloseMap()
+        {
+            if (PromptToSaveChanges(_map))
+            {
+                themeEditorComponent.Clear();
+                InitMap();
+                _renderer = null;
+
+                ResetView();
+
+                mnuClose.Visible = false;
+
+                Settings.Default.LastFile = null;
+                Settings.Default.Save();
+            }
+        }
+
+        private void ResetView()
+        {
+            viewport1.SetView(0, 0, 1, 0);
+        }
+
+        private void mnuResetView_Click(object sender, EventArgs e)
+        {
+            ResetView();
+        }
+
+        private void showMatrixWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.Default.ShowMatrixWindow = showMatrixWindowToolStripMenuItem.Checked;
+            Settings.Default.Save();
+            if (showMatrixWindowToolStripMenuItem.Checked)
+                ShowMatrixWindow();
+            else if (_matrixWindow != null)
+                _matrixWindow.Hide();
+        }
+
+        private void ShowMatrixWindow()
+        {
+            if (_matrixWindow != null)
+                _matrixWindow.Show();
+            else
+            {
+                _matrixWindow = new MatrixWindow();
+                _matrixWindow.TopMost = true;
+                _matrixWindow.Matrix = viewport1.View;
+                _matrixWindow.Show();
+                _matrixWindow.FormClosed += _matrixWindow_FormClosed;
+                _matrixWindow.MatrixChanged += _matrixWindow_MatrixChanged;
+            }
+        }
+
+        private void _matrixWindow_MatrixChanged(object sender, EventArgs e)
+        {
+            viewport1.View = _matrixWindow.Matrix;
+        }
+
+        private void _matrixWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _matrixWindow.Dispose();
+            _matrixWindow = null;
+            Settings.Default.ShowMatrixWindow =
+                showMatrixWindowToolStripMenuItem.Checked = false;
+            Settings.Default.Save();
         }
 
         private void mnuTrace_Click(object sender, EventArgs e)

@@ -20,7 +20,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExpressionTest.cs" />
+    <Compile Include="MatrixWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MatrixWindow.Designer.cs">
+      <DependentUpon>MatrixWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="SelectionTool.cs" />
     <Compile Include="SpatialViewerTestForm.cs">
       <SubType>Form</SubType>
@@ -57,6 +63,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="MatrixWindow.resx">
+      <DependentUpon>MatrixWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SpatialViewerTestForm.resx">
       <DependentUpon>SpatialViewerTestForm.cs</DependentUpon>
     </EmbeddedResource>

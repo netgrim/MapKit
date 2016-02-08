@@ -1,4 +1,8 @@
-﻿namespace MapKit.UI
+﻿using System;
+using System.Windows.Forms;
+using MapKit.Core;
+
+namespace MapKit.UI
 {
 	partial class ThemeEditorComponent
     {
@@ -170,7 +174,6 @@
             this.cmnThemeNode.ResumeLayout(false);
 
         }
-
 
         #endregion
 

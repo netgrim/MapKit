@@ -8,6 +8,7 @@ namespace MapKit.Core
     {
         private VerticesEnumerator _verticesEnumerator;
         private bool _compiled;
+        private FeatureType _outputFeatureType;
 
         public VerticesEnumeratorRenderer(Renderer renderer, VerticesEnumerator verticesEnumerator, IBaseRenderer parent)
             :base(renderer, verticesEnumerator, parent)
@@ -37,7 +38,7 @@ namespace MapKit.Core
         
         public IEnumerable<Feature> GetFeatures(Feature feature)
         {
-            var newFeature = OutputFeatureType.NewFeature(feature.Fid, feature.Values);
+            var newFeature = _outputFeatureType.NewFeature(feature.Fid, feature.Values);
             var id = feature.Values.Length;
             var x = id + 1;
             var y = x + 1;
@@ -107,7 +108,7 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
-            OutputFeatureType =  WrapFeatureType(InputFeatureType);
+            _outputFeatureType =  WrapFeatureType(InputFeatureType);
             base.Compile(recursive);
 
             _compiled = true;

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ciloci.Flee;
 using System.Diagnostics;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
+using System.Collections;
 
-namespace MapKit.Core 
+namespace MapKit.Core
 {
     class CaseRenderer : IFeatureRenderer
     {
@@ -17,6 +16,8 @@ namespace MapKit.Core
         private bool _compiled;
         private Renderer _renderer;
         private IList<IBaseRenderer> _renderers;
+        private object _caseValue;
+        private ArrayList _whenValues;
 
         public CaseRenderer(Renderer renderer, Case caseNode, IBaseRenderer parent)
         {
@@ -82,10 +83,16 @@ namespace MapKit.Core
             var count = _expressions.Count;
             int index;
 
-            if (_exprEval != null)
+            if (_exprEval != null || _caseValue != null)
             {
-                var value = _exprEval.Evaluate();
-                index = _expressions.FindIndex(e => e != null && Equals(((IDynamicExpression)e).Evaluate(), value));
+                index = -1;
+                var value = _exprEval != null ? _exprEval.Evaluate() : _caseValue;
+                for (int i = 0; i < _expressions.Count; i++)
+                    if (Equals(value, _expressions[i] != null ? ((IDynamicExpression)_expressions[i]).Evaluate() : _whenValues[i]))
+                    {
+                        index = i;
+                        break;
+                    }
             }
             else
                 index = _expressions.FindIndex(e => e != null && ((IGenericExpression<bool>)e).Evaluate());
@@ -125,8 +132,9 @@ namespace MapKit.Core
             //    _resolver.BindContext(context);
             //}
             var _context = _renderer.Context;
-            _exprEval = FeatureRenderer.CompileExpression(_caseNode, _context, Case.ExpressionField, _caseNode.Expression);
+            _exprEval = FeatureRenderer.CompileExpression(_caseNode, _context, Case.ExpressionField, _caseNode.Expression, ref _caseValue);
             _expressions = new List<IExpression>(_caseNode.Nodes.Count);
+            _whenValues = new ArrayList(_caseNode.Nodes.Count);
 
             _renderers = new List<IBaseRenderer>(_caseNode.Nodes.Count);
             foreach (ContainerNode child in _caseNode.Nodes)
@@ -137,18 +145,23 @@ namespace MapKit.Core
                 var when = child as When;
                 if (when != null)
                 {
+                    object whenValue = null;
                     var expr = when.Expression != null ?
-                        _exprEval != null
-                            ? (IExpression)FeatureRenderer.CompileExpression(_caseNode, _context, When.ExpressionField, when.Expression, false)
-                            : FeatureRenderer.CompileExpression<bool>(_renderer, _caseNode, _context, When.ExpressionField, when.Expression, false)
+                        _exprEval != null || _caseValue != null
+                            ? (IExpression)FeatureRenderer.CompileExpression(_caseNode, _context, When.ExpressionField, when.Expression, ref whenValue)
+                            : FeatureRenderer.CompileExpression<bool>(_renderer, _caseNode, _context, When.ExpressionField, when.Expression)
                         : null;
 
                     _expressions.Add(expr);
+                    _whenValues.Add(whenValue);
                 }
                 else if (!(child is Else))
                     continue;
                 
                 _renderers.Add(renderer);
+
+                if (recursive)
+                    renderer.Compile(true);
             }
             
             _compiled = true;

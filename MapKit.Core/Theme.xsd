@@ -278,20 +278,21 @@
       <xs:attributeGroup ref="lineStyleAttributes" />
       <xs:attribute name="name"/>
     </xs:complexType>
-  </xs:element>  
+  </xs:element>
 
   <xs:element name="text">
     <xs:complexType>
-    <xs:sequence>
-      <xs:element name="content" minOccurs="0"/>
-      <xs:element name="labelBox" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:sequence maxOccurs="unbounded">
-            <xs:group ref="areaItems" minOccurs="0" maxOccurs="unbounded" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-    </xs:sequence>
+      <xs:sequence>
+        <xs:element name="content" minOccurs="0"/>
+        <xs:element name="labelBox" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+              <xs:group ref="areaItems" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attributeGroup ref ="visibility"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
       <xs:attributeGroup ref="textAttributes"/>
     </xs:complexType>
   </xs:element>

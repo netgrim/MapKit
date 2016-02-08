@@ -8,5 +8,7 @@ namespace MapKit.Core
             : base(name, elementName, type)
         {
         }
+
+        public abstract DataSource CreateDataSource();
     }
 }

@@ -2,7 +2,6 @@
 using System.Drawing;
 using GeoAPI.Geometries;
 using System.Collections.Generic;
-using System.Windows.Media;
 
 using WinPoint = System.Windows.Point;
 using WinMatrix = System.Windows.Media.Matrix;
@@ -109,7 +108,7 @@ namespace MapKit.Core
             var savedState = Renderer.Graphics.Save();
             var oldModelView = Renderer.Translate;
             var oldZoom = Renderer.Zoom;
-            var oldAngle = Renderer.Angle;
+            //var oldAngle = Renderer.Angle;
             
             _recursion++;
 
@@ -163,7 +162,7 @@ namespace MapKit.Core
                         Renderer.Translate = newTranslate;
                         Renderer.Graphics.Transform = newTransform;
                         Renderer.Zoom *= zoom;
-                        Renderer.Angle += angle;
+                        //Renderer.Angle += angle;
 
                         //Renderer.Graphics.Clear(Evaluate(_bgColorEvaluator, _bgColor));
 
@@ -177,7 +176,7 @@ namespace MapKit.Core
                         Renderer.Graphics.Restore(savedState);
                         Renderer.Translate = oldModelView;
                         Renderer.Zoom = oldZoom;
-                        Renderer.Angle = oldAngle;
+                        //Renderer.Angle = oldAngle;
                         Renderer.Matrix = oldMatrix;
                         _recursion--;
                     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GeoAPI.Geometries;
+﻿using GeoAPI.Geometries;
 using Ciloci.Flee;
 using NetTopologySuite.LinearReferencing;
 using MapKit.Core.Rendering;
@@ -15,7 +11,11 @@ namespace MapKit.Core
         private IGenericExpression<double> _startMeasureEvaluator;
         private IGenericExpression<double> _endMeasureEvaluator;
         private bool _compiled;
-        private FeatureVariableResolver _resolver;
+        private double _startMeasure = 0;
+        private double _endMeasure = 0;
+
+
+        //private FeatureVariableResolver _resolver;
 
         public LinearCalibrationRenderer(Renderer renderer, LinearCalibration linearCalibration, IBaseRenderer parent)
             : base(renderer, linearCalibration, parent)
@@ -33,16 +33,26 @@ namespace MapKit.Core
         {
             var newFeature = new Feature(feature.FeatureType, feature.Fid, feature.Values);
             newFeature.Geometry = CalibrateGeometry(feature.Geometry);
-            _resolver.Feature = newFeature;
 
-            //RenderPath(node, newFeature, path);
-            base.Render(newFeature);
+            //_resolver.Feature = newFeature;
+            Renderer.FeatureVarResolver.Feature = newFeature;
+            try
+            {
+                //RenderPath(node, newFeature, path);
+                base.Render(newFeature);
+            }
+            finally
+            {
+                Renderer.FeatureVarResolver.Feature = feature;
+            }
         }
 
         public IGeometry CalibrateGeometry(IGeometry geometry)
         {
-            var startMeasure = FeatureRenderer.Evaluate(_startMeasureEvaluator, 0);
-            var endMeasure = FeatureRenderer.Evaluate(_endMeasureEvaluator, geometry.Length);
+            var startMeasure = Evaluate(_startMeasureEvaluator, _startMeasure);
+            var endMeasure = string.IsNullOrWhiteSpace(_linearCalibration.EndMeasure)
+                ? geometry.Length
+                : Evaluate(_endMeasureEvaluator, _endMeasure);
             return LinearGeometryBuilder.DefineMeasures(geometry, startMeasure, endMeasure);
         }
 
@@ -57,12 +67,12 @@ namespace MapKit.Core
         {
             base.Compile(recursive);
 
-            var context = CreateContext(Renderer);
-            _resolver = new FeatureVariableResolver(OutputFeatureType);
-            _resolver.BindContext(context);
+            //var context = CreateContext(Renderer);
+            //_resolver = new FeatureVariableResolver(OutputFeatureType);
+            //_resolver.BindContext(context);
 
-            _startMeasureEvaluator = CompileExpression<double>(context, LinearCalibration.StartMeasureField, _linearCalibration.StartMeasure);
-            _endMeasureEvaluator = CompileExpression<double>(context, LinearCalibration.EndMeasureField, _linearCalibration.EndMeasure);
+            _startMeasureEvaluator = CompileDoubleExpression(LinearCalibration.StartMeasureField, _linearCalibration.StartMeasure, ref _startMeasure);
+            _endMeasureEvaluator = CompileDoubleExpression(LinearCalibration.EndMeasureField, _linearCalibration.EndMeasure, ref _endMeasure);
             _compiled = true;
         }
     }

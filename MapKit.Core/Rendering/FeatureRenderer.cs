@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ciloci.Flee;
 using System.Drawing;
 using GeoAPI.Geometries;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using MapKit.Core;
 using WinPoint = System.Windows.Point;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
@@ -25,19 +21,6 @@ namespace MapKit.Core
             Parent = parentRenderer;
         }
 
-        private class RandomColor
-        {
-            private Random _rnd;
-            public RandomColor()
-            {
-                _rnd = new Random(GetHashCode());
-            }
-
-            public Color Random
-            {
-                get { return Color.FromArgb(_rnd.Next(255), _rnd.Next(255), _rnd.Next(255)); }
-            }
-        }
 
         [Browsable(false)]
         public Renderer Renderer { get; set; }
@@ -51,16 +34,6 @@ namespace MapKit.Core
         public int RenderCount { get; set; }
 
         public ThemeNode Node { get; private set; }
-        
-        protected static ExpressionContext CreateColorContext()
-        {
-            var context = CreateContext(new RandomColor());
-            context.Imports.AddType(typeof(Color));
-            context.Imports.AddType(typeof(SystemColors));
-            context.Imports.AddType(typeof(ColorTranslator));
-            return context;
-        }
-
 
         protected static ExpressionContext CreateContentAlignmentContext()
         {
@@ -94,6 +67,14 @@ namespace MapKit.Core
             return CompileExpression<T>(Node, context, name, expression, nullable);
         }
 
+        protected IGenericExpression<T> CompileExpression<T>(ThemeNode node, ExpressionContext context, string name, string expression, bool nullable = true)
+        {
+            return CompileExpression<T>(Renderer, node, context, name, expression, nullable);
+        }
+
+        /// <summary>
+        /// compile text directly if does not have the prefix
+        /// </summary>
         public static IGenericExpression<T> CompileExpression<T>(Renderer renderer, ThemeNode node, ExpressionContext context, string name, string expression, bool nullable = true)
         {
             try
@@ -102,7 +83,7 @@ namespace MapKit.Core
                 {
                     return expression.StartsWith(ExpressionPrefix)
                         ? context.CompileGeneric<T>(expression.Substring(1))
-                        : context.CompileGeneric<T>("\"" + expression + "\"");
+                        : context.CompileGeneric<T>(expression);
                 }
                 else if (nullable)
                     return null;
@@ -111,60 +92,111 @@ namespace MapKit.Core
             }
             catch (ExpressionCompileException ex)
             {
-                string message = String.Format("Failed to compile field '{0}' in '{1}':\r\n{2}", name, node.NodePath, ex.Message);
+                string message = string.Format("Failed to compile field '{0}' in '{1}':\r\n{2}", name, node.NodePath, ex.Message);
                 renderer.HandleError(message);
             }
             return null;
         }
 
-        internal IGenericExpression<T> CompileExpression<T>(ThemeNode node, ExpressionContext context, string name, string expression, bool nullable = true)
+        protected IGenericExpression<string> CompileStringExpression(ExpressionContext context, string name, string expression, ref string defaultValue, bool nullable = true)
         {
-            return CompileExpression<T>(Renderer, node, context, name, expression, nullable);
+            return CompileExpression(context, name, expression, ref defaultValue, x => x, nullable);
         }
 
         protected IGenericExpression<Color> CompileColorExpression(ExpressionContext context, string name, string expression, ref Color defaultValue, bool nullable = true)
         {
-            if (!string.IsNullOrEmpty(expression) && !Util.TryParseColor(expression, out defaultValue))
-                return CompileExpression<Color>(Node, context, name, expression, nullable);
-            return null;
-        }
-
-        protected IGenericExpression<DashStyle> CompileDashStyleExpression(ExpressionContext context, string name, string expression, ref DashStyle defaultValue, bool nullable = true)
-        {
-            if (!Enum.TryParse(expression, true, out defaultValue))
-                return CompileExpression<DashStyle>(Node, context, name, expression, nullable);
-            return null;
-        }
-
-
-        protected IGenericExpression<double> CompileDoubleExpression(ExpressionContext context, string name, string expression, ref Double defaultValue, bool nullable = true)
-        {
-            if (string.IsNullOrEmpty(expression) || double.TryParse(expression, System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo, out defaultValue))
+            Color parsedColor;
+            if (string.Compare(expression, "random", true) == 0)
+                return CompileExpression<Color>(Node, context, name, "=color.Random", nullable);
+            else if (Util.TryParseColor(expression, out parsedColor))
+            {
+                defaultValue = parsedColor;
                 return null;
-            return CompileExpression<double>(Node, context, name, expression, nullable);
+            }
+
+            return CompileExpression<Color>(Node, context, name, expression, nullable);
+        }
+        
+        protected IGenericExpression<TEnum> CompileEnumExpression<TEnum>(ExpressionContext context, string name, string expression, ref TEnum defaultValue, bool nullable = true) where TEnum : struct
+        {
+            TEnum parsedValue;
+            if (Enum.TryParse(expression, true, out parsedValue))
+            {
+                defaultValue = parsedValue;
+                return null;
+            }
+            
+            return CompileExpression<TEnum>(Node, context, name, expression, nullable);
+        }
+
+        protected IGenericExpression<double> CompileDoubleExpression(string name, string expression, ref double defaultValue, bool nullable = true)
+        {
+            return CompileDoubleExpression(Renderer.Context, name, expression, ref defaultValue, nullable);
+        }
+
+        protected IGenericExpression<double> CompileDoubleExpression(ExpressionContext context, string name, string expression, ref double defaultValue, bool nullable = true)
+        {
+            return CompileExpression(context, name, expression, ref defaultValue, e => double.Parse(e, System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo), nullable);
+        }
+
+        protected IGenericExpression<bool> CompileBoolExpression(ExpressionContext context, string name, string expression, ref bool defaultValue, bool nullable = true)
+        {
+            return CompileExpression(context, name, expression, ref defaultValue, e => bool.Parse(expression), nullable);
+        }
+
+        protected delegate T Parse<T>(string expression);
+
+        protected IGenericExpression<T> CompileExpression<T>(ExpressionContext context, string name, string expression, ref T defaultValue, Parse<T> parser, bool nullable = true)
+        {
+            return CompileExpression(Renderer, Node, context, name, expression, ref defaultValue, parser, nullable);
+        }
+
+        /// <summary>
+        /// Use the parser if it does not have the prefix
+        /// </summary>
+        protected static IGenericExpression<T> CompileExpression<T>(Renderer renderer, ThemeNode node, ExpressionContext context, string name, string expression, ref T defaultValue, Parse<T> parser, bool nullable = true)
+        {
+            if (!string.IsNullOrEmpty(expression))
+            {
+                try
+                {
+                    if (expression.StartsWith(ExpressionPrefix))
+                        return context.CompileGeneric<T>(expression.Substring(1));
+                }
+                catch (ExpressionCompileException ex)
+                {
+                    string message = string.Format("Failed to compile field '{0}' in '{1}':\r\n{2}", name, node.NodePath, ex.Message);
+                    renderer.HandleError(message);
+                }
+                defaultValue = parser(expression);
+            }
+            else if (!nullable)
+                throw new RenderingException(string.Format("Field '{0}' cannot be empty", name));
+
+            return null;
         }
 
         protected IGenericExpression<float> CompileFloatExpression(ExpressionContext context, string name, string expression, ref float defaultValue, bool nullable = true)
         {
-            if (string.IsNullOrEmpty(expression) || float.TryParse(expression, System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo, out defaultValue))
-                return null;
-            return CompileExpression<float>(Node, context, name, expression, nullable);
+            return CompileExpression(context, name, expression, ref defaultValue, e => float.Parse(expression, System.Globalization.NumberStyles.Float, System.Globalization.NumberFormatInfo.InvariantInfo), nullable);
         }
 
-        public IDynamicExpression CompileExpression(ExpressionContext context, string name, string expression, bool nullable = true)
+        public IDynamicExpression CompileExpression(ExpressionContext context, string name, string expression, ref object defaultValue, bool nullable = true)
         {
-            return CompileExpression(Node, context, name, expression, nullable);
+            return CompileExpression(Node, context, name, expression, ref defaultValue, nullable);
         }
         
-        public static IDynamicExpression CompileExpression(ThemeNode node, ExpressionContext context, string name, string expression, bool nullable = true)
+        public static IDynamicExpression CompileExpression(ThemeNode node, ExpressionContext context, string name, string expression, ref object defaultValue, bool nullable = true)
         {
             try
             {
-                if (expression != null)
+                if (!string.IsNullOrEmpty(expression))
                 {
-                    return expression.StartsWith(ExpressionPrefix)
-                        ? context.CompileDynamic(expression.Substring(1))
-                        : context.CompileDynamic("\"" + expression + "\"");
+                    if (expression.StartsWith(ExpressionPrefix))
+                        return context.CompileDynamic(expression.Substring(ExpressionPrefix.Length));
+
+                    defaultValue = expression;
+                    return null;
                 }
                 else if (nullable)
                     return null;
@@ -173,7 +205,7 @@ namespace MapKit.Core
             }
             catch (ExpressionCompileException ex)
             {
-                throw new RenderingException(String.Format("Failed to compile field '{0}' in '{1}':\r\n{2}", name, node.NodePath, ex.Message), ex);
+                throw new RenderingException(string.Format("Failed to compile field '{0}' in '{1}':\r\n{2}", name, node.NodePath, ex.Message), ex);
             }
         }
 
@@ -288,9 +320,7 @@ namespace MapKit.Core
             RenderCount = 0;
         }
 
-        public virtual void Compile(bool recursive)
-        {
-        }
+        public abstract void Compile(bool recursive);
 
         public IBaseRenderer Parent { get; set; }
 

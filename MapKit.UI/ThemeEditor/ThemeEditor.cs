@@ -9,11 +9,5 @@ namespace MapKit.UI
 		{
 			InitializeComponent();
 		}
-
-		public Map Map
-		{
-			get { return themeEditorComponent.Map; }
-			set { themeEditorComponent.Map = value; }
-		}
 	}
 }
