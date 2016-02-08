@@ -7,7 +7,7 @@ namespace MapKit.Core
         internal const string ReferenceFieldName = "ref";
         internal const string NameFieldName = "name";
         
-        private string _name;
+        //private string _name;
         private string _ref;
 
 		public Style()
@@ -15,16 +15,16 @@ namespace MapKit.Core
             _ref = string.Empty;
 		}
 
-        public string Name
-        {
+        //public string Name
+        //{
 
-            get { return _name; }
-            set
-            {
-                _name = value;
-                OnFieldChanged(NameFieldName);
-            }
-        }
+        //    get { return _name; }
+        //    set
+        //    {
+        //        _name = value;
+        //        OnFieldChanged(NameFieldName);
+        //    }
+        //}
 
         public string Reference
         {
