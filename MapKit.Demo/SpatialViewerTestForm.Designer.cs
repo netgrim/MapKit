@@ -37,6 +37,7 @@
             this.mnuFileLoad = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuClose = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRecentFiles = new System.Windows.Forms.ToolStripMenuItem();
             this.menuFileLine2 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,10 +50,13 @@
             this.mnuRenderShowQueryMBR = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuRenderSmallQueryWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuResetView = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.mnuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.showMatrixWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStatistics = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAutoTune = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.triStateTreeView1 = new Cyrez.UI.TriStateTreeView();
@@ -104,6 +108,7 @@
             this.mnuFileLoad,
             this.mnuFileSave,
             this.mnuFileSaveAs,
+            this.mnuClose,
             toolStripSeparator1,
             this.mnuRecentFiles,
             this.menuFileLine2,
@@ -132,6 +137,14 @@
             this.mnuFileSaveAs.Size = new System.Drawing.Size(136, 22);
             this.mnuFileSaveAs.Text = "Save As...";
             this.mnuFileSaveAs.Click += new System.EventHandler(this.mnuFileSaveAs_Click);
+            // 
+            // mnuClose
+            // 
+            this.mnuClose.Name = "mnuClose";
+            this.mnuClose.Size = new System.Drawing.Size(136, 22);
+            this.mnuClose.Text = "Close";
+            this.mnuClose.Visible = false;
+            this.mnuClose.Click += new System.EventHandler(this.mnuClose_Click);
             // 
             // mnuRecentFiles
             // 
@@ -167,6 +180,9 @@
             this.mnuRenderShowQueryMBR,
             this.mnuRenderSmallQueryWindow,
             this.toolStripMenuItem1,
+
+            this.mnuResetView,
+            this.toolStripSeparator3,
             this.mnuRefresh,
             this.showMatrixWindowToolStripMenuItem});
             mnuView.Name = "mnuView";
@@ -236,6 +252,18 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(183, 6);
             // 
+            // mnuResetView
+            // 
+            this.mnuResetView.Name = "mnuResetView";
+            this.mnuResetView.Size = new System.Drawing.Size(186, 22);
+            this.mnuResetView.Text = "Reset";
+            this.mnuResetView.Click += new System.EventHandler(this.mnuResetView_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(183, 6);
+            // 
             // mnuRefresh
             // 
             this.mnuRefresh.Name = "mnuRefresh";
@@ -260,7 +288,7 @@
             this.mnuStatistics,
             this.mnuAutoTune});
             mnuTools.Name = "mnuTools";
-            mnuTools.Size = new System.Drawing.Size(48, 20);
+            mnuTools.Size = new System.Drawing.Size(47, 20);
             mnuTools.Text = "Tools";
             // 
             // mnuStatistics
@@ -276,6 +304,11 @@
             this.mnuAutoTune.Size = new System.Drawing.Size(158, 22);
             this.mnuAutoTune.Text = "Auto-Tune";
             this.mnuAutoTune.Click += new System.EventHandler(this.mnuAutoTune_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(155, 6);
             // 
             // splitContainer1
             // 
@@ -326,6 +359,7 @@
             // 
             // propertyGrid
             // 
+            this.propertyGrid.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid.HelpVisible = false;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
@@ -351,7 +385,6 @@
             this.viewport1.Paint += new System.Windows.Forms.PaintEventHandler(this.viewport1_Paint);
             this.viewport1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.viewport1_KeyDown);
             this.viewport1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.viewport1_MouseMove);
-            this.viewport1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.viewport1_MouseUp);
             // 
             // toolStrip
             // 
@@ -472,13 +505,12 @@
             // 
             this.reopenToolStripMenuItem.CheckOnClick = true;
             this.reopenToolStripMenuItem.Name = "reopenToolStripMenuItem";
-            this.reopenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.reopenToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.reopenToolStripMenuItem.Text = "Reopen";
             this.reopenToolStripMenuItem.Click += new System.EventHandler(this.reopenToolStripMenuItem_Click);
             // 
             // themeEditorComponent
             // 
-            this.themeEditorComponent.Map = null;
             this.themeEditorComponent.PropertyGrid = this.propertyGrid;
             this.themeEditorComponent.TreeView = this.triStateTreeView1;
             // 
@@ -557,6 +589,10 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reopenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showMatrixWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem mnuClose;
+        private System.Windows.Forms.ToolStripMenuItem mnuResetView;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 
