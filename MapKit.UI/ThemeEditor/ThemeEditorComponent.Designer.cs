@@ -194,6 +194,5 @@ namespace MapKit.UI
         private System.Windows.Forms.ToolStripSeparator cmnThemeNodeRenameSep;
         private System.Windows.Forms.ToolStripMenuItem cmnThemeNodeRename;
         private System.Windows.Forms.ToolStripMenuItem cmnThemeNodeProperties;
-        private TreeNode _mapNode;
     }
 }
