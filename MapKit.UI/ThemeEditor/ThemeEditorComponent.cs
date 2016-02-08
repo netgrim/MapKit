@@ -11,8 +11,9 @@ namespace MapKit.UI
 {
     public partial class ThemeEditorComponent : Component
     {
+        private TreeNode _mapNode;
         private Dictionary<ThemeNode, TreeNode> _objectsNode = new Dictionary<ThemeNode, TreeNode>();
-        
+
         public ThemeEditorComponent()
         {
             InitializeComponent();
@@ -40,28 +41,28 @@ namespace MapKit.UI
             var state = TriStateTreeView.GetNodeState(e.Node);
             if (state != CheckState.Indeterminate)
                 themeNode.Visible = state == CheckState.Checked;
-			
 
-			//if (_updatingCheck) return;
-			//var r = e.Node.Tag as INodeRow;
-			//if (r == null) return;
-			//var layer = r.DataRow as ThemeDs.LayerRow;
-			//if (layer != null)
-			//    switch (_checkScaleMode)
-			//    {
-			//        case ScaleMode.Auto:
-			//            if (Math.Abs(layer.MinScale - _visibilityScale) < Math.Abs((layer.IsMaxScaleNull() ? double.MaxValue : layer.MaxScale) - _visibilityScale))
-			//                layer.MinScale = _visibilityScale;
-			//            else
-			//                layer.MaxScale = _visibilityScale;
-			//            break;
-			//        case ScaleMode.Min:
-			//            layer.MinScale = _visibilityScale;
-			//            break;
-			//        case ScaleMode.Max:
-			//            layer.MaxScale = _visibilityScale;
-			//            break;
-			//    }
+
+            //if (_updatingCheck) return;
+            //var r = e.Node.Tag as INodeRow;
+            //if (r == null) return;
+            //var layer = r.DataRow as ThemeDs.LayerRow;
+            //if (layer != null)
+            //    switch (_checkScaleMode)
+            //    {
+            //        case ScaleMode.Auto:
+            //            if (Math.Abs(layer.MinScale - _visibilityScale) < Math.Abs((layer.IsMaxScaleNull() ? double.MaxValue : layer.MaxScale) - _visibilityScale))
+            //                layer.MinScale = _visibilityScale;
+            //            else
+            //                layer.MaxScale = _visibilityScale;
+            //            break;
+            //        case ScaleMode.Min:
+            //            layer.MinScale = _visibilityScale;
+            //            break;
+            //        case ScaleMode.Max:
+            //            layer.MaxScale = _visibilityScale;
+            //            break;
+            //    }
         }
 
         void _treeView_MouseDown(object sender, MouseEventArgs e)
@@ -118,13 +119,14 @@ namespace MapKit.UI
             e.CancelEdit = !(_treeView.SelectedNode.Tag is IEditableNode);
         }
 
-        public void AddNewLayer(TreeNode parentNode)
+        public TreeNode AddNewLayer(TreeNode parentNode)
         {
+            throw new NotImplementedException();
             /*var wrapper = (LayerGroupWrapper)parentNode.Tag;
         
             var newLayer = new Layer();
             //newLayer.Sequence = _ds.Layer.Count(x => x.ThemeId == theme.Id);
-            newLayer.Name = "New layer";
+            //newLayer.Name = "New layer";
                         
             var parent = wrapper.Group;
             parent.Nodes.Add(newLayer);
@@ -136,36 +138,36 @@ namespace MapKit.UI
                 node.BeginEdit();*/
         }
 
-		private TriStateTreeView _treeView;
-		public TriStateTreeView TreeView 
-		{
-			get { return _treeView; }
-			set
-			{
-				if (_treeView != null)
-				{
-					_treeView.AfterCheck -= _treeView_AfterCheck;
-					_treeView.AfterLabelEdit -= _treeView_AfterLabelEdit;
-					_treeView.AfterSelect -= _treeView_AfterSelect;
-					_treeView.BeforeLabelEdit -= _treeView_BeforeLabelEdit;
-					_treeView.MouseDoubleClick -= _treeView_MouseDoubleClick;
-					_treeView.MouseDown -= _treeView_MouseDown;
-				}
+        private TriStateTreeView _treeView;
+        public TriStateTreeView TreeView
+        {
+            get { return _treeView; }
+            set
+            {
+                if (_treeView != null)
+                {
+                    _treeView.AfterCheck -= _treeView_AfterCheck;
+                    _treeView.AfterLabelEdit -= _treeView_AfterLabelEdit;
+                    _treeView.AfterSelect -= _treeView_AfterSelect;
+                    _treeView.BeforeLabelEdit -= _treeView_BeforeLabelEdit;
+                    _treeView.MouseDoubleClick -= _treeView_MouseDoubleClick;
+                    _treeView.MouseDown -= _treeView_MouseDown;
+                }
 
-				_treeView = value;
-				treeViewReorderHandler.TreeView = value;
+                _treeView = value;
+                treeViewReorderHandler.TreeView = value;
 
-				if (_treeView != null)
-				{
-					_treeView.AfterCheck += _treeView_AfterCheck;
-					_treeView.AfterLabelEdit +=_treeView_AfterLabelEdit;
-					_treeView.AfterSelect += _treeView_AfterSelect;
-					_treeView.BeforeLabelEdit += _treeView_BeforeLabelEdit;
-					_treeView.MouseDoubleClick += _treeView_MouseDoubleClick;
-					_treeView.MouseDown += _treeView_MouseDown;
-				}
-			}
-		}
+                if (_treeView != null)
+                {
+                    _treeView.AfterCheck += _treeView_AfterCheck;
+                    _treeView.AfterLabelEdit += _treeView_AfterLabelEdit;
+                    _treeView.AfterSelect += _treeView_AfterSelect;
+                    _treeView.BeforeLabelEdit += _treeView_BeforeLabelEdit;
+                    _treeView.MouseDoubleClick += _treeView_MouseDoubleClick;
+                    _treeView.MouseDown += _treeView_MouseDown;
+                }
+            }
+        }
 
 
         private PropertyGrid _propertyGrid;
@@ -175,52 +177,23 @@ namespace MapKit.UI
             set { _propertyGrid = value; }
         }
 
-		private Map _map;
-
-		public Map Map 
-		{
-			get { return _map; }
-			set
-			{
-				if (_treeView != null)
-					_treeView.Nodes.Clear();
-
-                foreach (var themeNode in _objectsNode.Keys)
-                    themeNode.PropertyChanged -= themeNode_PropertyChanged;
-                _objectsNode.Clear();
-                
-				_map = value;
-
-				if (_map != null)
-				{
-					if (_treeView != null)
-						_treeView.AfterCheck -= _treeView_AfterCheck;
-					var node = AddMapNode(_map);
-					node.Expand();
-
-					if (_treeView != null)
-						_treeView.AfterCheck += _treeView_AfterCheck;
-				}
-			}
-		}
-
         public bool TryGetNode(ThemeNode themeNode, out TreeNode node)
-		{
+        {
             return _objectsNode.TryGetValue(themeNode, out node);
-		}
+        }
 
         private void AddNodes(TreeNode parent, IEnumerable<ThemeNode> nodes)
-		{
-			foreach (var item in nodes)
-				AddNode(parent, item);
-		}
+        {
+            foreach (var item in nodes)
+                AddNode(parent, item);
+        }
 
-		private TreeNode AddNode(TreeNode parent, ThemeNode item)
-		{
+        private TreeNode AddNode(TreeNode parent, ThemeNode item)
+        {
             var layer = item as Layer;
             if (layer != null)
                 return AddLayerNode(parent, layer);
-            
+
             var group = item as Group;
             if (group != null)
                 return AddGroupNode(parent, group);
@@ -239,7 +212,7 @@ namespace MapKit.UI
             var containerNode = item as ContainerNode;
             if (containerNode != null)
                 return AddContainterNode(parent, new ContainerNodeWrapper(containerNode), cmnThemeNode);
-            
+
             Debug.WriteLine("Unknown type: " + item.GetType().Name);
 
             var parentNodes = parent != null ? parent.Nodes : _treeView.Nodes;
@@ -251,11 +224,31 @@ namespace MapKit.UI
             AttachNode(item, node);
 
             return node;
-		}
+        }
 
-        private TreeNode AddMapNode(Map map)
+        public void Clear()
         {
-            return AddGroupNode(null, map);
+            _mapNode = null;
+            foreach (var themeNode in _objectsNode.Keys)
+                themeNode.PropertyChanged -= themeNode_PropertyChanged;
+            _objectsNode.Clear();
+            _treeView.Nodes.Clear();
+        }
+
+        public TreeNode AddMapNode(TreeNode parent, Map map)
+        {
+            Debug.Assert(_mapNode == null);
+            if (_treeView != null)
+                _treeView.AfterCheck -= _treeView_AfterCheck;
+
+            var node = AddGroupNode(parent, map);
+            node.Expand();
+            node.Tag = new MapWrapper(map);
+
+            if (_treeView != null)
+                _treeView.AfterCheck += _treeView_AfterCheck;
+
+            return node;
         }
 
         private TreeNode AddGroupNode(TreeNode parent, Group group)
@@ -274,6 +267,12 @@ namespace MapKit.UI
             AddNodes(node, group.Nodes);
 
             return node;
+        }
+
+        public void SetMap(Map map)
+        {
+            Clear();
+            AddMapNode(_mapNode, map);
         }
 
         private TreeNode AddContainterNode(TreeNode parent, ContainerNodeWrapper wrapper, ContextMenuStrip contextMenu)
@@ -308,7 +307,24 @@ namespace MapKit.UI
                 treeNode.Text = themeNode.LabelOrDefault;
         }
 
-		private TreeNode AddLayerNode(TreeNode parent, Layer layer)
+        public TreeNode AddLayerNode(Layer layer)
+        {
+            return AddContainterNode(FindParentGroup(), new LayerWrapper(layer), cmnLayer);
+
+        }
+
+        private TreeNode FindParentGroup()
+        {
+            var node = _treeView.SelectedNode;
+            if (node == null) return null;
+
+            while (node != null && !(((ThemeNodeWrapper)node.Tag).Node is Group))
+                node = node.Parent;
+
+            return node;
+        }
+
+        public TreeNode AddLayerNode(TreeNode parent, Layer layer)
 		{
             return AddContainterNode(parent, new LayerWrapper(layer), cmnLayer);
 		}

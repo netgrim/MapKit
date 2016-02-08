@@ -1,4 +1,8 @@
-﻿namespace MapKit.UI
+﻿using System;
+using System.Windows.Forms;
+using MapKit.Core;
+
+namespace MapKit.UI
 {
 	partial class ThemeEditorComponent
     {
@@ -171,7 +175,6 @@
 
         }
 
-
         #endregion
 
         private System.Windows.Forms.ContextMenuStrip cmnLayer;
@@ -191,5 +194,6 @@
         private System.Windows.Forms.ToolStripSeparator cmnThemeNodeRenameSep;
         private System.Windows.Forms.ToolStripMenuItem cmnThemeNodeRename;
         private System.Windows.Forms.ToolStripMenuItem cmnThemeNodeProperties;
+        private TreeNode _mapNode;
     }
 }
