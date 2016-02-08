@@ -101,7 +101,7 @@ namespace MapKit.Core
             get { return _labelBox; }
             private set
             {
-                if (value != null && value.Map != null)
+                if (value != null && value.Map != null && value.Map != Map)
                     throw new InvalidOperationException("Already in another map");
 
                 if (_labelBox != null)
@@ -138,7 +138,7 @@ namespace MapKit.Core
             }
         }
 
-        public static new NodeType NodeType
+        public static NodeType NodeType
         {
             get { return _nodeType; }
         }
@@ -169,7 +169,7 @@ namespace MapKit.Core
                 while (reader.MoveToContent() != XmlNodeType.EndElement)
                 {
                     if (_style.ReadXmlContent(reader)) continue;
-                    else if (reader.IsStartElement(LabelBox.NodeType.ElementName)) LabelBox = LabelBox.FromXml(reader);
+                    else if (reader.IsStartElement(LabelBox.NodeType.ElementName)) LabelBox = LabelBox.FromXml(reader, Map);
                     else MapXmlReader.HandleUnexpectedElement(reader.LocalName);
 
                 }

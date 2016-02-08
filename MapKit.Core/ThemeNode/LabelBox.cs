@@ -51,9 +51,10 @@ namespace MapKit.Core
             return NodeType;
         }
 
-        public static LabelBox FromXml(XmlReader reader)
+        public static LabelBox FromXml(XmlReader reader, Map map)
         {
             var labelBox = new LabelBox();
+            labelBox.Map = map;
             labelBox.ReadXml(reader);
             return labelBox;
         }
