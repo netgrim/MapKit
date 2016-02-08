@@ -52,6 +52,7 @@
             this.mnuRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStatistics = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAutoTune = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTrace = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.triStateTreeView1 = new Cyrez.UI.TriStateTreeView();
@@ -246,7 +247,8 @@
             // 
             mnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuStatistics,
-            this.mnuAutoTune});
+            this.mnuAutoTune,
+            this.mnuTrace});
             mnuTools.Name = "mnuTools";
             mnuTools.Size = new System.Drawing.Size(48, 20);
             mnuTools.Text = "Tools";
@@ -264,6 +266,13 @@
             this.mnuAutoTune.Size = new System.Drawing.Size(158, 22);
             this.mnuAutoTune.Text = "Auto-Tune";
             this.mnuAutoTune.Click += new System.EventHandler(this.mnuAutoTune_Click);
+            // 
+            // mnuTrace
+            // 
+            this.mnuTrace.Name = "mnuTrace";
+            this.mnuTrace.Size = new System.Drawing.Size(158, 22);
+            this.mnuTrace.Text = "Trace";
+            this.mnuTrace.Click += new System.EventHandler(this.mnuTrace_Click);
             // 
             // splitContainer1
             // 
@@ -544,6 +553,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuRefresh;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reopenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuTrace;
 	}
 }
 

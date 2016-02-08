@@ -19,6 +19,8 @@ using WinPoint = System.Windows.Point;
 using MatrixF = System.Drawing.Drawing2D.Matrix;
 using System.IO;
 using MapKit.Core.Rendering;
+using MapKit.UI;
+using MapKit.GisLite;
 
 namespace MapKit.Demo
 {
@@ -564,5 +566,29 @@ namespace MapKit.Demo
         {
             Settings.Default.ReopenLastFile = reopenToolStripMenuItem.Checked;
         }
+
+        private void mnuTrace_Click(object sender, EventArgs e)
+        {
+            if(_traceController == null)
+            {
+                _traceController = new TraceController();
+                _traceController.Dialog.FormClosed += delegate { _traceController = null; };
+            }
+
+
+            _traceController.Dialog.Show();
+
+
+
+
+
+
+
+
+
+
+
+        }
+
     }
 }
