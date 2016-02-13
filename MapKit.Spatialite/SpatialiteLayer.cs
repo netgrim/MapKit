@@ -200,8 +200,9 @@ namespace MapKit.Spatialite
                         try
                         {
                             geom = geoReader.Read(buffer, 0, len);
+                            if (geom == null) continue;
                         }
-                        catch (GeometryException ex)
+                        catch (Exception ex)
                         {
                             Trace.WriteLine(string.Format("Invalid geometry while reading {0} Fid={1}: {2}", ToString(), fid, ex.Message));
                             continue;
