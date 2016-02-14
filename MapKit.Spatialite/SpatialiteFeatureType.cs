@@ -142,74 +142,74 @@ namespace MapKit.Spatialite
         //    return featureType;
         //}
 
-        public override IEnumerable<Feature> GetFeatures(Envelope window)
-        {
-            var cmd = _useCounter > 0 ? CreateCommand(Connection) : GetOrCreateCommand(Connection);
-            _useCounter++;
+        //public override IEnumerable<Feature> GetFeatures(Envelope window)
+        //{
+        //    var cmd = _useCounter > 0 ? CreateCommand(Connection) : GetOrCreateCommand(Connection);
+        //    _useCounter++;
 
-            try
-            {
+        //    try
+        //    {
 
-                SetParameters(cmd, window);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    var geomOrdinal = reader.GetOrdinal(GeometryColumn);
-                    if (geomOrdinal < 0) throw new Exception("Geometry column not found: " + GeometryColumn);
+        //        SetParameters(cmd, window);
+        //        using (var reader = cmd.ExecuteReader())
+        //        {
+        //            var geomOrdinal = reader.GetOrdinal(GeometryColumn);
+        //            if (geomOrdinal < 0) throw new Exception("Geometry column not found: " + GeometryColumn);
 
-                    var fidOrdinal = string.IsNullOrEmpty(FidColumn) ? -1 : reader.GetOrdinal(FidColumn);
-                    var buffer = new byte[1024];
+        //            var fidOrdinal = string.IsNullOrEmpty(FidColumn) ? -1 : reader.GetOrdinal(FidColumn);
+        //            var buffer = new byte[1024];
 
-                    var fieldCount = reader.FieldCount;
-                    var values = new object[fieldCount];
-                    var geoReader = new GaiaGeoReader();
+        //            var fieldCount = reader.FieldCount;
+        //            var values = new object[fieldCount];
+        //            var geoReader = new GaiaGeoReader();
 
-                    while (reader.Read())
-                    {
-                        long fid;
-                        if (fidOrdinal >= 0)
-                        {
-                            fid = reader.GetInt64(fidOrdinal);
-                            values[fidOrdinal] = fid;
-                        }
-                        else
-                            fid = 0;
+        //            while (reader.Read())
+        //            {
+        //                long fid;
+        //                if (fidOrdinal >= 0)
+        //                {
+        //                    fid = reader.GetInt64(fidOrdinal);
+        //                    values[fidOrdinal] = fid;
+        //                }
+        //                else
+        //                    fid = 0;
 
-                        for (int i = 0; i < fieldCount; i++)
-                            if (i != fidOrdinal && i != geomOrdinal)
-                                values[i] = reader.GetValue(i);
+        //                for (int i = 0; i < fieldCount; i++)
+        //                    if (i != fidOrdinal && i != geomOrdinal)
+        //                        values[i] = reader.GetValue(i);
 
-                        var len = (int)reader.GetBytes(geomOrdinal, 0L, null, 0, 0);
-                        if (len > buffer.Length)
-                            buffer = new byte[len];
+        //                var len = (int)reader.GetBytes(geomOrdinal, 0L, null, 0, 0);
+        //                if (len > buffer.Length)
+        //                    buffer = new byte[len];
 
-                        reader.GetBytes(geomOrdinal, 0L, buffer, 0, len);
+        //                reader.GetBytes(geomOrdinal, 0L, buffer, 0, len);
 
-                        IGeometry geom;
-                        try
-                        {
-                            geom = geoReader.Read(buffer, 0, len);
-                        }
-                        catch (GeometryException ex)
-                        {
-                            Trace.WriteLine(string.Format("Invalid geometry while reading {0} Fid={1}: {2}", ToString(), fid, ex.Message));
-                            continue;
-                        }
+        //                IGeometry geom;
+        //                try
+        //                {
+        //                    geom = geoReader.Read(buffer, 0, len);
+        //                }
+        //                catch (GeometryException ex)
+        //                {
+        //                    Trace.WriteLine(string.Format("Invalid geometry while reading {0} Fid={1}: {2}", ToString(), fid, ex.Message));
+        //                    continue;
+        //                }
 
-                        //var geom = GeometryReader.ReadBlobGeometry(new MemoryStream(buffer, 0, buffer.Length));
-                        values[geomOrdinal] = geom;
-                        //featureType.GeometryType = geom.OgcGeometryType;
-                        var feature = NewFeature(fid, values);
-                        feature.Geometry = geom;
+        //                //var geom = GeometryReader.ReadBlobGeometry(new MemoryStream(buffer, 0, buffer.Length));
+        //                values[geomOrdinal] = geom;
+        //                //featureType.GeometryType = geom.OgcGeometryType;
+        //                var feature = NewFeature(fid, values);
+        //                feature.Geometry = geom;
 
-                        yield return feature;
-                    }
-                }
-            }
-            finally
-            {
-                _useCounter--;
-            }
-        }
+        //                yield return feature;
+        //            }
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        _useCounter--;
+        //    }
+        //}
 
         protected override void WriteXmlContent(XmlWriter writer)
         {
