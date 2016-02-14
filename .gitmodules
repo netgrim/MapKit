@@ -1,3 +1,9 @@
 [submodule "FleeSharp"]
 	path = FleeSharp
 	url = https://github.com/netgrim/FleeSharp.git
+[submodule "NetTopologySuite"]
+	path = NetTopologySuite
+	url = https://github.com/NetTopologySuite/NetTopologySuite.git
+[submodule "GeoAPI"]
+	path = GeoAPI
+	url = https://github.com/NetTopologySuite/GeoAPI.git
