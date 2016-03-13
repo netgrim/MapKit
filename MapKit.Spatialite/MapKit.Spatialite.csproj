@@ -98,8 +98,8 @@
       <Project>{00437DA6-7EFF-4168-BCD4-678661119812}</Project>
       <Name>Cyrez.SqliteUtil</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GeoAPI\GeoAPI.csproj">
-      <Project>{FFB69466-79DE-466A-ADA7-5C47C5C5CA3A}</Project>
+    <ProjectReference Include="..\GeoAPI\GeoAPI\GeoAPI.csproj">
+      <Project>{ffb69466-79de-466a-ada7-5c47c5c5ca3a}</Project>
       <Name>GeoAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\MapKit.Core\MapKit.Core.csproj">
@@ -107,11 +107,11 @@
       <Name>MapKit.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite.IO\NetTopologySuite.IO.SpatiaLite\NetTopologySuite.IO.SpatiaLite.csproj">
-      <Project>{AD33B357-E789-4102-8DC3-F18EEE507583}</Project>
+      <Project>{ad33b357-e789-4102-8dc3-f18eee507583}</Project>
       <Name>NetTopologySuite.IO.SpatiaLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetTopologySuite\NetTopologySuite\NetTopologySuite.csproj">
-      <Project>{5770DAA9-84E5-4770-AF43-F6B815894368}</Project>
+      <Project>{5770daa9-84e5-4770-af43-f6b815894368}</Project>
       <Name>NetTopologySuite</Name>
     </ProjectReference>
   </ItemGroup>
