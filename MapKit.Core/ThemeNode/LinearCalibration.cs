@@ -93,5 +93,6 @@ namespace MapKit.Core
             else if (reader.LocalName == LinearCalibration.EndMeasureField) EndMeasure = reader.Value;
             else return base.TryReadXmlAttribute(reader);
             return true;
-        }    }
+        }
+    }
 }

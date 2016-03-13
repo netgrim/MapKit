@@ -56,6 +56,7 @@ namespace MapKit.Core
             var labelBox = new LabelBox();
             labelBox.Map = map;
             labelBox.ReadXml(reader);
+
             return labelBox;
         }
     }
