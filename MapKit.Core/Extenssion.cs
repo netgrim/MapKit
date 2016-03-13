@@ -80,11 +80,9 @@ namespace MapKit.Core
 		public static Polygon ToRectanglePolygon(this RectangleF rectangle)
 		{
 			var point0 = new Coordinate(rectangle.X, rectangle.Y);
-			//var point0 = new SharpPoint(0, 0);
-			var v1 = new Coordinate(0, rectangle.Height);
-			var v3 = new Coordinate(rectangle.Width, 0);
-			var point1 = point0 + v1;
-			var point2 = point1 + v3;
+			var point2 = new Coordinate(rectangle.Right, rectangle.Bottom);
+            var point1 = new Coordinate(point2.X, point0.Y);
+			var point3 = new Coordinate(point0.X, point2.Y);
 
 			//generate rectangle polygon
 			return new Polygon(new LinearRing(new[] { point0, point1, point2, point3, point0 }));
