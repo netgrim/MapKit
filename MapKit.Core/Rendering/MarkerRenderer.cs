@@ -67,7 +67,7 @@ namespace MapKit.Core
                 var pScreenF = Renderer.Transform(winPoint).ToPointF();
                 var color = GetRenderColor(_opacityEvaluator, _opacity, _colorEvaluator, _color);
                 using (var brush = new SolidBrush(color))
-                    g.FillEllipse(brush, pScreenF.X, pScreenF.Y, width, height);
+                    g.FillEllipse(brush, pScreenF.X - width / 2, pScreenF.Y - height / 2, width, height);
             }
             else
             {
