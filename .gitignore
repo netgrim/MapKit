@@ -15,5 +15,5 @@
 /MapKit.Demo/obj
 /MapKit.UI/bin
 /MapKit.UI/obj
-/Cyrez.SqliteUtil/*.user
 /.vs
+*.user
