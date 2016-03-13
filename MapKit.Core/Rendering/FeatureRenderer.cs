@@ -256,9 +256,9 @@ namespace MapKit.Core
         
         protected void AddToPath(ILineString lineString, GraphicsPath path)
         {
-            if (lineString.Count > 1)
+            if (lineString.NumPoints > 1)
             {
-                path.AddLines(TransformToPointsF(lineString.Vertices));
+                path.AddLines(TransformToPointsF(lineString.CoordinateSequence));
 
                 if (lineString.IsClosed)
                     path.CloseFigure();
