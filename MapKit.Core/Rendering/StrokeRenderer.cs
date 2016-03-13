@@ -139,8 +139,8 @@ namespace MapKit.Core
                     pen.DashOffset = _dashOffsetEvaluator.Evaluate();
 
                 foreach (var lineString in Renderer.GetLineString(feature.Geometry))
-                    if (lineString.Vertices.Count > 1)
-                        Renderer.Graphics.DrawLines(pen, TransformToPointsF(lineString.Vertices));
+                    if (lineString.NumPoints > 1)
+                        Renderer.Graphics.DrawLines(pen, TransformToPointsF(lineString.CoordinateSequence));
                     else
                         _invalidGeometry++;
                 
