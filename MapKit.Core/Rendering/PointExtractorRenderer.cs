@@ -99,17 +99,17 @@ namespace MapKit.Core
             switch (geometry.OgcGeometryType)
             {
                 case OgcGeometryType.LineString:
-                case OgcGeometryType.LineStringZ:
+                //case OgcGeometryType.LineStringZ:
                 case OgcGeometryType.MultiLineString:
-                case OgcGeometryType.MultiLineStringZ:
+                //case OgcGeometryType.MultiLineStringZ:
                     if (start < 0) start += geometry.Length;
                     if(end < 0) end += geometry.Length;
                     return GetFeatures(feature, start, end, increment, offset);
-                case OgcGeometryType.LineStringM:
-                case OgcGeometryType.LineStringZM:
-                case OgcGeometryType.MultiLineStringM:
-                case OgcGeometryType.MultiLineStringZM:
-                    return GetFeaturesM(feature, start, end, increment, offset);
+                //case OgcGeometryType.LineStringM:
+                //case OgcGeometryType.LineStringZM:
+                //case OgcGeometryType.MultiLineStringM:
+                //case OgcGeometryType.MultiLineStringZM:
+                //    return GetFeaturesM(feature, start, end, increment, offset);
                 default:
                     throw new InvalidEnumArgumentException();
             }

@@ -196,9 +196,9 @@ namespace MapKit.Core.Rendering
 			switch (geometry.OgcGeometryType)
 			{
                 case OgcGeometryType.Point:
-                case OgcGeometryType.PointZ:
-                case OgcGeometryType.PointM:
-                case OgcGeometryType.PointZM:
+                //case OgcGeometryType.PointZ:
+                //case OgcGeometryType.PointM:
+                //case OgcGeometryType.PointZM:
                     yield return (IPoint)geometry;
 					break;
 				case OgcGeometryType.MultiPoint:
@@ -211,9 +211,9 @@ namespace MapKit.Core.Rendering
 						switch (geometryItem.OgcGeometryType)
 						{
                             case OgcGeometryType.Point:
-                            case OgcGeometryType.PointZ:
-                            case OgcGeometryType.PointM:
-                            case OgcGeometryType.PointZM:
+                            //case OgcGeometryType.PointZ:
+                            //case OgcGeometryType.PointM:
+                            //case OgcGeometryType.PointZM:
 								yield return (IPoint)geometry;
 								break;
 							case OgcGeometryType.MultiPoint:
