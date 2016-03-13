@@ -109,7 +109,7 @@ namespace MapKit.Core
         public override void Compile(bool recursive = false)
         {
             _outputFeatureType =  WrapFeatureType(InputFeatureType);
-            base.Compile(recursive);
+            base.Compile(_outputFeatureType, recursive);
 
             _compiled = true;
         }
@@ -117,7 +117,10 @@ namespace MapKit.Core
         public override void Render(Feature feature)
         {
             foreach (var newFeature in GetFeatures(feature))
+            {
+                Renderer.FeatureVarResolver.Feature = newFeature;
                 Renderer.Render(_verticesEnumerator, newFeature);
+            }
             
             RenderCount++;
         }
