@@ -87,7 +87,7 @@ namespace MapKit.Core
 			var point2 = point1 + v3;
 
 			//generate rectangle polygon
-			return new Polygon(new LinearRing(new[] { point0, point1, point2, point0 + v3, point0 }));
+			return new Polygon(new LinearRing(new[] { point0, point1, point2, point3, point0 }));
 		}
 
         public static Coordinate ToCoordinate(this WinPoint point)
