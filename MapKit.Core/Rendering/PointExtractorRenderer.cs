@@ -8,7 +8,7 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class PointExtractorRenderer : ContainerNodeRenderer
+    class PointExtractorRenderer : FeatureRenderer
     {
         private PointExtractor _pointExtractor;
         private int _xIndex;
@@ -21,7 +21,6 @@ namespace MapKit.Core
         private IGenericExpression<double> _incEvaluator;
         private IGenericExpression<double> _offsetEvaluator;
         //private FeatureVariableResolver _featureVarResolver;
-        private bool _compiled;
         private FeatureType _outputFeatureType;
         private double _start = 0;
         private double _end;
@@ -37,7 +36,7 @@ namespace MapKit.Core
 
         void _pointExtractor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _compiled = false;
+            Compiled = false;
         }
 
         public override void Compile(bool recursive = false)
@@ -53,8 +52,8 @@ namespace MapKit.Core
             _endEvaluator = CompileDoubleExpression(PointExtractor.EndField, _pointExtractor.End, ref _end, false);
             _incEvaluator = CompileDoubleExpression(PointExtractor.IncField, _pointExtractor.Increment, ref _increment, false);
             _offsetEvaluator = CompileDoubleExpression(PointExtractor.OffsetField, _pointExtractor.Offset, ref _offset);
-            
-            _compiled = true;
+
+            base.Compile(recursive);
         }
 
         public FeatureType WrapFeatureType(PointExtractor pointExtractor, FeatureType featureType)
@@ -165,8 +164,8 @@ namespace MapKit.Core
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible);
-            if (Visible && !_compiled)
-                Compile();
+            //if (Visible && !_compiled)
+            //    Compile();
 
             foreach (var child in _pointExtractor.Nodes)
             {
@@ -175,7 +174,7 @@ namespace MapKit.Core
                     childRenderer.BeginScene(Visible);
             }
 
-            RenderCount = 0;
+            //RenderCount = 0;
         }
     }
 }

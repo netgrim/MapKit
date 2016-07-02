@@ -11,7 +11,7 @@ using NetTopologySuite.Geometries;
 
 namespace MapKit.Core
 {
-    class WindowRenderer : ContainerNodeRenderer
+    class WindowRenderer : FeatureRenderer
     {
         private Window _window;
         private IGenericExpression<Color> _bgColorEvaluator;
@@ -71,7 +71,7 @@ namespace MapKit.Core
             //angle = -_zoom;
             
             //clip path coordinates      
-            var coordinates = ToWinPointArray(geometry.Coordinates);
+            var coordinates = TransformUtil.ToWinPointArray(geometry.Coordinates);
             Renderer.Transform(coordinates);
             var coordinatesF = coordinates.ToPointFArray();
             var clipPath = new GraphicsPath();
@@ -85,7 +85,7 @@ namespace MapKit.Core
             camera.Translate(centerX, centerY);
 
             //camera polygon
-            coordinates = ToWinPointArray(geometry.Coordinates);
+            coordinates = TransformUtil.ToWinPointArray(geometry.Coordinates);
             camera.Transform(coordinates);
 
             var queryWindow = new Envelope();
@@ -134,7 +134,7 @@ namespace MapKit.Core
                     if (windowTargetFeature == null)
                     {
                         windowTargetFeature = new Feature(feature);
-                        windowTargetFeature.Geometry = new Polygon(new LinearRing(ToCoordinateArray(coordinates)));
+                        windowTargetFeature.Geometry = new Polygon(new LinearRing(TransformUtil.ToCoordinateArray(coordinates)));
                     }
 
                     do
@@ -213,8 +213,8 @@ namespace MapKit.Core
         {
             base.BeginScene(visible);
 
-            if (!_compiled && Visible)
-                Compile();
+            //if (!_compiled && Visible)
+            //    Compile();
         }
 
         public override void Compile(bool recursive = false)

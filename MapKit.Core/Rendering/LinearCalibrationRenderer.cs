@@ -5,12 +5,11 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class LinearCalibrationRenderer : ContainerNodeRenderer
+    class LinearCalibrationRenderer : FeatureRenderer
     {
         private LinearCalibration _linearCalibration;
         private IGenericExpression<double> _startMeasureEvaluator;
         private IGenericExpression<double> _endMeasureEvaluator;
-        private bool _compiled;
         private double _startMeasure = 0;
         private double _endMeasure = 0;
 
@@ -26,7 +25,7 @@ namespace MapKit.Core
 
         void _linearCalibration_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            _compiled = false;
+            Compiled = false;
         }
 
         public override void Render(Feature feature)
@@ -59,8 +58,8 @@ namespace MapKit.Core
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible);
-            if (!_compiled && Visible)
-                Compile();
+            //if (!_compiled && Visible)
+            //    Compile();
         }
 
         public override void Compile(bool recursive = false)
@@ -73,7 +72,6 @@ namespace MapKit.Core
 
             _startMeasureEvaluator = CompileDoubleExpression(LinearCalibration.StartMeasureField, _linearCalibration.StartMeasure, ref _startMeasure);
             _endMeasureEvaluator = CompileDoubleExpression(LinearCalibration.EndMeasureField, _linearCalibration.EndMeasure, ref _endMeasure);
-            _compiled = true;
         }
     }
 }

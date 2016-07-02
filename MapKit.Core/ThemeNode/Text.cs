@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace MapKit.Core
 {
     [DebuggerDisplay("Text: Label = {Label}, Path={NodePath}")]
-    public class Text : ThemeNode
+    public class Text : ContainerNode
 	{
         internal const string ElementName = "text";
 

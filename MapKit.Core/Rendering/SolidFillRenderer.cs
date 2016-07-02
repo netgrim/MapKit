@@ -5,13 +5,12 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class SolidFillRenderer :FeatureRenderer
+    class SolidFillRenderer : FeatureRenderer
     {
         private GraphicsPath _path;
         private IGenericExpression<Color> _colorEvaluator;
         private IGenericExpression<float> _opacityEvaluator;
         private Renderer _renderer;
-        private bool _compiled;
         private SolidFill _fill;
         private Color _color = Color.Black;
         private float _opacity = 1;
@@ -28,14 +27,14 @@ namespace MapKit.Core
 
         void fill_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            _compiled = false;
+            Compiled = false;
         }
 
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible);
-            if (Visible && !_compiled)
-                Compile();
+            //if (Visible && !_compiled)
+            //    Compile();
         }
 
         public override void Compile(bool recursive = false)
@@ -55,7 +54,7 @@ namespace MapKit.Core
             _colorEvaluator = CompileColorExpression(colorContext, SolidFill.ColorPropertyName, _fill.Color, ref _color);
             _opacityEvaluator = CompileFloatExpression(context, SolidFill.OpacityPropertyName, _fill.Opacity, ref _opacity);
             
-            _compiled = true;
+            base.Compile(false);
         }
 
         public override void Render(Feature feature)

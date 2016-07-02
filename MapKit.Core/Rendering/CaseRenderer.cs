@@ -64,9 +64,6 @@ namespace MapKit.Core
         [Category(Constants.CatStatistics)]
         public int RenderCount { get; set; }
 
-        [Category(Constants.CatStatistics)]
-        public int FeatureCount { get; private set; }
-
         public FeatureType InputFeatureType { get; set; }
 
         void _caseNode_PropertyChanged(object sender, PropertyChangedEventArgs e)

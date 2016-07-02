@@ -7,7 +7,7 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class MarkerRenderer : FeatureRenderer
+    class MarkerRenderer : NodeRenderer
     {
         private Marker _marker;
         private IGenericExpression<double> _angleEvaluator;
@@ -19,7 +19,6 @@ namespace MapKit.Core
         private IGenericExpression<bool> _allowOverlapEvaluator;
         private IGenericExpression<string> _fileEvaluator;
         private IGenericExpression<Color> _colorEvaluator;
-        private bool _compiled;
         private Color _color = Color.Black;
         private float _opacity = 1;
         private double _scaleX = 1;
@@ -38,7 +37,7 @@ namespace MapKit.Core
 
         void _marker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            _compiled = false;
+            Compiled = false;
         }
 
         public override void Render(Feature feature)
@@ -142,8 +141,8 @@ namespace MapKit.Core
         {
             base.BeginScene(visible);
 
-            if (Visible && !_compiled)
-                Compile();
+            //if (Visible && !_compiled)
+            //    Compile();
         }
 
         public override void Compile(bool recursive = false)
@@ -173,8 +172,6 @@ namespace MapKit.Core
             _allowOverlapEvaluator = CompileBoolExpression(context, Marker.AllowOverlapPropertyName, _marker.AllowOverlap, ref _allowOverlap);
             _fileEvaluator = CompileExpression<string>(context, Marker.FilePropertyName, _marker.File);
             _colorEvaluator = CompileColorExpression(context, Marker.FilePropertyName, _marker.Color, ref _color);
-         
-            _compiled = true;
         }
 
     }

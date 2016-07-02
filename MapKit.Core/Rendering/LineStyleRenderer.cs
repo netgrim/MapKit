@@ -3,10 +3,11 @@ using Ciloci.Flee;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
+using System;
 
 namespace MapKit.Core
 {
-    class LineStyleRenderer : FeatureRenderer
+    class LineStyleRenderer : NodeRenderer
     {
         private LineStyle _lineStyle;
 
@@ -26,7 +27,7 @@ namespace MapKit.Core
         private Color _defaultColor = Color.Black;
 
         public LineStyleRenderer(Renderer renderer, LineStyle lineStyle, IBaseRenderer parent)
-            :base(renderer, lineStyle, parent)
+            : base(renderer, lineStyle, parent)
         {
             _lineStyle = lineStyle;
             lineStyle.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(stroke_PropertyChanged);
@@ -35,8 +36,8 @@ namespace MapKit.Core
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible);
-            if (Visible && !_compiled)
-                Compile();
+            //if (Visible && !_compiled)
+            //    Compile();
         }
 
         public override void Compile(bool recursive = false)

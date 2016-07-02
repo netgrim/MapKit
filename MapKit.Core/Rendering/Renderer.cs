@@ -373,8 +373,8 @@ namespace MapKit.Core.Rendering
             if (node is Variable)
                 return new VarRenderer(this, (Variable)node, parent);
             if (node is Run)
-                return new MacroExecuter(this, (Run)node, context, parent);
-            
+                return new MacroExecuter(this, (Run)node, parent);
+
             Debug.Fail("No renderer");
             return null;
         }
@@ -403,9 +403,9 @@ namespace MapKit.Core.Rendering
         }
 
 
-        internal IEnumerable<IBaseRenderer> GetRenderers(ContainerNode _containerNode, IBaseRenderer parent)
+        internal IEnumerable<IBaseRenderer> GetRenderers(ContainerNode node, IBaseRenderer parent)
         {
-            var nodes = _containerNode.Nodes;
+            var nodes = node.Nodes;
             for (int i = nodes.Count - 1; i >= 0; i--)
             {
                 var child = nodes[i];
@@ -429,6 +429,20 @@ namespace MapKit.Core.Rendering
         public WinPoint Transform(WinPoint point)
         {
             return _translate.Transform(point);
+        }
+
+        public PointF[] TransformToPointsF(ICoordinateSequence sharpPoints)
+        {
+            var points = TransformUtil.ToWinPointArray(sharpPoints);
+            Transform(points);
+            return points.ToPointFArray();
+        }
+
+        public PointF[] TransformToPointsF(Coordinate[] sharpPoints)
+        {
+            var points = TransformUtil.ToWinPointArray(sharpPoints);
+            Transform(points);
+            return points.ToPointFArray();
         }
 
         public WinMatrix Matrix { get; set; }

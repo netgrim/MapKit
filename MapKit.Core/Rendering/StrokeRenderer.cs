@@ -20,7 +20,6 @@ namespace MapKit.Core
         private IGenericExpression<LineCap> _endCapEvaluator;
         private IGenericExpression<LineJoin> _joinEvaluator;
         private IGenericExpression<float> _mitterLimitEvaluator;
-        private bool _compiled;
         private Color _color = Color.Black;
         private float _opacity = 1;
         private double _width = 1;
@@ -33,14 +32,14 @@ namespace MapKit.Core
             :base(renderer, stroke, parent)
         {
             _stroke = stroke;
-            stroke.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(stroke_PropertyChanged);
+            stroke.PropertyChanged += new PropertyChangedEventHandler(stroke_PropertyChanged);
         }
 
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible);
-            if (Visible && !_compiled)
-                Compile();
+            //if (Visible && !_compiled)
+            //    Compile();
             _invalidGeometry = 0;
         }
 
@@ -81,13 +80,13 @@ namespace MapKit.Core
             _joinEvaluator = CompileExpression<LineJoin>(lineJoinContext, LineStyle.JoinField, _stroke.Join);
             _mitterLimitEvaluator = CompileExpression<float>(context, LineStyle.MiterLimitField, _stroke.Miterlimit);
 
-            _compiled = true;
+            base.Compile(recursive);
         }
 
         void stroke_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == Stroke.VisiblePropertyName) return;
-            _compiled = false;
+            Compiled = false;
         }
 
         private ExpressionContext CreateDashArrayContext()
@@ -143,8 +142,6 @@ namespace MapKit.Core
                         Renderer.Graphics.DrawLines(pen, TransformToPointsF(lineString.CoordinateSequence));
                     else
                         _invalidGeometry++;
-                
-
             }
         }
 

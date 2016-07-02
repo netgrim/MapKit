@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace MapKit.Core
 {
     [DebuggerDisplay("Stroke: Label = {Label}, Path={NodePath}")]
-    public class Stroke : ThemeNode, INotifyPropertyChanged
+    public class Stroke : ContainerNode, INotifyPropertyChanged
 	{
         private const string ElementName = "stroke";
         private const string ReferenceField = "ref"; 

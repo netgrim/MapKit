@@ -4,103 +4,73 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class ContainerNodeRenderer : FeatureRenderer
+    class ContainerNodeRenderer : NodeRenderer
     {
-        private ContainerNode _containerNode;
-        private bool _compiled;
-        private IList<IBaseRenderer> _renderers;
-        private IList<IBaseRenderer> _declarations;
-
         public ContainerNodeRenderer(Renderer renderer, ContainerNode node, IBaseRenderer parent)
-            : base(renderer, node, parent)
+            : base (renderer, node, parent)
         {
-            _containerNode = node;
-            _containerNode.PropertyChanged += _containerNode_PropertyChanged;
-        }
-
-        public override FeatureType InputFeatureType
-        {
-            get
-            {
-                return base.InputFeatureType;
-            }
-            set
-            {
-                base.InputFeatureType = value;
-                _compiled = false;
-                //OutputFeatureType = value;
-            }
-        }
-
-        //public FeatureType OutputFeatureType { get; protected set; }
-
-        public IList<IBaseRenderer> Renderers
-        {
-            get { return _renderers; }
+            ContainerNode = node;
+            Node.PropertyChanged += _containerNode_PropertyChanged;
         }
         
+        //public FeatureType OutputFeatureType { get; protected set; }
+
+        public IList<IBaseRenderer> Renderers { get; set; }
+
+        public IList<IBaseRenderer> Declarations { get; set; }
+
+        public ContainerNode ContainerNode { get; private set; }
+
         void _containerNode_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == ThemeNode.VisiblePropertyName) return;
-            _compiled = false;
+            Compiled = false;
         }
-    
+
         public override void Render(Feature feature)
         {
-            if (!Visible)
-                return;
-
-            Renderer.Render(_renderers, feature);
-
-            RenderCount++;
+            Renderer.Render(Renderers, feature);
+            base.Render(feature);
         }
 
         public override void BeginScene(bool visible)
         {
-            base.BeginScene(visible && _containerNode.IsVisibleAt(Renderer.Zoom));
-            
-            if (Visible && !_compiled)
-                Compile();
+            visible &= ContainerNode.IsVisibleAt(Renderer.Zoom);
+            base.BeginScene(visible);
 
-            if (_compiled)
+            if (Compiled)
             {
-                foreach (var renderer in _declarations)
-                    renderer.BeginScene(Visible);
-                foreach (var renderer in _renderers)
-                    renderer.BeginScene(Visible);
+                foreach (var renderer in Declarations)
+                    renderer.BeginScene(visible);
+                foreach (var renderer in Renderers)
+                    renderer.BeginScene(visible);
             }
+
+            RenderCount = 0;
         }
 
         public override void Compile(bool recursive = false)
         {
-            Compile(InputFeatureType, recursive);
-        }
+            Renderers = new List<IBaseRenderer>();
+            Declarations = new List<IBaseRenderer>();
 
-        public virtual void Compile(FeatureType featuretype, bool recursive = false)
-        {
-            //_containerNode.CascadeStyles();
-
-            _renderers = new List<IBaseRenderer>();
-            _declarations = new List<IBaseRenderer>();
-
-            foreach (IFeatureRenderer renderer in Renderer.GetRenderers(_containerNode, this))
+            foreach (var renderer in Renderer.GetRenderers(ContainerNode, this))
                 if (renderer.Node is Macro)
-                    _declarations.Add(renderer);
+                    Declarations.Add(renderer);
                 else
                 {
-                    renderer.InputFeatureType = featuretype;
-                    _renderers.Add(renderer);
+                    Renderers.Add(renderer);
 
                     if (recursive)
                         renderer.Compile(true);
                 }
 
-            _compiled = true;
+            base.Compile(recursive);
         }
 
         public override IBaseRenderer FindChildByName(string name)
         {
-            foreach (var child in _declarations)
+            foreach (var child in Declarations)
             {
                 var container = child.Node as ContainerNode;
                 if (container != null && string.Compare(container.Name, name, true) == 0)
@@ -108,5 +78,6 @@ namespace MapKit.Core
             }
             return null;
         }
+
     }
 }

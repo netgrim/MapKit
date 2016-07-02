@@ -4,7 +4,7 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class VerticesEnumeratorRenderer : ContainerNodeRenderer
+    class VerticesEnumeratorRenderer : FeatureRenderer
     {
         private VerticesEnumerator _verticesEnumerator;
         private bool _compiled;
@@ -93,8 +93,8 @@ namespace MapKit.Core
         public override void BeginScene(bool visible)
         {
             base.BeginScene(visible);
-            if (Visible && !_compiled)
-                Compile();
+            //if (Visible && !_compiled)
+            //    Compile();
 
             foreach (var child in _verticesEnumerator.Nodes)
             {
@@ -103,7 +103,7 @@ namespace MapKit.Core
                     childRenderer.BeginScene(Visible);
             }
 
-            RenderCount = 0;
+            //RenderCount = 0;
         }
 
         public override void Compile(bool recursive = false)

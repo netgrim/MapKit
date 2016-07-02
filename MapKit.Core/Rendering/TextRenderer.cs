@@ -93,7 +93,7 @@ namespace MapKit.Core
             //_labelBoxRenderer = _text.LabelBox != null && _text.LabelBox.Renderer != null && !string.IsNullOrWhiteSpace(_text.Content)
             //    ? _text.LabelBox.Renderer as IFeatureRenderer
             //    : null;
-            _labelBoxRenderer = _text.LabelBox != null ? new ContainerNodeRenderer(Renderer, _text.LabelBox, this) : null;
+            _labelBoxRenderer = _text.LabelBox != null ? new FeatureRenderer(Renderer, _text.LabelBox, this) : null;
 
             _compiled = true;
         }
@@ -259,8 +259,8 @@ namespace MapKit.Core
         public override void BeginScene(bool visible)
         {
            base.BeginScene(visible);
-           if (Visible && !_compiled)
-                Compile();
+           //if (Visible && !_compiled)
+           //     Compile();
 
             if (_labelBoxRenderer != null)
                 _labelBoxRenderer.BeginScene(Visible);
