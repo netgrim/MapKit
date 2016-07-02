@@ -110,10 +110,19 @@ namespace MapKit.Core
             RenderCount++;
         }
 
+        private new bool Equals(object value1, object value2)
+        {
+            if (value1 == null)
+                return value2 == null;
+            else if (value2 == null)
+                return false;
+            else
+                return object.Equals(value1, Convert.ChangeType(value2, value1.GetType()));
+        }
+
         public void BeginScene(bool visible)
         {
             Visible = visible && _caseNode.IsVisibleAt(_renderer.Zoom);
-
             if (Visible && !_compiled)
                 Compile();
 
