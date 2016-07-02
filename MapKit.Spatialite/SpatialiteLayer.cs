@@ -26,6 +26,7 @@ namespace MapKit.Spatialite
         internal const string SqlField = "sql";
         internal const string TableField = "table";
         internal const string IndexedField = "indexed";
+        internal const string ColumnsField = "columns";
 
         private SQLiteCommand _cmd;
         private const string DefaultFidColumn = "rowid";
@@ -68,7 +69,7 @@ namespace MapKit.Spatialite
         public string GenerateDefaultQuery()
         {
             var geometryExpression = Map.SRID != 0 ? string.Format("Transform({0}, {1}) ", GeometryColumn , Map.SRID) + GeometryColumn : GeometryColumn;
-            var sql = string.Format("select {0}, {1}, srid({3})\nfrom {2}",  this.FidColumn, geometryExpression, this.Table, GeometryColumn);
+            var sql = string.Format("select {0}, {1}, {4}srid({3})\nfrom {2}", FidColumn, geometryExpression, Table, GeometryColumn, !string.IsNullOrWhiteSpace(Columns) ? Columns + ", " : null);
             string where = null;
             
             if (Indexed)
@@ -137,7 +138,8 @@ namespace MapKit.Spatialite
 		public bool Indexed { get; set; }
         public string Sql { get; set; }
         public string Table { get; set; }
-        
+        public string Columns { get; set; }
+
         public override FeatureType GetFeatureType()
         {
             var featureType = new FeatureType(Name);
@@ -263,6 +265,7 @@ namespace MapKit.Spatialite
             else if (reader.LocalName == SpatialiteLayer.GeomField) GeometryColumn = reader.Value;
             else if (reader.LocalName == SpatialiteLayer.TableField) Table = reader.Value;
             else if (reader.LocalName == SpatialiteLayer.IndexedField) Indexed = Convert.ToBoolean(reader.Value);
+            else if (reader.LocalName == SpatialiteLayer.ColumnsField) Columns = reader.Value;
             else return base.TryReadXmlAttribute(reader);
             return true;
         }
