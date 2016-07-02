@@ -243,18 +243,36 @@
     <xs:attribute name="minScale" type="xs:double" use="optional" />
     <xs:attribute name="maxScale" type="xs:double" use="optional"  />
   </xs:attributeGroup>
-
+  
   <xs:attributeGroup name="filterAttributes">
     <xs:attribute name="condition" use="required" />
     <xs:attribute name="label"/>
     <xs:attributeGroup ref="visibility" />
   </xs:attributeGroup>
 
-  <xs:element name="stroke">
-    <xs:complexType>
-      <xs:attributeGroup ref="lineStyleAttributes" />
-    </xs:complexType>
-  </xs:element>
+  <xs:attributeGroup name="pointStyleAttributes">
+    <xs:attribute name="file" />
+    <xs:attribute name="allowOverlap" default="true" type="xs:boolean"/>
+    <xs:attribute name="overlapable" default="true" type="xs:boolean"/>
+    <xs:attribute name="scaleX" />
+    <xs:attribute name="scaleY" />
+    <xs:attribute name="angle" default="0" />
+    <xs:attribute name="alignment" default="BottomLeft" type="contentAlignment" />
+    <xs:attribute name="color" default="black" type="color"   />
+  </xs:attributeGroup>
+  
+  <xs:attributeGroup name="textAttributes">
+    <xs:attribute name="font" />
+    <xs:attribute name="size" />
+    <xs:attribute name="color" default="Black" type="color" />
+    <xs:attribute name="alignment" default="BottomLeft" type="contentAlignment" />
+    <xs:attribute name="allowOverlap" default="true" type="xs:boolean"/>
+    <xs:attribute name="overlapable"  default="true" type="xs:boolean"/>
+    <xs:attribute name="scaleX" default="1" type="xs:double"/>
+    <xs:attribute name="scaleY" default="1" type="xs:double"/>
+    <xs:attribute name="angle" default="0" type="xs:double"/>
+    <xs:attribute name="keepUpward" default="true" type="xs:boolean" />
+  </xs:attributeGroup>
 
   <xs:attributeGroup name="lineStyleAttributes">
     <xs:attribute name="patternFile" />
@@ -263,20 +281,135 @@
     <xs:attribute name="dashArray" />
     <xs:attribute name="dashOffset" default="0" />
     <xs:attribute name="dashStyle" default="Solid" />
-    <xs:attribute name="opacity" default="1" />
     <xs:attribute name="startCap" default="butt" type="lineCap" />
     <xs:attribute name="endCap"  default="butt" type="lineCap" />
     <xs:attribute name="join" default="bevel" type="lineJoin" />
-    <xs:attribute name="miterlimit"  />
-    <xs:attribute name="id" />
-    <xs:attribute name="visible" default="true" type="xs:boolean" />
-    <xs:attribute name="label"/>
+    <xs:attribute name="miterlimit" />
   </xs:attributeGroup>
+
+  <xs:attributeGroup name="styleAttributes">
+    <xs:attribute name="visible" default="true" type="xs:boolean" />
+    <xs:attribute name="opacity" default="1" />
+    <xs:attribute name="selector"/>
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="solidFillAttributes">
+    <xs:attribute name="color" default="Black" type="color" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="hatchFillAttributes">
+    <xs:attribute name="backColor" default="White" type="color" />
+    <xs:attribute name="backOpacity" default="0" />
+    <xs:attribute name="foreColor" default="Black" type="color" />
+    <xs:attribute name="foreOpacity" default="1" />
+  </xs:attributeGroup>
+
+  <xs:attributeGroup name="linearGradientFillAttributes">
+    <xs:attribute name="fromColor" default="White" type="color" />
+    <xs:attribute name="fromOpacity" default="1" />
+    <xs:attribute name="toColor" default="Black" type="color" />
+    <xs:attribute name="toOpacity" default="1" />
+    <xs:attribute name="angle" default="0"/>
+  </xs:attributeGroup>
+
+  <xs:element name="style">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="lineStyle" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element ref="textStyle" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:group ref="fillStyles" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="pointStyle" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <!--<xs:group ref="fills" />
+      <xs:element ref="marker" />
+      <xs:element name="text" type="textType" />-->
+
+      <!--<xs:element name="zoomFilter" >
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="inside" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:group ref="topLevelStyles"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="outside" minOccurs="0" maxOccurs="1">
+              <xs:complexType>
+                <xs:group ref="topLevelStyles"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attributeGroup ref="visibility"/>
+        </xs:complexType>
+      </xs:element>-->
+    </xs:complexType>
+  </xs:element>
  
   <xs:element name="lineStyle">
     <xs:complexType>
       <xs:attributeGroup ref="lineStyleAttributes" />
-      <xs:attribute name="name"/>
+      <xs:attributeGroup ref="styleAttributes" />
+    </xs:complexType>
+  </xs:element>
+   
+  <xs:element name="textStyle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="content" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="textAttributes" />
+      <xs:attributeGroup ref="styleAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="solidFillStyle">
+    <xs:complexType>
+      <xs:attributeGroup ref="solidFillAttributes"/>
+      <xs:attributeGroup ref="styleAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="hatchFillStyle">
+    <xs:complexType>
+      <xs:attributeGroup ref="hatchFillAttributes"/>
+      <xs:attributeGroup ref="styleAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="linearGradientFillStyle">
+    <xs:complexType>
+      <xs:attributeGroup ref="linearGradientFillAttributes"/>
+      <xs:attributeGroup ref="styleAttributes"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="pointStyle">
+    <xs:complexType>
+      <xs:attributeGroup ref="pointStyleAttributes" />
+      <xs:attributeGroup ref="styleAttributes"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="offset">
+    <xs:complexType>
+      <xs:group ref="layerItems" />
+      <xs:attribute name="x" />
+      <xs:attribute name="y" />
+      <xs:attribute name="label"/>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="stroke">
+    <xs:complexType>
+      <xs:attributeGroup ref="lineStyleAttributes" />
+      <xs:attributeGroup ref="symbolizerAttributes" />
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="marker">
+    <xs:complexType>
+      <xs:attributeGroup ref="pointStyleAttributes" />
+      <xs:attributeGroup ref="symbolizerAttributes" />
     </xs:complexType>
   </xs:element>
 
@@ -294,75 +427,10 @@
         </xs:element>
       </xs:sequence>
       <xs:attributeGroup ref="textAttributes"/>
+      <xs:attributeGroup ref="symbolizerAttributes" />
     </xs:complexType>
   </xs:element>
-
-  <xs:attributeGroup name="textAttributes">
-    <xs:attribute name="font" />
-    <xs:attribute name="size" />
-    <xs:attribute name="color" default="Black" type="color" />
-    <xs:attribute name="alignment" default="BottomLeft" type="contentAlignment" />
-    <xs:attribute name="allowOverlap" default="true"/>
-    <xs:attribute name="overlapable"/>
-    <xs:attribute name="opacity" default="1" />
-    <xs:attribute name="scaleX" />
-    <xs:attribute name="scaleY" />
-    <xs:attribute name="angle" />
-    <xs:attribute name="id" />
-    <xs:attribute name="visible" default="true" type="xs:boolean" />
-    <xs:attribute name="keepUpward" default="true" type="xs:boolean" />
-    <xs:attribute name="label"/>
-  </xs:attributeGroup>
   
-  <xs:element name="textStyle">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="content" minOccurs="0"/>
-      </xs:sequence>
-      <xs:attributeGroup ref="textAttributes" />
-      <xs:attribute name="name"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="solidFillStyle">
-    <xs:complexType>
-      <xs:attributeGroup ref="solidFillAttributes"/>
-      <xs:attribute name="name"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="pointStyle">
-    <xs:complexType>
-      <xs:attribute name="name"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="offset">
-    <xs:complexType>
-      <xs:group ref="layerItems" />
-      <xs:attribute name="x" />
-      <xs:attribute name="y" />
-      <xs:attribute name="label"/>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="marker">
-    <xs:complexType>
-      <xs:attribute name="file" />
-      <xs:attribute name="allowOverlap" />
-      <xs:attribute name="overlapable"/>
-      <xs:attribute name="opacity" default="1" />
-      <xs:attribute name="scaleX" />
-      <xs:attribute name="scaleY" />
-      <xs:attribute name="angle" />
-      <xs:attribute name="alignment" default="BottomLeft" type="contentAlignment" />
-      <xs:attribute name="color" />
-      <xs:attribute name="id" />
-      <xs:attribute name="visible" default="true" type="xs:boolean" />
-      <xs:attribute name="label"/>
-    </xs:complexType>
-  </xs:element>
-
   <xs:group name="linearItems">
     <xs:sequence>
       <xs:element ref ="stroke" minOccurs="0" maxOccurs="unbounded"/>
@@ -425,6 +493,12 @@
     </xs:sequence>
   </xs:group>
 
+  <xs:attributeGroup name="symbolizerAttributes">
+    <xs:attribute name="id" />
+    <xs:attribute name="class" />
+    <xs:attribute name="label" />
+  </xs:attributeGroup>
+  
   <xs:group name="symbolizer">
     <xs:choice>
       <xs:element ref="stroke" />
@@ -433,73 +507,33 @@
       <xs:element ref="text"/>
     </xs:choice>
   </xs:group>
-
-  <xs:group name="styles">
+  
+  <xs:group name="fillStyles">
     <xs:choice>
-      <xs:element ref="lineStyle" />
-      <xs:element ref="textStyle" />
-      <xs:element ref="solidFillStyle" />
-      <xs:element ref="pointStyle" />
-      <!--<xs:group ref="fills" />
-      <xs:element ref="marker" />
-      <xs:element name="text" type="textType" />-->
-
-          <!--<xs:element name="zoomFilter" >
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="inside" minOccurs="0" maxOccurs="1">
-              <xs:complexType>
-                <xs:group ref="topLevelStyles"/>
-              </xs:complexType>
-            </xs:element>
-            <xs:element name="outside" minOccurs="0" maxOccurs="1">
-              <xs:complexType>
-                <xs:group ref="topLevelStyles"/>
-              </xs:complexType>
-            </xs:element>
-          </xs:sequence>
-          <xs:attributeGroup ref="visibility"/>
-        </xs:complexType>
-      </xs:element>-->
+      <xs:element ref="solidFillStyle"/>
+      <xs:element ref="hatchFillStyle"/>
+      <xs:element ref="linearGradientFillStyle"/>
     </xs:choice>
   </xs:group>
-
-  <xs:attributeGroup name="solidFillAttributes">
-    <xs:attribute name="color" default="Black" type="color" />
-    <xs:attribute name="opacity" default="1" />
-    <xs:attribute name="id" />
-    <xs:attribute name="visible" default="true" type="xs:boolean" />
-    <xs:attribute name="label"/>
-  </xs:attributeGroup>
   
   <xs:group name="fills">
     <xs:choice>
       <xs:element name="solidFill">
         <xs:complexType>
           <xs:attributeGroup ref="solidFillAttributes"/>
+          <xs:attributeGroup ref="symbolizerAttributes" />
         </xs:complexType>
       </xs:element>
       <xs:element name="hatchFill">
         <xs:complexType>
-          <xs:attribute name="backColor" default="White" type="color" />
-          <xs:attribute name="backOpacity" default="0" />
-          <xs:attribute name="foreColor" default="Black" type="color" />
-          <xs:attribute name="foreOpacity" default="1" />
-          <xs:attribute name="id" default="default" type="xs:string" />
-          <xs:attribute name="visible" default="true" type="xs:boolean" />
-          <xs:attribute name="label"/>
+          <xs:attributeGroup ref="hatchFillAttributes"/>
+          <xs:attributeGroup ref="symbolizerAttributes" />
         </xs:complexType>
       </xs:element>
       <xs:element name="linearGradientFill">
         <xs:complexType>
-          <xs:attribute name="fromColor" default="White" type="color" />
-          <xs:attribute name="fromOpacity" default="1" />
-          <xs:attribute name="toColor" default="Black" type="color" />
-          <xs:attribute name="toOpacity" default="1" />
-          <xs:attribute name="angle" default="0" type="xs:float" />
-          <xs:attribute name="id" default="default" type="xs:string" />
-          <xs:attribute name="visible" default="true" type="xs:boolean" />
-          <xs:attribute name="label"/>
+          <xs:attributeGroup ref="linearGradientFillAttributes"/>
+          <xs:attributeGroup ref="symbolizerAttributes" />
         </xs:complexType>
       </xs:element>
     </xs:choice>
@@ -556,7 +590,6 @@
       <xs:group ref="linearItems" />
       <xs:group ref="pointItems" />
       <xs:group ref="areaItems" />
-      <xs:group ref="styles" />
       <xs:element ref="offset" />
     </xs:choice>
   </xs:group>  
@@ -694,7 +727,6 @@
   <xs:group name="groupItems">
     <xs:sequence>
       <xs:choice minOccurs="1" maxOccurs="unbounded">
-        <xs:group ref="styles"/>
         <xs:element ref="group"/>
         <xs:element ref="var"/>
         <xs:group ref="layers"/> 
@@ -707,6 +739,13 @@
   <xs:element name="map">
     <xs:complexType >
       <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="head">
+          <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="style" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
         <xs:group ref="groupItems" minOccurs="0" maxOccurs="unbounded" />
       </xs:sequence>
       <xs:attribute name="bgColor" />
