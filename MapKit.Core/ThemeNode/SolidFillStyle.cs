@@ -47,7 +47,7 @@ namespace MapKit.Core
             }
 		}
 
-        public static new NodeType NodeType
+        public static NodeType NodeType
         {
             get { return _nodeType; }
         }

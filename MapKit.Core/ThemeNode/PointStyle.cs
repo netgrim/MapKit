@@ -156,7 +156,7 @@ namespace MapKit.Core
             get { return "PointStyle"; }
         }
 
-        public static new NodeType NodeType
+        public static NodeType NodeType
         {
             get { return _nodeType; }
         }

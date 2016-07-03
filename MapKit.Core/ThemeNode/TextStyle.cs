@@ -192,7 +192,7 @@ namespace MapKit.Core
             internal set { base.Map = value; }
         }
 
-        public static new NodeType NodeType
+        public static NodeType NodeType
         {
             get { return _nodeType; }
         }
