@@ -54,8 +54,15 @@
     <Compile Include="Data\Feature\Feature.cs" />
     <Compile Include="Data\Feature\FeatureType.cs" />
     <Compile Include="NodeType.cs" />
+    <Compile Include="Rendering\Svg\AnimateRenderer.cs" />
     <Compile Include="Rendering\Drawing.cs" />
     <Compile Include="Rendering\MacroExecuter.cs" />
+    <Compile Include="Rendering\NodeRenderer.cs" />
+    <Compile Include="Rendering\Svg\PolygonRenderer.cs" />
+    <Compile Include="Rendering\Svg\SvgNodeRenderer.cs" />
+    <Compile Include="Rendering\Svg\SvgGraphicElementRenderer.cs" />
+    <Compile Include="Rendering\Svg\PolylineRenderer.cs" />
+    <Compile Include="Rendering\Transform.cs" />
     <Compile Include="Rendering\VarRenderer.cs" />
     <Compile Include="Rendering\GroupItemRenderer.cs" />
     <Compile Include="Rendering\LayerGroupRenderer.cs" />
@@ -104,6 +111,11 @@
     <Compile Include="ThemeNode\Macro.cs" />
     <Compile Include="ThemeNode\Map.cs" />
     <Compile Include="Rendering\MapRenderer.cs" />
+    <Compile Include="ThemeNode\SVG\Animate.cs" />
+    <Compile Include="ThemeNode\SVG\SvgGraphicElement.cs" />
+    <Compile Include="ThemeNode\SVG\SvgNode.cs" />
+    <Compile Include="ThemeNode\SVG\Polyline.cs" />
+    <Compile Include="ThemeNode\SVG\Polygon.cs" />
     <Compile Include="ThemeNode\Marker.cs" />
     <Compile Include="Rendering\MarkerRenderer.cs" />
     <Compile Include="ThemeNode\PointExtractor.cs" />

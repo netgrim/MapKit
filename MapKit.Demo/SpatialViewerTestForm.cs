@@ -369,6 +369,7 @@ namespace MapKit.Demo
                         _renderer.Translate = translate;
                         _renderer.BeginScene(g);
                         _renderer.Render();
+                        _renderer.EndScene();
                     }
                     catch (Exception ex)
                     {

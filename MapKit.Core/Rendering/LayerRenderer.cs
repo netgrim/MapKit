@@ -27,6 +27,9 @@ namespace MapKit.Core
             {
                 var cnt = 0;
 
+                Renderer.Svg.WriteStartElement("g");
+                Renderer.Svg.WriteAttributeString("id", _layer.Name);
+                
                 foreach (var feature in _layer.GetFeatures(_featureType, _layer, Renderer.Window))
                 {
                     Renderer.Context.Variables[Renderer.FEATURE_VAR] = feature;
@@ -34,11 +37,14 @@ namespace MapKit.Core
                         return;
 
                     Renderer.FeatureVarResolver.Feature = feature;
+
                     Renderer.Render(Renderers, feature);
-                    
+
                     cnt++;
                 }
 
+                Renderer.Svg.WriteEndElement();
+                
                 FeatureCount = cnt;
                 Renderer.PerformLayerRendered(new LayerEventArgs(_layer));
             }
@@ -54,11 +60,6 @@ namespace MapKit.Core
             
             RenderCount++;
             RenderTime = new TimeSpan((Environment.TickCount - tStart) * 10000);
-        }
-        
-        public override void BeginScene(bool visible)
-        {
-            base.BeginScene(visible);
         }
 
         public override void Compile(bool recursive)

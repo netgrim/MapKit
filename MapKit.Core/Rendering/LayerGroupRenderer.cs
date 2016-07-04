@@ -17,7 +17,19 @@ namespace MapKit.Core
 
             Renderer.Graphics.SmoothingMode = SmoothingMode;
 
+            if (!string.IsNullOrEmpty(GroupItem.Name))
+            {
+                Renderer.Svg.WriteStartElement("g");
+                if (!string.IsNullOrWhiteSpace(GroupItem.Id))
+                    Renderer.Svg.WriteAttributeString("id", GroupItem.Id);
+                if (!string.IsNullOrWhiteSpace(GroupItem.Class))
+                    Renderer.Svg.WriteAttributeString("class", GroupItem.Class);
+            }
+
             RenderChildren();
+
+            if (!string.IsNullOrEmpty(GroupItem.Name))
+                Renderer.Svg.WriteEndElement();
 
             RenderCount++;
             RenderTime = new TimeSpan((Environment.TickCount - tStart) * 10000);

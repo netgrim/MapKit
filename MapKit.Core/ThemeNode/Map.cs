@@ -51,6 +51,9 @@ namespace MapKit.Core
                 {Variable.NodeType.ElementName, Variable.NodeType},
                 {VerticesEnumerator.NodeType.ElementName, VerticesEnumerator.NodeType},
                 {Window.ElementName, new NodeType(Window.ElementName, typeof(Window))},
+                {PolylineNode.ElementName, new NodeType(PolylineNode.ElementName, typeof(PolylineNode))},
+                {PolygonNode.ElementName, new NodeType(PolygonNode.ElementName, typeof(PolygonNode))},
+                {Animate.ElementName, new NodeType(Animate.ElementName, typeof(Animate))},
                 {Run.NodeType.ElementName, Run.NodeType}};
         }
 

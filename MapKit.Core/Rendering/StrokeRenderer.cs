@@ -3,6 +3,7 @@ using Ciloci.Flee;
 using System.Drawing.Drawing2D;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
+using System.Text;
 
 namespace MapKit.Core
 {
@@ -139,7 +140,26 @@ namespace MapKit.Core
 
                 foreach (var lineString in Renderer.GetLineString(feature.Geometry))
                     if (lineString.NumPoints > 1)
-                        Renderer.Graphics.DrawLines(pen, TransformToPointsF(lineString.CoordinateSequence));
+                    {
+                        var points = Renderer.TransformToPointsF(lineString.CoordinateSequence);
+                        Renderer.Graphics.DrawLines(pen, points);
+
+                        //Renderer.Graphics.Transform.TransformPoints(points);
+                        //Renderer.Svg.WriteStartElement("polyline");
+                        //var pointSvg = new StringBuilder();
+                        //for (var i = 0; i < lineString.NumPoints; i++)
+                        //{
+                        //    if (i > 0)
+                        //        pointSvg.Append(" ");
+                        //    pointSvg.Append(points[i].X.ToString(System.Globalization.NumberFormatInfo.InvariantInfo));
+                        //    pointSvg.Append(",");
+                        //    pointSvg.Append(points[i].Y.ToString(System.Globalization.NumberFormatInfo.InvariantInfo));
+                        //}
+
+                        //Renderer.Svg.WriteAttributeString("points", pointSvg.ToString());
+                        ////Renderer.Svg.WriteAttributeString("style", "fill:none;stroke:black");
+                        //Renderer.Svg.WriteEndElement();
+                    }
                     else
                         _invalidGeometry++;
             }

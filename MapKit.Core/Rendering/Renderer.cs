@@ -10,6 +10,7 @@ using GeoAPI.Geometries;
 using GeoAPI;
 using NetTopologySuite;
 using Ciloci.Flee;
+using System.Xml;
 
 namespace MapKit.Core.Rendering
 {
@@ -140,10 +141,24 @@ namespace MapKit.Core.Rendering
 				_window.ExpandBy(-margin);
 			}
 
-		}
+            if (Svg != null)
+                Svg.Close();
+            var settings = new XmlWriterSettings();
+            settings.Indent = true;
+            Svg = XmlWriter.Create("output.svg", settings);
+            Svg.WriteProcessingInstruction("xml-stylesheet", "href = \"main.css\" type = \"text/css\"");
+                 Svg.WriteStartElement("svg", "http://www.w3.org/2000/svg");
+            Svg.WriteAttributeString("width", "2000");
+            Svg.WriteAttributeString("height", "2000");
+            Svg.WriteAttributeString("xmlns", "xlink", null, "http://www.w3.org/1999/xlink");
+        }
 
 		public void EndScene()
 		{
+            Svg.WriteEndElement();
+
+            Svg.Close();
+            Svg = null;
 		}
 
 		public void Render()
@@ -368,6 +383,12 @@ namespace MapKit.Core.Rendering
                 return null;
             if (node is Window)
                 return new WindowRenderer(this, (Window)node, parent);
+            if (node is PolygonNode)
+                return new PolygonRenderer(this, (PolygonNode)node, parent);
+            if (node is PolylineNode)
+                return new PolylineRenderer(this, (PolylineNode)node, parent);
+            if (node is Animate)
+                return new AnimateRenderer(this, (Animate)node,  parent);
             if (node is ContainerNode)
                 return new ContainerNodeRenderer(this, (ContainerNode)node, parent);
             if (node is Variable)
@@ -446,5 +467,8 @@ namespace MapKit.Core.Rendering
         }
 
         public WinMatrix Matrix { get; set; }
+
+        public XmlWriter Svg { get; set; }
+
     }
 }

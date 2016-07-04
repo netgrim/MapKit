@@ -27,6 +27,7 @@ namespace MapKit.Core
         private ContentAlignment _alignment;
         private bool _overlappable;
         private bool _allowOverlap;
+        private string _file;
 
         public MarkerRenderer(Renderer renderer, Marker marker, IBaseRenderer parent)
             : base(renderer, marker, parent)
@@ -57,6 +58,7 @@ namespace MapKit.Core
             var width = (float)Evaluate(_scaleXEvaluator, _scaleX);
             var height = (float)Evaluate(_scaleYEvaluator, _scaleY);
             var alignment = Evaluate(_alignEvaluator, _alignment);
+            var angle = Evaluate(_angleEvaluator, _angle);
             winPoint.Y += GetVerticalAlignentOffset(alignment, height);
             winPoint.X += GetHorizontalAligmentOffset(alignment, width);
 
@@ -67,6 +69,20 @@ namespace MapKit.Core
                 var color = GetRenderColor(_opacityEvaluator, _opacity, _colorEvaluator, _color);
                 using (var brush = new SolidBrush(color))
                     g.FillEllipse(brush, pScreenF.X - width / 2, pScreenF.Y - height / 2, width, height);
+
+                var points = new[] { pScreenF };
+                g.Transform.TransformPoints(points);
+                pScreenF = points[0];
+                Renderer.Svg.WriteStartElement("use");
+                var x = pScreenF.X.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                var y = pScreenF.Y.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                //Renderer.Svg.WriteAttributeString("x", x);
+                //Renderer.Svg.WriteAttributeString("y", y);
+                Renderer.Svg.WriteAttributeString("width", width.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                Renderer.Svg.WriteAttributeString("height", height.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                Renderer.Svg.WriteAttributeString("xlink", "href", null, Evaluate(_fileEvaluator, _file));
+                Renderer.Svg.WriteAttributeString("transform", "translate(" + x + " " + y + ") rotate(" + angle.ToString(System.Globalization.CultureInfo.InvariantCulture) + ") scale(" + (Renderer.Map.Zoom * width).ToString(System.Globalization.CultureInfo.InvariantCulture) + ")");
+                Renderer.Svg.WriteEndElement();
             }
             else
             {
@@ -170,7 +186,7 @@ namespace MapKit.Core
             _overlappableEvaluator = CompileBoolExpression(context, Marker.OverlappablePropertyName, _marker.Overlappable, ref _overlappable);
             _alignEvaluator = CompileEnumExpression(context, Marker.AlignmentPropertyName, _marker.Alignment, ref _alignment);
             _allowOverlapEvaluator = CompileBoolExpression(context, Marker.AllowOverlapPropertyName, _marker.AllowOverlap, ref _allowOverlap);
-            _fileEvaluator = CompileExpression<string>(context, Marker.FilePropertyName, _marker.File);
+            _fileEvaluator = CompileStringExpression(context, Marker.FilePropertyName, _marker.File, ref _file);
             _colorEvaluator = CompileColorExpression(context, Marker.FilePropertyName, _marker.Color, ref _color);
         }
 
