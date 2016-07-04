@@ -335,14 +335,12 @@ namespace MapKit.UI
             if (style == null) throw new ArgumentNullException("style");
 
             var wrapper = new StyleWrapper(style);
-            var node = parent.Nodes.Add(wrapper.Label);
+            var node = parent.Nodes.Add(wrapper.Style.Name);
             node.Tag = wrapper;
             node.Checked = style.Visible;
             node.ContextMenuStrip = cmnThemeNode;
 
             AttachNode(style, node);
-
-            AddNodes(node, style.Nodes);
 
             return node;
 		}

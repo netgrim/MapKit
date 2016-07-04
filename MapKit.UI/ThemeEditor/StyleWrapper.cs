@@ -3,10 +3,9 @@ using System.ComponentModel;
 
 namespace MapKit.UI
 {
-	class StyleWrapper : LayerGroupWrapper 
+	class StyleWrapper
 	{
         public StyleWrapper(Style style)
-            : base(style)
 		{
             Style = style;
 		}
