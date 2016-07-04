@@ -71,10 +71,6 @@ namespace MapKit.Core
             }
             else
             {
-                float scaleX = _marker.ScaleX != null ? float.Parse(_marker.ScaleX, System.Globalization.NumberFormatInfo.InvariantInfo) : 1;
-                float scaleY = _marker.ScaleY != null ? float.Parse(_marker.ScaleY, System.Globalization.NumberFormatInfo.InvariantInfo) : 1;
-                float angle = _marker.Angle != null ? float.Parse(_marker.Angle, System.Globalization.NumberFormatInfo.InvariantInfo) : 0;
-
                 float opacity = _marker.Opacity != null ? float.Parse(_marker.Opacity, System.Globalization.NumberFormatInfo.InvariantInfo) : 1;
 
                 float[][] matrixAlpha =
@@ -101,7 +97,7 @@ namespace MapKit.Core
 
                 using (var m = new Matrix())
                 {
-                    m.Scale(scaleX, scaleY);
+                    m.Scale(width, height);
                     //m.Rotate(angle);
                     //m.Translate(offsetX, offsetY);
                     //_g.MultiplyTransform(m, MatrixOrder.Append);
