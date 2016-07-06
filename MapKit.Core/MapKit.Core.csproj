@@ -62,7 +62,7 @@
     <Compile Include="Rendering\Svg\SvgNodeRenderer.cs" />
     <Compile Include="Rendering\Svg\SvgGraphicElementRenderer.cs" />
     <Compile Include="Rendering\Svg\PolylineRenderer.cs" />
-    <Compile Include="Rendering\Transform.cs" />
+    <Compile Include="Rendering\TransformUtil.cs" />
     <Compile Include="Rendering\VarRenderer.cs" />
     <Compile Include="Rendering\GroupItemRenderer.cs" />
     <Compile Include="Rendering\LayerGroupRenderer.cs" />
