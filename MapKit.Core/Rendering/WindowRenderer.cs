@@ -8,6 +8,7 @@ using WinMatrix = System.Windows.Media.Matrix;
 using System.Drawing.Drawing2D;
 using MapKit.Core.Rendering;
 using NetTopologySuite.Geometries;
+using System.Diagnostics;
 
 namespace MapKit.Core
 {
@@ -219,6 +220,9 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
+            Debug.Assert(InputFeatureType != null);
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
+
             base.Compile(recursive);
 
             _bgColorEvaluator = CompileColorExpression(Renderer.Context, Window.BgColorField, _window.BackgroundColor, ref _bgColor, true);

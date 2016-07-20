@@ -131,6 +131,9 @@ namespace MapKit.Core
 
         public void Compile(bool recursive = false)
         {
+            Debug.Assert(InputFeatureType != null);
+            _renderer.FeatureVarResolver.FeatureType = InputFeatureType;
+
             //var context = FeatureRenderer.CreateContext();
             //if (InputFeatureType != null)
             //{
@@ -147,6 +150,10 @@ namespace MapKit.Core
             {
                 var renderer = child.Renderer ?? (child.Renderer = _renderer.CreateRenderer(child, null, this));
                 if (renderer == null) continue;
+
+                var featureRenderer = renderer as IFeatureRenderer;
+                if (featureRenderer != null)
+                    featureRenderer.InputFeatureType = InputFeatureType;
 
                 var when = child as When;
                 if (when != null)

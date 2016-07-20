@@ -2,6 +2,7 @@
 using Ciloci.Flee;
 using NetTopologySuite.LinearReferencing;
 using MapKit.Core.Rendering;
+using System.Diagnostics;
 
 namespace MapKit.Core
 {
@@ -64,6 +65,9 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
+            Debug.Assert(InputFeatureType != null);
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
+
             base.Compile(recursive);
 
             //var context = CreateContext(Renderer);

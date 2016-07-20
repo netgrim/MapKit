@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace MapKit.Core
 {
     [DebuggerDisplay("Marker: Label = {Label}, Path={NodePath}")]
-    public class Marker : ThemeNode
+    public class Marker : ContainerNode
     {
         private const string ElementName = "marker";
 

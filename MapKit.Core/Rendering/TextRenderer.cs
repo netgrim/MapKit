@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 
 using WinPoint = System.Windows.Point;
 using MapKit.Core.Rendering;
+using System.Diagnostics;
 
 namespace MapKit.Core
 {
@@ -47,7 +48,8 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
-            //Debug.Assert(InputFeatureType != null);
+            Debug.Assert(InputFeatureType != null);
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
 
             if (_text.LabelBox != null)
             {
@@ -94,6 +96,7 @@ namespace MapKit.Core
             //    ? _text.LabelBox.Renderer as IFeatureRenderer
             //    : null;
             _labelBoxRenderer = _text.LabelBox != null ? new FeatureRenderer(Renderer, _text.LabelBox, this) : null;
+            _labelBoxRenderer.InputFeatureType = InputFeatureType;
 
             _compiled = true;
         }

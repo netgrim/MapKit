@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
 using System.Text;
+using System.Diagnostics;
 
 namespace MapKit.Core
 {
@@ -47,7 +48,8 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
-            //Debug.Assert(InputFeatureType != null);
+            Debug.Assert(InputFeatureType != null);
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
 
             //var context = CreateContext(Renderer);
             //var colorContext = CreateColorContext();

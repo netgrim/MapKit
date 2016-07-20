@@ -389,6 +389,10 @@ namespace MapKit.Core.Rendering
                 return new PolylineRenderer(this, (PolylineNode)node, parent);
             if (node is Animate)
                 return new AnimateRenderer(this, (Animate)node,  parent);
+            if (node is When)
+                return new FeatureRenderer(this, (When)node, parent);
+            if (node is Else)
+                return new FeatureRenderer(this, (Else)node, parent);
             if (node is ContainerNode)
                 return new ContainerNodeRenderer(this, (ContainerNode)node, parent);
             if (node is Variable)

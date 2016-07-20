@@ -85,7 +85,7 @@ namespace MapKit.Core
             foreach (var childRenderer in Renderers)
                 if (!Renderer.CancelPending && childRenderer.Visible)
                 {
-                    childRenderer.Render(null);
+                    childRenderer.Render(feature);
 
                     var groupRenderer = childRenderer as IGroupRenderer;
                     if (groupRenderer != null)

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using NetTopologySuite.LinearReferencing;
 using Ciloci.Flee;
 using MapKit.Core.Rendering;
+using System.Diagnostics;
 
 namespace MapKit.Core
 {
@@ -41,8 +42,12 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
+            Debug.Assert(InputFeatureType != null);
+
             _outputFeatureType = WrapFeatureType(_pointExtractor, InputFeatureType);
             base.Compile(_outputFeatureType, recursive);
+
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
 
             //var context = CreateContext();
             //_featureVarResolver = new FeatureVariableResolver(OutputFeatureType);
@@ -52,8 +57,6 @@ namespace MapKit.Core
             _endEvaluator = CompileDoubleExpression(PointExtractor.EndField, _pointExtractor.End, ref _end, false);
             _incEvaluator = CompileDoubleExpression(PointExtractor.IncField, _pointExtractor.Increment, ref _increment, false);
             _offsetEvaluator = CompileDoubleExpression(PointExtractor.OffsetField, _pointExtractor.Offset, ref _offset);
-
-            base.Compile(recursive);
         }
 
         public FeatureType WrapFeatureType(PointExtractor pointExtractor, FeatureType featureType)
@@ -166,10 +169,11 @@ namespace MapKit.Core
             base.BeginScene(visible);
             //if (Visible && !_compiled)
             //    Compile();
-
+            if(Compiled)
             foreach (var child in _pointExtractor.Nodes)
             {
                 var childRenderer = child.Renderer as IFeatureRenderer;
+
                 if (childRenderer != null)
                     childRenderer.BeginScene(Visible);
             }

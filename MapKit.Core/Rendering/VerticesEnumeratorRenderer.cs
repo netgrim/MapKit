@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using MapKit.Core.Rendering;
+using System.Diagnostics;
 
 namespace MapKit.Core
 {
@@ -108,9 +109,11 @@ namespace MapKit.Core
 
         public override void Compile(bool recursive = false)
         {
-            _outputFeatureType =  WrapFeatureType(InputFeatureType);
+            Debug.Assert(InputFeatureType != null);
+             _outputFeatureType =  WrapFeatureType(InputFeatureType);
             base.Compile(_outputFeatureType, recursive);
 
+            Renderer.FeatureVarResolver.FeatureType = InputFeatureType;
             _compiled = true;
         }
 
