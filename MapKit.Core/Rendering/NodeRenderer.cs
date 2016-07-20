@@ -235,6 +235,12 @@ namespace MapKit.Core.Rendering
             return CompileExpression(Node, context, name, expression, ref defaultValue, nullable);
         }
 
+        public IDynamicExpression CompileExpression(ExpressionContext context, string name, string expression)
+        {
+            object defaultValue = null;
+            return CompileExpression(Node, context, name, expression, ref defaultValue, true);
+        }
+
         public static IDynamicExpression CompileExpression(ThemeNode node, ExpressionContext context, string name, string expression, ref object defaultValue, bool nullable = true)
         {
             try
@@ -259,6 +265,11 @@ namespace MapKit.Core.Rendering
         }
 
         public static T Evaluate<T>(IGenericExpression<T> evaluator, T defaultValue)
+        {
+            return evaluator != null ? evaluator.Evaluate() : defaultValue;
+        }
+
+        public static object Evaluate(IDynamicExpression evaluator, object defaultValue)
         {
             return evaluator != null ? evaluator.Evaluate() : defaultValue;
         }

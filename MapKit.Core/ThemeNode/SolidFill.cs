@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace MapKit.Core
 {
     [DebuggerDisplay("SolidFill: Label = {Label}, Path={NodePath}")]
-    public class SolidFill : ThemeNode
+    public class SolidFill : ContainerNode
 	{
         internal const string ElementName = "solidFill";
         internal const string ColorPropertyName = "Color";

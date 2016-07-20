@@ -83,7 +83,7 @@ namespace MapKit.Core
             if (_exprEval != null || _caseValue != null)
             {
                 index = -1;
-                var value = _exprEval != null ? _exprEval.Evaluate() : _caseValue;
+                var value = NodeRenderer.Evaluate(_exprEval, _caseValue);
                 for (int i = 0; i < _expressions.Count; i++)
                     if (Equals(value, _expressions[i] != null ? ((IDynamicExpression)_expressions[i]).Evaluate() : _whenValues[i]))
                     {

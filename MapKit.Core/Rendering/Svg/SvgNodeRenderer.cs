@@ -5,7 +5,7 @@ namespace MapKit.Core.Rendering
 {
     internal class SvgNodeRenderer : FeatureRenderer
     {
-        protected IGenericExpression<string> _idEvaluator;
+        protected IDynamicExpression _idEvaluator;
         private SvgNode _svgNode;
 
         public SvgNodeRenderer(Renderer renderer, SvgGraphicElement node, IBaseRenderer parent)
@@ -20,7 +20,7 @@ namespace MapKit.Core.Rendering
 
             var context = Renderer.Context;
 
-            _idEvaluator = CompileStringExpression(context, Animate.IdField, _svgNode.Id);
+            _idEvaluator = CompileExpression(context, Animate.IdField, _svgNode.Id);
         }
     }
 }

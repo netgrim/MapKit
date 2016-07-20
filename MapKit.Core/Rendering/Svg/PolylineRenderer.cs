@@ -1,4 +1,5 @@
 ﻿using Ciloci.Flee;
+using System;
 using System.Text;
 
 namespace MapKit.Core.Rendering
@@ -35,7 +36,7 @@ namespace MapKit.Core.Rendering
                         pointSvg.Append(points[i].Y.ToString(System.Globalization.NumberFormatInfo.InvariantInfo));
                     }
 
-                    foreach (var attribute in new[]{ new { field = SvgNode.IdField, value = Evaluate(_idEvaluator, _polylineNode.Id) },
+                    foreach (var attribute in new[]{ new { field = SvgNode.IdField, value = Convert.ToString(Evaluate(_idEvaluator, _polylineNode.Id)) },
                         new { field = SvgGraphicElement.ClassField, value = Evaluate(_classEvaluator, _polylineNode.Class) },
                         new { field = "points", value = pointSvg.ToString() },
                         new { field = SvgGraphicElement.StyleField, value = Evaluate(_styleEvaluator, _polylineNode.Style) },
