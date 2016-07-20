@@ -35,7 +35,8 @@ namespace MapKit.Core.Rendering
             base.Compile(featuretype, recursive);
 
             var context = Renderer.Context;
-            context.Variables.Add("counter", _counter);
+            if(!context.Variables.ContainsKey("counter"))
+                context.Variables.Add("counter", _counter);
 
             _idEvaluator = CompileStringExpression(context, Animate.IdField, _animate.Id);
             _attributeNameEvaluator = CompileStringExpression(context, Animate.AttributeNameField, _animate.AttributeName);
