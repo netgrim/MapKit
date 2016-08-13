@@ -240,13 +240,18 @@ namespace MapKit.Spatialite
 
         protected override void WriteXmlAttributes(XmlWriter writer)
         {
+            base.WriteXmlAttributes(writer);
+
             writer.WriteAttributeString(FileField, File);
+
             if (!string.IsNullOrEmpty(Table))
                 writer.WriteAttributeString(TableField, Table);
             if (!string.IsNullOrEmpty(FidColumn) && FidColumn != DefaultFidColumn)
                 writer.WriteAttributeString(FidField, FidColumn);
             if (!string.IsNullOrEmpty(GeometryColumn) && GeometryColumn != DefaultGeometryColumn)
                 writer.WriteAttributeString(GeomField, GeometryColumn);
+            if (!string.IsNullOrEmpty(Columns))
+                writer.WriteAttributeString(ColumnsField, Columns);
 
             if (!Indexed)
             {
@@ -255,7 +260,6 @@ namespace MapKit.Spatialite
                 writer.WriteEndAttribute();
             }
 
-            //base.WriteXmlAttributes(writer);
         }
 
         protected override bool TryReadXmlAttribute(XmlReader reader)
