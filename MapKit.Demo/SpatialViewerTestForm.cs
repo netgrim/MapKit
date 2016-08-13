@@ -377,7 +377,7 @@ namespace MapKit.Demo
                     }
                 /*}
                 else
-                {*/
+                {
                     //g.Clear(Color.Gray);
                     //draw test rectagle
                     var rectPosition = translate.Transform(new WinPoint(100.0, 200.0));
@@ -387,7 +387,7 @@ namespace MapKit.Demo
                     var p = new WinPoint(100, 200);
                     p = translate.Transform(p);
                     g.DrawString("hello world jpgqy", SystemFonts.DefaultFont, Brushes.Black, p.ToPointF(), new System.Drawing.StringFormat { LineAlignment = StringAlignment.Far });
-
+                    */
                 }
 
                 BeginInvoke(new ThreadStart(RenderingComplete));
