@@ -16,7 +16,7 @@ namespace MapKit.Core
 
         public string Transform { get; set; }
 
-        public string Style { get; private set; }
+        public string Style { get; set; }
 
         public override object Clone()
         {
@@ -29,7 +29,7 @@ namespace MapKit.Core
             if (!string.IsNullOrEmpty(Class))
                 writer.WriteAttributeString(ClassField, Class);
             if (!string.IsNullOrEmpty(Style))
-                writer.WriteAttributeString(IdField, Style);
+                writer.WriteAttributeString(StyleField, Style);
             if (!string.IsNullOrEmpty(Transform))
                 writer.WriteAttributeString(TransformField, Transform);
         }
