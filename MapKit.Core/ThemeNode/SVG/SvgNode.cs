@@ -1,5 +1,7 @@
 ﻿using System.Xml;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System;
 
 namespace MapKit.Core
 {
@@ -9,6 +11,13 @@ namespace MapKit.Core
         public const string IdField = "id";
 
         public string Id { get; set; }
+
+        public List<Tuple<string, string>> Attributes { get; private set; }
+
+        public SvgNode()
+        {
+            Attributes = new List<Tuple<string, string>>();
+        }
 
         public override object Clone()
         {
@@ -30,7 +39,9 @@ namespace MapKit.Core
         protected internal override bool TryReadXmlAttribute(XmlReader reader)
         {
             if (reader.LocalName == IdField) Id = reader.Value;
-            else return base.TryReadXmlAttribute(reader);
+            else if (!base.TryReadXmlAttribute(reader))
+                Attributes.Add(Tuple.Create(reader.LocalName, reader.Value));
+
             return true;
         }
 

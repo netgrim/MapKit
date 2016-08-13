@@ -46,6 +46,15 @@ namespace MapKit.Core.Rendering
                             Renderer.Svg.WriteAttributeString(attribute.field, attribute.value);
                     }
 
+                    for (int i = 0; i < _attributeEvaluators.Count; i++)
+                    {
+                        var evalutator = _attributeEvaluators[i];
+                        var pair = _polylineNode.Attributes[i];
+                        var value = Convert.ToString(Evaluate(evalutator, pair.Item2));
+                        if (value != null)
+                            Renderer.Svg.WriteAttributeString(pair.Item1, value);
+                    }
+
                     base.Render(feature);
 
                     //Renderer.Svg.WriteAttributeString("style", "fill:none;stroke:black");
