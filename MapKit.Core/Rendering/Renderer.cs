@@ -391,14 +391,14 @@ namespace MapKit.Core.Rendering
                 return new AnimateRenderer(this, (Animate)node,  parent);
             if (node is When)
                 return new FeatureRenderer(this, (When)node, parent);
-            if (node is Else)
-                return new FeatureRenderer(this, (Else)node, parent);
+            if (node is Else || node is WindowTarget || node is WindowQuery)
+                return new FeatureRenderer(this, (ContainerNode)node, parent);
+            if (node is Run)
+                return new MacroExecuter(this, (Run)node, parent);
             if (node is ContainerNode)
                 return new ContainerNodeRenderer(this, (ContainerNode)node, parent);
             if (node is Variable)
                 return new VarRenderer(this, (Variable)node, parent);
-            if (node is Run)
-                return new MacroExecuter(this, (Run)node, parent);
 
             Debug.Fail("No renderer");
             return null;
