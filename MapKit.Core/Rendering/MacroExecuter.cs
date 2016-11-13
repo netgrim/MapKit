@@ -5,7 +5,7 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class MacroExecuter : NodeRenderer
+    class MacroExecuter : FeatureRenderer
     {
         private Run _run;
 

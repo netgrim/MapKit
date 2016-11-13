@@ -4,7 +4,7 @@ using MapKit.Core.Rendering;
 
 namespace MapKit.Core
 {
-    class ContainerNodeRenderer : NodeRenderer
+    class ContainerNodeRenderer : FeatureRenderer
     {
         public ContainerNodeRenderer(Renderer renderer, ContainerNode node, IBaseRenderer parent)
             : base (renderer, node, parent)

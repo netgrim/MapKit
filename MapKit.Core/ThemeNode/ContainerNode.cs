@@ -22,7 +22,7 @@ namespace MapKit.Core
         private double? _maxScale;
         private double _minScale;
 
- 		public ContainerNode()
+		public ContainerNode()
 		{
             var nodes = new ThemeNodeCollection<ThemeNode>(this);
             nodes.ItemAdded += Nodes_changed;
@@ -279,7 +279,7 @@ namespace MapKit.Core
 
         public override void WriteXml(XmlWriter writer)
         {
-            writer.WriteStartElement(GetNodeType().ElementName);
+            writer.WriteStartElement(GetType().Name);
             WriteXmlAttributes(writer);
             WriteXmlContent(writer);
             writer.WriteEndElement();

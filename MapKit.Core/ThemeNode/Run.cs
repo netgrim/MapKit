@@ -2,7 +2,7 @@
 
 namespace MapKit.Core
 {
-    public class Run : ThemeNode
+    public class Run : ContainerNode
     {
         internal const string ElementName = "run";
         private const string MacroField = "macro";
