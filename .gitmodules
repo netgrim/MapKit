@@ -7,3 +7,6 @@
 [submodule "GeoAPI"]
 	path = GeoAPI
 	url = https://github.com/NetTopologySuite/GeoAPI.git
+[submodule "SVG"]
+	path = SVG
+	url = https://github.com/vvvv/SVG.git
